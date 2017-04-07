@@ -59,6 +59,12 @@
   <ItemGroup>
     <Compile Include="Benchmarks\Cases\Data\Row.cs" />
     <Compile Include="Benchmarks\Cases\Data\StringGenerator.cs" />
+    <Compile Include="Benchmarks\Cases\Filtering\Base.cs" />
+    <Compile Include="Benchmarks\Cases\Filtering\Filtering.cs" />
+    <Compile Include="Benchmarks\Cases\Searching\Base.cs" />
+    <Compile Include="Benchmarks\Cases\Searching\Searching.cs" />
+    <Compile Include="Benchmarks\Cases\Sorting\Base.cs" />
+    <Compile Include="Benchmarks\Cases\Sorting\Sorting.cs" />
     <Compile Include="Benchmarks\Hosts\Empty.cs" />
     <Compile Include="Benchmarks\Hosts\Empty.Designer.cs">
       <DependentUpon>Empty.cs</DependentUpon>
