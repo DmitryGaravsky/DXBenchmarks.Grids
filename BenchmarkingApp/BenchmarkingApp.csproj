@@ -57,6 +57,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Benchmarks\Cases\Data\Row.cs" />
+    <Compile Include="Benchmarks\Cases\Data\StringGenerator.cs" />
+    <Compile Include="Benchmarks\Hosts\Empty.cs" />
+    <Compile Include="Benchmarks\Hosts\Empty.Designer.cs">
+      <DependentUpon>Empty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Benchmarks\Hosts\Grid.cs" />
+    <Compile Include="Benchmarks\Hosts\Grid.Designer.cs">
+      <DependentUpon>Grid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Benchmarks\Hosts\Treelist.cs" />
+    <Compile Include="Benchmarks\Hosts\Treelist.Designer.cs">
+      <DependentUpon>Treelist.cs</DependentUpon>
+    </Compile>
     <Compile Include="Core\Services\IHostService.cs" />
     <Compile Include="Core\Model\IBenchmarkHost.cs" />
     <Compile Include="Core\Model\IBenchmarkItem.cs" />
@@ -71,6 +85,15 @@
     <Compile Include="Core\ViewModels\BenchmarkItem.cs" />
     <Compile Include="Core\ViewModels\HostItem.cs" />
     <Compile Include="Core\ViewModels\MainViewModel.cs" />
+    <EmbeddedResource Include="Benchmarks\Hosts\Empty.resx">
+      <DependentUpon>Empty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Benchmarks\Hosts\Grid.resx">
+      <DependentUpon>Grid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Benchmarks\Hosts\Treelist.resx">
+      <DependentUpon>Treelist.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
