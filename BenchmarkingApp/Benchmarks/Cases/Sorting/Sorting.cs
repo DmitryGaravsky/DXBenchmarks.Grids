@@ -25,6 +25,33 @@
         }
     }
 }
+namespace BenchmarkingApp.Tree.BoundHierarchy {
+    [BenchmarkItem("Sort by ID (Bound Hierarchy)")]
+    public class Sorting_ID : SortBoundBase {
+        public sealed override void Benchmark() {
+            treeList.BeginSort();
+            treeList.Columns["ID"].SortOrder = System.Windows.Forms.SortOrder.Descending;
+            treeList.EndSort();
+        }
+    }
+    [BenchmarkItem("Sort by Name (Bound Hierarchy)")]
+    public class Sorting_Name : SortBoundBase {
+        public sealed override void Benchmark() {
+            treeList.BeginSort();
+            treeList.Columns["Name"].SortOrder = System.Windows.Forms.SortOrder.Ascending;
+            treeList.EndSort();
+        }
+    }
+    [BenchmarkItem("Sort by ID and Name (Bound Hierarchy)")]
+    public class Sorting_ID_and_Name : SortBoundBase {
+        public sealed override void Benchmark() {
+            treeList.BeginSort();
+            treeList.Columns["ID"].SortOrder = System.Windows.Forms.SortOrder.Descending;
+            treeList.Columns["Name"].SortOrder = System.Windows.Forms.SortOrder.Ascending;
+            treeList.EndSort();
+        }
+    }
+}
 
 namespace BenchmarkingApp.Tree.Unbound {
     [BenchmarkItem("Sort by ID (Unbound)")]
@@ -44,6 +71,34 @@ namespace BenchmarkingApp.Tree.Unbound {
         }
     }
     [BenchmarkItem("Sort by ID and Name (Unbound)")]
+    public class Sorting_ID_and_Name : SortUnboundBase {
+        public sealed override void Benchmark() {
+            treeList.BeginSort();
+            treeList.Columns["ID"].SortOrder = System.Windows.Forms.SortOrder.Descending;
+            treeList.Columns["Name"].SortOrder = System.Windows.Forms.SortOrder.Ascending;
+            treeList.EndSort();
+        }
+    }
+}
+
+namespace BenchmarkingApp.Tree.UnboundHierarchy {
+    [BenchmarkItem("Sort by ID (Unbound Hierarchy)")]
+    public class Sorting_ID : SortUnboundBase {
+        public sealed override void Benchmark() {
+            treeList.BeginSort();
+            treeList.Columns["ID"].SortOrder = System.Windows.Forms.SortOrder.Descending;
+            treeList.EndSort();
+        }
+    }
+    [BenchmarkItem("Sort by Name (Unbound Hierarchy)")]
+    public class Sorting_Name : SortUnboundBase {
+        public sealed override void Benchmark() {
+            treeList.BeginSort();
+            treeList.Columns["Name"].SortOrder = System.Windows.Forms.SortOrder.Ascending;
+            treeList.EndSort();
+        }
+    }
+    [BenchmarkItem("Sort by ID and Name (Unbound Hierarchy)")]
     public class Sorting_ID_and_Name : SortUnboundBase {
         public sealed override void Benchmark() {
             treeList.BeginSort();

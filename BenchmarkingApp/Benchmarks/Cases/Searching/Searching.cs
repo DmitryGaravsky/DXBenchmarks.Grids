@@ -29,7 +29,7 @@ namespace BenchmarkingApp.Tree.Unbound {
 }
 
 namespace BenchmarkingApp.Grid.Bound {
-    [BenchmarkItem("Search by Notes (Unbound)")]
+    [BenchmarkItem("Search by Notes")]
     public class Searching_Notes : SearchBase {
         public sealed override void Benchmark() {
             gridView.ApplyFindFilter("Notes:ipsum");

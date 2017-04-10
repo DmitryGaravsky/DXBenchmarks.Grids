@@ -82,6 +82,9 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.leHosts.Properties.DataSource = this.hostItemBindingSource;
             this.leHosts.Properties.DisplayMember = "Name";
+            this.leHosts.Properties.DropDownRows = 3;
+            this.leHosts.Properties.PopupFormMinSize = new System.Drawing.Size(120, 0);
+            this.leHosts.Properties.ShowFooter = false;
             this.leHosts.Properties.ShowHeader = false;
             this.leHosts.Size = new System.Drawing.Size(150, 20);
             this.leHosts.TabIndex = 1;
@@ -95,6 +98,9 @@
             this.leBenchmarks.Properties.DataSource = this.benchmarkItemBindingSource;
             this.leBenchmarks.Properties.DisplayMember = "Name";
             this.leBenchmarks.Properties.ShowHeader = false;
+            this.leBenchmarks.Properties.ShowFooter = false;
+            this.leBenchmarks.Properties.PopupWidth = 250;
+            this.leBenchmarks.Properties.DropDownRows = 28;
             this.leBenchmarks.Size = new System.Drawing.Size(150, 20);
             this.leBenchmarks.TabIndex = 1;
             // 

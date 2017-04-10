@@ -170,7 +170,7 @@ namespace BenchmarkingApp {
         void LogResults() {
             var log = this.GetService<ILogService>();
             if(log != null)
-                log.Log(DateTime.Now.ToShortTimeString() + " " + Result);
+                log.Log("[" + DateTime.Now.ToShortTimeString() + ": " + ActiveBenchmarkItem.Name + "] " + Result);
         }
         //
         long? result, worst;

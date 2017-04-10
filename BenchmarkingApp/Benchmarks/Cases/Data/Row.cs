@@ -7,7 +7,7 @@
     }
     public class Row {
         static Random random = new Random(10000);
-        Row() { }
+        protected Row() { }
         //
         public int ID { get; set; }
         public Guid UID { get; set; }
@@ -43,8 +43,36 @@
             }
             else dataSource.RemoveRange(n, dataSource.Count - n);
         }
-        public static Row CreateRow(int seed) {
-            Row r = new Row();
+        readonly static IDictionary<int, List<HierarchicalRow>> hierarchicalDataSourcesCache = new Dictionary<int, List<HierarchicalRow>>();
+        public static void EnsureHierarchicalSource(ref List<HierarchicalRow> dataSource, int n = 10000, int level = 5) {
+            if(dataSource == null && !hierarchicalDataSourcesCache.TryGetValue(n, out dataSource)) {
+                dataSource = new List<HierarchicalRow>(n);
+                hierarchicalDataSourcesCache.Add(n, dataSource);
+            }
+            if(dataSource.Count != n) {
+                dataSource.Clear();
+                int levelStep = (int)(Math.Log(n, level) + 0.5);
+                int levelBegin = 0; int levelEnd = levelStep - 1;
+                int parentLevelBegin = 0; int parentLevelEnd = 0;
+                for(int i = 0; i < n; i++) {
+                    if(i == levelEnd) {
+                        parentLevelBegin = levelBegin;
+                        parentLevelEnd = levelEnd;
+                        levelEnd = levelBegin + (levelEnd - levelBegin) * levelStep;
+                        levelBegin = i;
+                    }
+                    HierarchicalRow parent = null;
+                    if(parentLevelBegin >= 0 && parentLevelEnd > 0) {
+                        int parentLevelSize = parentLevelEnd - parentLevelBegin;
+                        parent = dataSource[parentLevelBegin + (i - levelBegin) % parentLevelSize];
+                    }
+                    dataSource.Add(HierarchicalRow.CreateHierarchicalRow(parent, i));
+                }
+            }
+        }
+        public static Row CreateRow(int seed, Func<Row> createRow = null) {
+            createRow = createRow ?? new Func<Row>(() => new Row());
+            Row r = createRow();
             r.ID = seed;
             r.UID = new Guid(seed.UID());
             r.SID = random.String(6);
@@ -76,6 +104,37 @@
         }
         internal object[] GetData() {
             return new object[] { ID, UID, SID, Age, Size, Price, Amount, Factor, Name, Notes, IsActive, Approved, Open, Resolved, Gender };
+        }
+    }
+    public class HierarchicalRow : Row {
+        HierarchicalRow(Row parent) {
+            if(parent != null) {
+                ParentID = parent.ID;
+                ParentSID = parent.SID;
+                ParentUID = parent.UID;
+            }
+            else ParentID = -1;
+        }
+        public int ParentID {
+            get;
+            private set;
+        }
+        public string ParentSID {
+            get;
+            private set;
+        }
+        public Guid ParentUID {
+            get;
+            private set;
+        }
+        public static HierarchicalRow CreateHierarchicalRow(HierarchicalRow parent, int seed) {
+            return (HierarchicalRow)CreateRow(seed, () => new HierarchicalRow(parent));
+        }
+        internal static string[] GetHierarchicalColumns() {
+            return new string[] { "ID", "ParentID", "UID", "ParentUID", "SID", "ParentSID", "Age", "Size", "Price", "Amount", "Factor", "Name", "Notes", "IsActive", "Approved", "Open", "Resolved", "Gender" };
+        }
+        internal object[] GetHierarchicalData() {
+            return new object[] { ID, ParentID, UID, ParentUID, SID, ParentSID, Age, Size, Price, Amount, Factor, Name, Notes, IsActive, Approved, Open, Resolved, Gender };
         }
     }
 }

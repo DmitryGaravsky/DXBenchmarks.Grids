@@ -23,7 +23,31 @@
         }
     }
 }
+namespace BenchmarkingApp.Tree.BoundHierarchy {
+    using DevExpress.Data.Filtering;
 
+    [BenchmarkItem("Filter by Price (Bound Hierarchy)")]
+    public class Filtering_Price : FilterBoundBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price>5000");
+        public sealed override void Benchmark() {
+            treeList.ActiveFilterCriteria = criteria;
+        }
+    }
+    [BenchmarkItem("Filter by Approved (Bound Hierarchy)")]
+    public class Filtering_Approved : FilterBoundBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("Approved Is Not Null");
+        public sealed override void Benchmark() {
+            treeList.ActiveFilterCriteria = criteria;
+        }
+    }
+    [BenchmarkItem("Filter by Price and Approved (Bound Hierarchy)")]
+    public class Filtering_Price_and_Approved : FilterBoundBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price<5000 AND Approved Is Not Null");
+        public sealed override void Benchmark() {
+            treeList.ActiveFilterCriteria = criteria;
+        }
+    }
+}
 namespace BenchmarkingApp.Tree.Unbound {
     using DevExpress.Data.Filtering;
 
@@ -42,6 +66,31 @@ namespace BenchmarkingApp.Tree.Unbound {
         }
     }
     [BenchmarkItem("Filter by Price and Approved (Unbound)")]
+    public class Filtering_Price_and_Approved : FilterUnboundBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price<5000 AND Approved Is Not Null");
+        public sealed override void Benchmark() {
+            treeList.ActiveFilterCriteria = criteria;
+        }
+    }
+}
+namespace BenchmarkingApp.Tree.UnboundHierarchy {
+    using DevExpress.Data.Filtering;
+
+    [BenchmarkItem("Filter by Price (Unbound Hierarchy)")]
+    public class Filtering_Price : FilterUnboundBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price>5000");
+        public sealed override void Benchmark() {
+            treeList.ActiveFilterCriteria = criteria;
+        }
+    }
+    [BenchmarkItem("Filter by Approved (Unbound Hierarchy)")]
+    public class Filtering_Approved : FilterUnboundBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("Approved Is Not Null");
+        public sealed override void Benchmark() {
+            treeList.ActiveFilterCriteria = criteria;
+        }
+    }
+    [BenchmarkItem("Filter by Price and Approved (Unbound Hierarchy)")]
     public class Filtering_Price_and_Approved : FilterUnboundBase {
         readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price<5000 AND Approved Is Not Null");
         public sealed override void Benchmark() {
