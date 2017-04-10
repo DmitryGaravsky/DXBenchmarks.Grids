@@ -24,7 +24,7 @@
         public abstract void Benchmark();
     }
     namespace Bound {
-        public abstract class SearchBoundBase : FilterBase {
+        public abstract class SearchBoundBase : SearchBase {
             public override void SetUp(object uiControl) {
                 base.SetUp(uiControl);
                 treeList.DataSource = dataSource;
@@ -34,7 +34,7 @@
     }
     namespace Unbound {
         [BenchmarkHost("TreeList")]
-        public abstract class SearchUnboundBase : FilterBase {
+        public abstract class SearchUnboundBase : SearchBase {
             public override void SetUp(object uiControl) {
                 base.SetUp(uiControl);
                 // Columns

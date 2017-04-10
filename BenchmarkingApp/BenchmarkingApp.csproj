@@ -65,21 +65,28 @@
     <Compile Include="Benchmarks\Cases\Searching\Searching.cs" />
     <Compile Include="Benchmarks\Cases\Sorting\Base.cs" />
     <Compile Include="Benchmarks\Cases\Sorting\Sorting.cs" />
-    <Compile Include="Benchmarks\Hosts\Empty.cs" />
+    <Compile Include="Benchmarks\Hosts\Empty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Benchmarks\Hosts\Empty.Designer.cs">
       <DependentUpon>Empty.cs</DependentUpon>
     </Compile>
-    <Compile Include="Benchmarks\Hosts\Grid.cs" />
+    <Compile Include="Benchmarks\Hosts\Grid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Benchmarks\Hosts\Grid.Designer.cs">
       <DependentUpon>Grid.cs</DependentUpon>
     </Compile>
-    <Compile Include="Benchmarks\Hosts\Treelist.cs" />
+    <Compile Include="Benchmarks\Hosts\Treelist.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Benchmarks\Hosts\Treelist.Designer.cs">
       <DependentUpon>Treelist.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\Services\IHostService.cs" />
     <Compile Include="Core\Model\IBenchmarkHost.cs" />
     <Compile Include="Core\Model\IBenchmarkItem.cs" />
+    <Compile Include="Core\Services\ILogService.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

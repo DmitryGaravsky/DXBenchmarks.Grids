@@ -3,6 +3,8 @@ namespace BenchmarkingApp {
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Threading.Tasks;
+    using DevExpress.Mvvm;
     using DevExpress.Mvvm.POCO;
 
     public class MainViewModel {
@@ -141,7 +143,7 @@ namespace BenchmarkingApp {
                 low--;
                 hi++;
             }
-            worst = 0; 
+            worst = 0;
             int watchDog = Math.Max(counter * 2, 100);
             while(counter > 0 && (0 < watchDog--)) {
                 // Run
@@ -163,6 +165,12 @@ namespace BenchmarkingApp {
             this.RaisePropertyChanged(x => x.Result);
             running--;
             UpdateCommands();
+            LogResults();
+        }
+        void LogResults() {
+            var log = this.GetService<ILogService>();
+            if(log != null)
+                log.Log(DateTime.Now.ToShortTimeString() + " " + Result);
         }
         //
         long? result, worst;
@@ -181,5 +189,32 @@ namespace BenchmarkingApp {
                 return string.Empty;
             }
         }
+        #region Test
+        public bool CanTest() {
+            return HasBenchmark && running == 0;
+        }
+        public Task Test() {
+            var dispatcher = this.GetService<IDispatcherService>();
+            var target = ActiveBenchmarkItem.Target;
+            var uiControl = ActiveHostItem.Target.UIControl;
+            return Task.Factory.StartNew(() =>
+                dispatcher.BeginInvoke(() =>
+                {
+                    running++;
+                    target.SetUp(uiControl);
+                })
+            ).ContinueWith(setup =>
+                dispatcher.BeginInvoke(() => target.Benchmark())
+            ).ContinueWith(b =>
+            {
+                System.Threading.Thread.Sleep(5000);
+                dispatcher.BeginInvoke(() =>
+                {
+                    target.TearDown(uiControl);
+                    running--;
+                });
+            });
+        }
+        #endregion Test
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 
 namespace BenchmarkingApp {
     static class Program {
@@ -11,6 +9,9 @@ namespace BenchmarkingApp {
         /// </summary>
         [STAThread]
         static void Main() {
+            WindowsFormsSettings.EnableFormSkins();
+            WindowsFormsSettings.DefaultLookAndFeel.SetSkinStyle("Office 2016 Colorful");
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

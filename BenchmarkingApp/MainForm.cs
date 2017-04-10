@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 
 namespace BenchmarkingApp {
-    public partial class MainForm : Form, IHostService {
+    public partial class MainForm : XtraForm, IHostService, ILogService {
         public MainForm() {
             InitializeComponent();
+            this.KeyPreview = true;
+            memoLog.Visible = false;
         }
         protected override void OnHandleCreated(EventArgs e) {
             base.OnHandleCreated(e);
@@ -23,8 +26,15 @@ namespace BenchmarkingApp {
                 //
                 fluent.WithEvent(this, "Load")
                     .EventToCommand(x => x.Load());
+                fluent.WithKey(this, Keys.Control | Keys.T)
+                    .KeyToCommand(x => x.Test());
                 fluent.SetBinding(result, l => l.Text, x => x.Result);
             }
+        }
+        void showLog_CheckedChanged(object sender, EventArgs e) {
+            memoLog.Visible = showLog.Checked;
+            result.Visible = !showLog.Checked;
+            Padding = new Padding(8, 40, 8, showLog.Checked ? 120 : 8);
         }
         #region IHostService Members
         void IHostService.Show(IBenchmarkHost host) {
@@ -32,6 +42,11 @@ namespace BenchmarkingApp {
             hostControl.Dock = DockStyle.Fill;
             hostControl.Parent = hostPanel;
             hostControl.BringToFront();
+        }
+        #endregion
+        #region ILogService Members
+        void ILogService.Log(string message) {
+            memoLog.Text += (message + Environment.NewLine);
         }
         #endregion
     }
