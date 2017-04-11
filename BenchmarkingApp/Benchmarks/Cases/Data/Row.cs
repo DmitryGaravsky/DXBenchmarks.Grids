@@ -106,24 +106,14 @@
             return new object[] { ID, UID, SID, Age, Size, Price, Amount, Factor, Name, Notes, IsActive, Approved, Open, Resolved, Gender };
         }
     }
+    //
     public class HierarchicalRow : Row {
         HierarchicalRow(Row parent) {
-            if(parent != null) {
+            ParentID = -1;
+            if(parent != null)
                 ParentID = parent.ID;
-                ParentSID = parent.SID;
-                ParentUID = parent.UID;
-            }
-            else ParentID = -1;
         }
         public int ParentID {
-            get;
-            private set;
-        }
-        public string ParentSID {
-            get;
-            private set;
-        }
-        public Guid ParentUID {
             get;
             private set;
         }
@@ -131,10 +121,10 @@
             return (HierarchicalRow)CreateRow(seed, () => new HierarchicalRow(parent));
         }
         internal static string[] GetHierarchicalColumns() {
-            return new string[] { "ID", "ParentID", "UID", "ParentUID", "SID", "ParentSID", "Age", "Size", "Price", "Amount", "Factor", "Name", "Notes", "IsActive", "Approved", "Open", "Resolved", "Gender" };
+            return new string[] { "ID", "ParentID", "UID", "SID", "Age", "Size", "Price", "Amount", "Factor", "Name", "Notes", "IsActive", "Approved", "Open", "Resolved", "Gender" };
         }
         internal object[] GetHierarchicalData() {
-            return new object[] { ID, ParentID, UID, ParentUID, SID, ParentSID, Age, Size, Price, Amount, Factor, Name, Notes, IsActive, Approved, Open, Resolved, Gender };
+            return new object[] { ID, ParentID, UID, SID, Age, Size, Price, Amount, Factor, Name, Notes, IsActive, Approved, Open, Resolved, Gender };
         }
     }
 }
