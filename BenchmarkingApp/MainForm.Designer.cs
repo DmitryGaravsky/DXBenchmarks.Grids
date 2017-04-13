@@ -83,15 +83,15 @@
             this.leHosts.Properties.DataSource = this.hostItemBindingSource;
             this.leHosts.Properties.DisplayMember = "Name";
             this.leHosts.Properties.DropDownRows = 3;
-            this.leHosts.Properties.PopupFormMinSize = new System.Drawing.Size(120, 0);
+            this.leHosts.Properties.PopupFormMinSize = new System.Drawing.Size(80, 0);
             this.leHosts.Properties.ShowFooter = false;
             this.leHosts.Properties.ShowHeader = false;
-            this.leHosts.Size = new System.Drawing.Size(150, 20);
+            this.leHosts.Size = new System.Drawing.Size(80, 20);
             this.leHosts.TabIndex = 1;
             // 
             // leBenchmarks
             // 
-            this.leBenchmarks.Location = new System.Drawing.Point(164, 14);
+            this.leBenchmarks.Location = new System.Drawing.Point(94, 14);
             this.leBenchmarks.Name = "leBenchmarks";
             this.leBenchmarks.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -100,8 +100,8 @@
             this.leBenchmarks.Properties.ShowHeader = false;
             this.leBenchmarks.Properties.ShowFooter = false;
             this.leBenchmarks.Properties.PopupWidth = 250;
-            this.leBenchmarks.Properties.DropDownRows = 28;
-            this.leBenchmarks.Size = new System.Drawing.Size(150, 20);
+            this.leBenchmarks.Properties.DropDownRows = 40;
+            this.leBenchmarks.Size = new System.Drawing.Size(220, 20);
             this.leBenchmarks.TabIndex = 1;
             // 
             // hostPanel
@@ -116,10 +116,10 @@
             // 
             this.result.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.result.Location = new System.Drawing.Point(385, 14);
+            this.result.Location = new System.Drawing.Point(365, 14);
             this.result.Name = "result";
             this.result.Properties.ReadOnly = true;
-            this.result.Size = new System.Drawing.Size(429, 20);
+            this.result.Size = new System.Drawing.Size(449, 20);
             this.result.TabIndex = 3;
             this.result.TabStop = false;
             // 
@@ -138,8 +138,8 @@
             // 
             this.showLog.Location = new System.Drawing.Point(320, 14);
             this.showLog.Name = "showLog";
-            this.showLog.Properties.Caption = "Full Log";
-            this.showLog.Size = new System.Drawing.Size(59, 19);
+            this.showLog.Properties.Caption = "Log";
+            this.showLog.Size = new System.Drawing.Size(40, 19);
             this.showLog.TabIndex = 5;
             this.showLog.TabStop = false;
             this.showLog.CheckedChanged += new System.EventHandler(this.showLog_CheckedChanged);

@@ -22,6 +22,13 @@
             treeList.ActiveFilterCriteria = criteria;
         }
     }
+    [BenchmarkItem("Filter by Amount and Open (Bound)")]
+    public class Filtering_Amount_and_Open : FilterBoundBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("[Amount] Between('150','175') AND ([Open]>='1/1/2001' AND [Open]<'1/1/2002')");
+        public sealed override void Benchmark() {
+            treeList.ActiveFilterCriteria = criteria;
+        }
+    }
 }
 namespace BenchmarkingApp.Tree.BoundHierarchy {
     using DevExpress.Data.Filtering;
@@ -43,6 +50,13 @@ namespace BenchmarkingApp.Tree.BoundHierarchy {
     [BenchmarkItem("Filter by Price and Approved (Bound Hierarchy)")]
     public class Filtering_Price_and_Approved : FilterBoundBase {
         readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price<5000 AND Approved Is Not Null");
+        public sealed override void Benchmark() {
+            treeList.ActiveFilterCriteria = criteria;
+        }
+    }
+    [BenchmarkItem("Filter by Amount and Open (Bound Hierarchy)")]
+    public class Filtering_Amount_and_Open : FilterBoundBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("[Amount] Between('150','175') AND ([Open]>='1/1/2001' AND [Open]<'1/1/2002')");
         public sealed override void Benchmark() {
             treeList.ActiveFilterCriteria = criteria;
         }
@@ -72,6 +86,13 @@ namespace BenchmarkingApp.Tree.Unbound {
             treeList.ActiveFilterCriteria = criteria;
         }
     }
+    [BenchmarkItem("Filter by Amount and Open (Unbound)")]
+    public class Filtering_Amount_and_Open : FilterUnboundBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("[Amount] Between('150','175') AND ([Open]>='1/1/2001' AND [Open]<'1/1/2002')");
+        public sealed override void Benchmark() {
+            treeList.ActiveFilterCriteria = criteria;
+        }
+    }
 }
 namespace BenchmarkingApp.Tree.UnboundHierarchy {
     using DevExpress.Data.Filtering;
@@ -93,6 +114,13 @@ namespace BenchmarkingApp.Tree.UnboundHierarchy {
     [BenchmarkItem("Filter by Price and Approved (Unbound Hierarchy)")]
     public class Filtering_Price_and_Approved : FilterUnboundBase {
         readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price<5000 AND Approved Is Not Null");
+        public sealed override void Benchmark() {
+            treeList.ActiveFilterCriteria = criteria;
+        }
+    }
+    [BenchmarkItem("Filter by Amount and Open (Unbound Hierarchy)")]
+    public class Filtering_Amount_and_Open : FilterUnboundBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("[Amount] Between('150','175') AND ([Open]>='1/1/2001' AND [Open]<'1/1/2002')");
         public sealed override void Benchmark() {
             treeList.ActiveFilterCriteria = criteria;
         }
@@ -119,6 +147,13 @@ namespace BenchmarkingApp.Grid.Bound {
     [BenchmarkItem("Filter by Price and Approved")]
     public class Filtering_Price_and_Approved : FilterBase {
         readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price<5000 AND Approved Is Not Null");
+        public sealed override void Benchmark() {
+            gridView.ActiveFilterCriteria = criteria;
+        }
+    }
+    [BenchmarkItem("Filter by Amount and Open")]
+    public class Filtering_Amount_and_Open : FilterBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("[Amount] Between('150','175') AND ([Open]>='1/1/2001' AND [Open]<'1/1/2002')");
         public sealed override void Benchmark() {
             gridView.ActiveFilterCriteria = criteria;
         }
@@ -161,7 +196,17 @@ namespace BenchmarkingApp.InMemory {
     public class Filtering_Price_and_Approved : FilterBase {
         public sealed override void Benchmark() {
             filtered = dataSource
-                .Where(r => r.Price > 5000 && r.Approved.HasValue)
+                .Where(r => r.Price > 5000m && r.Approved.HasValue)
+                .ToArray();
+        }
+    }
+    [BenchmarkItem("Filter by Amount and Open")]
+    public class Filtering_Amount_and_Open : FilterBase {
+        public sealed override void Benchmark() {
+            System.DateTime before = new System.DateTime(2002, 1, 1);
+            System.DateTime after = new System.DateTime(2001, 1, 1);
+            filtered = dataSource
+                .Where(r => (r.Amount >= 150.0 && r.Amount <= 170.0) && (r.Open >= after && r.Open < before))
                 .ToArray();
         }
     }
