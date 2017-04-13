@@ -56,5 +56,17 @@ Sort by Name			| 1.20		| 2.83		| 2.30		| 2.00			| 1.69
 Sort by ID and Name		| 1.14		| 1.56		| 2.07		| 2.04			| 1.79
 Sort by Age and Factor	| 1.13		| 1.61		| 2.26		| 1.89			| 1.95
 
+2) i7-4710HQ 2.5 GHz, 16 Gb, Win8.1x64 
 
-
+Test | Grid		| Tree(Bound)	| Tree(Unbound)	| Tree(Bound Hierarchy)	| Tree(Unbound Hierarchy)
+--- | ---:| ---:| ---:| ---:| ---:|
+Filter by Price	| 1.13	| 1.75	| 1.18	| 31.20	| 1.79
+Filter by Approved	| 1.17	| 1.68	| 1.76	| 3.48	| 1.50
+Filter by Price and Approved	| 1.13	| 1.85	| 2.10	| 1.92	| 1.56
+Filter by Amount and Open	| 1.05	| 1.08	| 1.28	| 1.50	| 1.24
+Search by Notes	| 1.02	| 1.20	| 1.13	| 1.15	| 1.16
+Search by all columns	| 1.01	| 1.43	| 1.33	| 1.30	| 1.44
+Sort by ID	| 1.17	| 7.08	| 4.07	| 2.50	| 2.67
+Sort by Name	| 1.10	| 2.92	| 2.36	| 2.18	| 1.60
+Sort by ID and Name	| 2.67	| 1.89	| 2.38	| 2.17	| 1.78
+Sort by Age and Factor	| 1.14	| 1.63	| 2.16	| 2.14	| 1.95
