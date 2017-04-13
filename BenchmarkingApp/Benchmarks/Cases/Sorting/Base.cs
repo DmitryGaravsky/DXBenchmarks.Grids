@@ -43,7 +43,6 @@ namespace BenchmarkingApp.Tree {
         }
     }
     namespace Unbound {
-        [BenchmarkHost("TreeList")]
         public abstract class SortUnboundBase : SortBase {
             protected List<Row> dataSource;
             public sealed override void SetUp(object uiControl) {
@@ -87,6 +86,7 @@ namespace BenchmarkingApp.Tree {
         }
     }
 }
+
 namespace BenchmarkingApp.Grid.Bound {
     using System.Collections.Generic;
     using BenchmarkingApp.Benchmarks.Data;

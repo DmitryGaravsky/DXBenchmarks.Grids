@@ -24,6 +24,15 @@
             treeList.EndSort();
         }
     }
+    [BenchmarkItem("Sort by Age and Factor (Bound)")]
+    public class Sorting_Age_and_Factor : SortBoundBase {
+        public sealed override void Benchmark() {
+            treeList.BeginSort();
+            treeList.Columns["Age"].SortOrder = System.Windows.Forms.SortOrder.Ascending;
+            treeList.Columns["Factor"].SortOrder = System.Windows.Forms.SortOrder.Descending;
+            treeList.EndSort();
+        }
+    }
 }
 namespace BenchmarkingApp.Tree.BoundHierarchy {
     [BenchmarkItem("Sort by ID (Bound Hierarchy)")]
@@ -48,6 +57,15 @@ namespace BenchmarkingApp.Tree.BoundHierarchy {
             treeList.BeginSort();
             treeList.Columns["ID"].SortOrder = System.Windows.Forms.SortOrder.Descending;
             treeList.Columns["Name"].SortOrder = System.Windows.Forms.SortOrder.Ascending;
+            treeList.EndSort();
+        }
+    }
+    [BenchmarkItem("Sort by Age and Factor (Bound Hierarchy)")]
+    public class Sorting_Age_and_Factor : SortBoundBase {
+        public sealed override void Benchmark() {
+            treeList.BeginSort();
+            treeList.Columns["Age"].SortOrder = System.Windows.Forms.SortOrder.Ascending;
+            treeList.Columns["Factor"].SortOrder = System.Windows.Forms.SortOrder.Descending;
             treeList.EndSort();
         }
     }
@@ -79,6 +97,15 @@ namespace BenchmarkingApp.Tree.Unbound {
             treeList.EndSort();
         }
     }
+    [BenchmarkItem("Sort by Age and Factor (Unbound)")]
+    public class Sorting_Age_and_Factor : SortUnboundBase {
+        public sealed override void Benchmark() {
+            treeList.BeginSort();
+            treeList.Columns["Age"].SortOrder = System.Windows.Forms.SortOrder.Ascending;
+            treeList.Columns["Factor"].SortOrder = System.Windows.Forms.SortOrder.Descending;
+            treeList.EndSort();
+        }
+    }
 }
 
 namespace BenchmarkingApp.Tree.UnboundHierarchy {
@@ -107,6 +134,15 @@ namespace BenchmarkingApp.Tree.UnboundHierarchy {
             treeList.EndSort();
         }
     }
+    [BenchmarkItem("Sort by Age and Factor (Unbound Hierarchy)")]
+    public class Sorting_Age_and_Factor : SortUnboundBase {
+        public sealed override void Benchmark() {
+            treeList.BeginSort();
+            treeList.Columns["Age"].SortOrder = System.Windows.Forms.SortOrder.Ascending;
+            treeList.Columns["Factor"].SortOrder = System.Windows.Forms.SortOrder.Descending;
+            treeList.EndSort();
+        }
+    }
 }
 
 namespace BenchmarkingApp.Grid.Bound {
@@ -132,6 +168,15 @@ namespace BenchmarkingApp.Grid.Bound {
             gridView.BeginSort();
             gridView.Columns["ID"].SortOrder = DevExpress.Data.ColumnSortOrder.Descending;
             gridView.Columns["Name"].SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+            gridView.EndSort();
+        }
+    }
+    [BenchmarkItem("Sort by Age and Factor")]
+    public class Sorting_Age_and_Factor : SortBase {
+        public sealed override void Benchmark() {
+            gridView.BeginSort();
+            gridView.Columns["Age"].SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+            gridView.Columns["Factor"].SortOrder = DevExpress.Data.ColumnSortOrder.Descending;
             gridView.EndSort();
         }
     }
@@ -174,6 +219,14 @@ namespace BenchmarkingApp.InMemory {
         public sealed override void Benchmark() {
             sorted = dataSource
                 .OrderByDescending(r => r.ID).ThenBy(r => r.Name)
+                .ToArray();
+        }
+    }
+    [BenchmarkItem("Sort by Age and Factor")]
+    public class Sorting_Age_and_Factor : SortBase {
+        public sealed override void Benchmark() {
+            sorted = dataSource
+                .OrderBy(r => r.Age).ThenByDescending(r => r.Factor)
                 .ToArray();
         }
     }

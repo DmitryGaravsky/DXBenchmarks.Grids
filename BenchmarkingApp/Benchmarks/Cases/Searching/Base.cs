@@ -5,10 +5,8 @@
 
     [BenchmarkHost("TreeList")]
     public abstract class SearchBase : IBenchmarkItem {
-        protected List<Row> dataSource;
         protected TreeList treeList;
         public virtual void SetUp(object uiControl) {
-            Row.EnsureListSource(ref dataSource, 10000);
             treeList = ((TreeList)uiControl);
             treeList.OptionsBehavior.EnableFiltering = true;
             treeList.OptionsFilter.FilterMode = FilterMode.Extended;
@@ -25,17 +23,32 @@
     }
     namespace Bound {
         public abstract class SearchBoundBase : SearchBase {
+            protected List<Row> dataSource;
             public override void SetUp(object uiControl) {
+                Row.EnsureListSource(ref dataSource, 10000);
                 base.SetUp(uiControl);
                 treeList.DataSource = dataSource;
                 treeList.ApplyFindFilter(null);
             }
         }
     }
+    namespace BoundHierarchy {
+        public abstract class SearchBoundBase : SearchBase {
+            protected List<HierarchicalRow> dataSource;
+            public sealed override void SetUp(object uiControl) {
+                Row.EnsureHierarchicalSource(ref dataSource, 10000);
+                base.SetUp(uiControl);
+                treeList.DataSource = dataSource;
+                treeList.ExpandAll();
+                treeList.ApplyFindFilter(null);
+            }
+        }
+    }
     namespace Unbound {
-        [BenchmarkHost("TreeList")]
         public abstract class SearchUnboundBase : SearchBase {
+            protected List<Row> dataSource;
             public override void SetUp(object uiControl) {
+                Row.EnsureListSource(ref dataSource, 10000);
                 base.SetUp(uiControl);
                 // Columns
                 treeList.BeginUpdate();
@@ -47,6 +60,30 @@
                 treeList.BeginUnboundLoad();
                 for(int i = 0; i < dataSource.Count; i++)
                     treeList.Nodes.Add(dataSource[i].GetData());
+                treeList.EndUnboundLoad();
+                treeList.ApplyFindFilter(null);
+            }
+        }
+    }
+    namespace UnboundHierarchy {
+        public abstract class SearchUnboundBase : SearchBase {
+            protected List<HierarchicalRow> dataSource;
+            public sealed override void SetUp(object uiControl) {
+                Row.EnsureHierarchicalSource(ref dataSource, 10000);
+                base.SetUp(uiControl);
+                // Columns
+                treeList.BeginUpdate();
+                var columns = HierarchicalRow.GetHierarchicalColumns();
+                for(int i = 0; i < columns.Length; i++)
+                    treeList.Columns.AddVisible(columns[i]);
+                treeList.EndUpdate();
+                // Data
+                treeList.BeginUnboundLoad();
+                for(int i = 0; i < dataSource.Count; i++) {
+                    var data = dataSource[i].GetHierarchicalData();
+                    treeList.AppendNode(data, dataSource[i].ParentID);
+                }
+                treeList.ExpandAll();
                 treeList.EndUnboundLoad();
                 treeList.ApplyFindFilter(null);
             }
