@@ -13,13 +13,13 @@
     }
 }
 namespace BenchmarkingApp.Tree.BoundHierarchy {
-    [BenchmarkItem("Search by Notes (Bound)")]
+    [BenchmarkItem("Search by Notes (Bound Hierarchy)")]
     public class Searching_Notes : SearchBoundBase {
         public sealed override void Benchmark() {
             treeList.ApplyFindFilter("Notes:ipsum");
         }
     }
-    [BenchmarkItem("Search by all columns (Bound)")]
+    [BenchmarkItem("Search by all columns (Bound Hierarchy)")]
     public class Searching_All : SearchBoundBase {
         public sealed override void Benchmark() {
             treeList.ApplyFindFilter("AB 5");
@@ -41,13 +41,13 @@ namespace BenchmarkingApp.Tree.Unbound {
     }
 }
 namespace BenchmarkingApp.Tree.UnboundHierarchy {
-    [BenchmarkItem("Search by Notes (Unbound)")]
+    [BenchmarkItem("Search by Notes (Unbound Hierarchy)")]
     public class Searching_Notes : SearchUnboundBase {
         public sealed override void Benchmark() {
             treeList.ApplyFindFilter("Notes:ipsum");
         }
     }
-    [BenchmarkItem("Search by all columns (Unbound)")]
+    [BenchmarkItem("Search by all columns (Unbound Hierarchy)")]
     public class Searching_All : SearchUnboundBase {
         public sealed override void Benchmark() {
             treeList.ApplyFindFilter("AB 5");
