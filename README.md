@@ -48,6 +48,7 @@ Test | Grid		| Tree(Bound)	| Tree(Unbound)	| Tree(Bound Hierarchy)	| Tree(Unboun
 Filter by Price		| 1.25		| 1.80		| 1.30		| 30.79			| 1.54
 Filter by Approved		| 1.14		| 2.05		| 1.52		| 3.28			| 1.60
 Filter by Price and Approved	| 1.11		| 1.77		| 1.71		| 1.76			| 1.52
+Filter by Amount and Open	| 1.10		| 1.08		| 1.35		| 1.27			| 1.30
 Search by Notes		| 1.02		| 1.13		| 1.16		| 1.13			| 1.14
 Search by all columns		| 1.01		| 1.42		| 1.45		| 1.39			| 1.50
 Sort by ID			| 1.33		| 4.50		|4.62		|2.25			|2.20
