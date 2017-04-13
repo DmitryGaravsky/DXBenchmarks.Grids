@@ -15,7 +15,7 @@ App for measuring performance of DevExpress WinForms GridControl and TreeListCon
 1) i7-4702HQ 2.2 GHz, 16 Gb, Win8.1x64
 
 **17.1 vs v16.2**		| Grid		| Tree(Bound)	| Tree(Unbound)	| Tree(Bound Hierarchy)	| Tree(Unbound Hierarchy)
---- | --- | ---| ---| ---| ---
+--- | ---:| ---:| ---:| ---:| ---:|
 Filter by Price		| 1.25		| 1.80		| 1.30		| 30.79			| 1.54
 Filter by Approved		| 1.14		| 2.05		| 1.52		| 3.28			| 1.60
 Filter by Price and Approved	| 1.11		| 1.77		| 1.71		| 1.76			| 1.52
