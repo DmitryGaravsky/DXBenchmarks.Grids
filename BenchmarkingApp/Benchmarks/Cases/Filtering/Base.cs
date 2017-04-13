@@ -40,6 +40,7 @@
                 base.SetUp(uiControl);
                 treeList.OptionsBehavior.ExpandNodesOnFiltering = true;
                 treeList.DataSource = dataSource;
+                treeList.ExpandAll();
                 treeList.ClearColumnsFilter();
             }
         }
@@ -61,7 +62,6 @@
                 treeList.BeginUnboundLoad();
                 for(int i = 0; i < dataSource.Count; i++)
                     treeList.Nodes.Add(dataSource[i].GetData());
-                treeList.ExpandAll();
                 treeList.EndUnboundLoad();
                 treeList.ClearColumnsFilter();
             }
