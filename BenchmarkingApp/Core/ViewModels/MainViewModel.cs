@@ -166,11 +166,11 @@ namespace BenchmarkingApp {
             running--;
             UpdateCommands();
             LogResults();
+            CopyToClipboard();
         }
         void LogResults() {
             var log = this.GetService<ILogService>();
-            if(log != null)
-                log.Log("[" + ActiveHostItem.Name + " - " + ActiveBenchmarkItem.Name + "] " + Result);
+            log.Log("[" + ActiveHostItem.Name + " - " + ActiveBenchmarkItem.Name + "] " + Result);
         }
         //
         long? result, worst;
@@ -189,6 +189,31 @@ namespace BenchmarkingApp {
                 return string.Empty;
             }
         }
+        #region Clipboard
+        protected string TabulatedResult {
+            get {
+                if(!IsCold) {
+                    string tab = '\t'.ToString();
+                    string tabulated = coldRunResult.Value.ToString();
+                    if(warmUpResult.HasValue)
+                        tabulated += tab + warmUpResult.Value.ToString();
+                    if(result.HasValue)
+                        tabulated += tab + result.Value.ToString();
+                    if(worst.HasValue)
+                        tabulated += tab + worst.Value.ToString();
+                    return tabulated;
+                }
+                return string.Empty;
+            }
+        }
+        public bool CanCopyToClipboard() {
+            return HasBenchmark && running == 0;
+        }
+        public void CopyToClipboard() {
+            var clipboard = this.GetService<IClipboardService>();
+            clipboard.SetResult(TabulatedResult);
+        }
+        #endregion Clipboard
         #region Test
         public bool CanTest() {
             return HasBenchmark && running == 0;

@@ -3,10 +3,9 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 
 namespace BenchmarkingApp {
-    public partial class MainForm : XtraForm, IHostService, ILogService {
+    public partial class MainForm : XtraForm, IHostService, ILogService, IClipboardService {
         public MainForm() {
             InitializeComponent();
-            this.KeyPreview = true;
             memoLog.Visible = false;
         }
         protected override void OnHandleCreated(EventArgs e) {
@@ -26,6 +25,8 @@ namespace BenchmarkingApp {
                 //
                 fluent.WithEvent(this, "Load")
                     .EventToCommand(x => x.Load());
+                fluent.WithKey(this, Keys.Control | Keys.C)
+                    .KeyToCommand(x => x.CopyToClipboard());
                 fluent.WithKey(this, Keys.Control | Keys.T)
                     .KeyToCommand(x => x.Test());
                 fluent.SetBinding(result, l => l.Text, x => x.Result);
@@ -36,17 +37,18 @@ namespace BenchmarkingApp {
             result.Visible = !showLog.Checked;
             Padding = new Padding(8, 40, 8, showLog.Checked ? 120 : 8);
         }
-        #region IHostService Members
+        #region Custom Services
         void IHostService.Show(IBenchmarkHost host) {
             var hostControl = host as Control;
             hostControl.Dock = DockStyle.Fill;
             hostControl.Parent = hostPanel;
             hostControl.BringToFront();
         }
-        #endregion
-        #region ILogService Members
         void ILogService.Log(string message) {
             memoLog.Text += (message + Environment.NewLine);
+        }
+        void IClipboardService.SetResult(string result) {
+            Clipboard.SetText(result, TextDataFormat.Text);
         }
         #endregion
     }

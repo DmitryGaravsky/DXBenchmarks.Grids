@@ -172,6 +172,7 @@
             this.Controls.Add(this.btnWarmup);
             this.Controls.Add(this.btnCold);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(8, 40, 8, 8);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
