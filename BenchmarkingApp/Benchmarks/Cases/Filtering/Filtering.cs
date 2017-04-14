@@ -1,7 +1,7 @@
 ﻿namespace BenchmarkingApp.Tree.Bound {
     using DevExpress.Data.Filtering;
 
-    [BenchmarkItem("Filter by Price (Bound)")]
+    [BenchmarkItem("Filter by Price (Bound)", Configuration = "Huge")]
     public class Filtering_Price : FilterBoundBase {
         readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price>5000");
         public sealed override void Benchmark() {
@@ -33,7 +33,7 @@
 namespace BenchmarkingApp.Tree.BoundHierarchy {
     using DevExpress.Data.Filtering;
 
-    [BenchmarkItem("Filter by Price (Bound Hierarchy)")]
+    [BenchmarkItem("Filter by Price (Bound Hierarchy)", Configuration = "Deep")]
     public class Filtering_Price : FilterBoundBase {
         readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price>5000");
         public sealed override void Benchmark() {
@@ -65,7 +65,7 @@ namespace BenchmarkingApp.Tree.BoundHierarchy {
 namespace BenchmarkingApp.Tree.Unbound {
     using DevExpress.Data.Filtering;
 
-    [BenchmarkItem("Filter by Price (Unbound)")]
+    [BenchmarkItem("Filter by Price (Unbound)", Configuration = "Huge")]
     public class Filtering_Price : FilterUnboundBase {
         readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price>5000");
         public sealed override void Benchmark() {
@@ -97,7 +97,7 @@ namespace BenchmarkingApp.Tree.Unbound {
 namespace BenchmarkingApp.Tree.UnboundHierarchy {
     using DevExpress.Data.Filtering;
 
-    [BenchmarkItem("Filter by Price (Unbound Hierarchy)")]
+    [BenchmarkItem("Filter by Price (Unbound Hierarchy)", Configuration = "Deep")]
     public class Filtering_Price : FilterUnboundBase {
         readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price>5000");
         public sealed override void Benchmark() {
@@ -130,7 +130,7 @@ namespace BenchmarkingApp.Tree.UnboundHierarchy {
 namespace BenchmarkingApp.Grid.Bound {
     using DevExpress.Data.Filtering;
 
-    [BenchmarkItem("Filter by Price")]
+    [BenchmarkItem("Filter by Price", Configuration = "Huge")]
     public class Filtering_Price : FilterBase {
         readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price>5000");
         public sealed override void Benchmark() {
@@ -170,13 +170,13 @@ namespace BenchmarkingApp.InMemory {
         protected List<Row> dataSource;
         protected Row[] filtered;
         public void SetUp(object uiControl) {
-            Row.EnsureListSource(ref dataSource, 10000);
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
         }
         public void TearDown(object uiControl) { }
         public abstract void Benchmark();
     }
     //
-    [BenchmarkItem("Filter by Price")]
+    [BenchmarkItem("Filter by Price", Configuration = "Huge")]
     public class Filtering_Price : FilterBase {
         public sealed override void Benchmark() {
             filtered = dataSource

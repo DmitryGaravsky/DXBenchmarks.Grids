@@ -6,7 +6,7 @@
         Male, Female, Other
     }
     public class Row {
-        static Random random = new Random(10000);
+        static Random random = new Random(Configuration.Seed);
         protected Row() { }
         //
         public int ID { get; set; }
@@ -31,30 +31,30 @@
         public Gender Gender { get; set; }
         //
         readonly static IDictionary<int, List<Row>> dataSourcesCache = new Dictionary<int, List<Row>>();
-        public static void EnsureListSource(ref List<Row> dataSource, int n = 10000) {
-            if(dataSource == null && !dataSourcesCache.TryGetValue(n, out dataSource)) {
-                dataSource = new List<Row>(n);
-                dataSourcesCache.Add(n, dataSource);
+        public static void EnsureListSource(ref List<Row> dataSource, int rows) {
+            if(dataSource == null && !dataSourcesCache.TryGetValue(rows, out dataSource)) {
+                dataSource = new List<Row>(rows);
+                dataSourcesCache.Add(rows, dataSource);
             }
             int start = dataSource.Count;
-            if(start < n) {
-                for(int i = start; i < n; i++)
+            if(start < rows) {
+                for(int i = start; i < rows; i++)
                     dataSource.Add(Row.CreateRow(i));
             }
-            else dataSource.RemoveRange(n, dataSource.Count - n);
+            else dataSource.RemoveRange(rows, dataSource.Count - rows);
         }
         readonly static IDictionary<int, List<HierarchicalRow>> hierarchicalDataSourcesCache = new Dictionary<int, List<HierarchicalRow>>();
-        public static void EnsureHierarchicalSource(ref List<HierarchicalRow> dataSource, int n = 10000, int level = 5) {
-            if(dataSource == null && !hierarchicalDataSourcesCache.TryGetValue(n, out dataSource)) {
-                dataSource = new List<HierarchicalRow>(n);
-                hierarchicalDataSourcesCache.Add(n, dataSource);
+        public static void EnsureHierarchicalSource(ref List<HierarchicalRow> dataSource, int rows, int levels) {
+            if(dataSource == null && !hierarchicalDataSourcesCache.TryGetValue(rows, out dataSource)) {
+                dataSource = new List<HierarchicalRow>(rows);
+                hierarchicalDataSourcesCache.Add(rows, dataSource);
             }
-            if(dataSource.Count != n) {
+            if(dataSource.Count != rows) {
                 dataSource.Clear();
-                int levelStep = (int)(Math.Log(n, level) + 0.5);
+                int levelStep = (int)(Math.Log(rows, levels) + 0.5);
                 int levelBegin = 0; int levelEnd = levelStep - 1;
                 int parentLevelBegin = 0; int parentLevelEnd = 0;
-                for(int i = 0; i < n; i++) {
+                for(int i = 0; i < rows; i++) {
                     if(i == levelEnd) {
                         parentLevelBegin = levelBegin;
                         parentLevelEnd = levelEnd;

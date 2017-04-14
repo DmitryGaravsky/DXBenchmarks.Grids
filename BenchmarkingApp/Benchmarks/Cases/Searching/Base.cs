@@ -25,7 +25,7 @@
         public abstract class SearchBoundBase : SearchBase {
             protected List<Row> dataSource;
             public override void SetUp(object uiControl) {
-                Row.EnsureListSource(ref dataSource, 10000);
+                Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
                 base.SetUp(uiControl);
                 treeList.DataSource = dataSource;
                 treeList.ApplyFindFilter(null);
@@ -36,7 +36,7 @@
         public abstract class SearchBoundBase : SearchBase {
             protected List<HierarchicalRow> dataSource;
             public sealed override void SetUp(object uiControl) {
-                Row.EnsureHierarchicalSource(ref dataSource, 10000);
+                Row.EnsureHierarchicalSource(ref dataSource, Configuration.Current.Rows, Configuration.Current.Levels);
                 base.SetUp(uiControl);
                 treeList.DataSource = dataSource;
                 treeList.ExpandAll();
@@ -48,7 +48,7 @@
         public abstract class SearchUnboundBase : SearchBase {
             protected List<Row> dataSource;
             public override void SetUp(object uiControl) {
-                Row.EnsureListSource(ref dataSource, 10000);
+                Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
                 base.SetUp(uiControl);
                 // Columns
                 treeList.BeginUpdate();
@@ -69,7 +69,7 @@
         public abstract class SearchUnboundBase : SearchBase {
             protected List<HierarchicalRow> dataSource;
             public sealed override void SetUp(object uiControl) {
-                Row.EnsureHierarchicalSource(ref dataSource, 10000);
+                Row.EnsureHierarchicalSource(ref dataSource, Configuration.Current.Rows, Configuration.Current.Levels);
                 base.SetUp(uiControl);
                 // Columns
                 treeList.BeginUpdate();
@@ -103,7 +103,7 @@ namespace BenchmarkingApp.Grid.Bound {
         protected GridControl grid;
         protected GridView gridView;
         public void SetUp(object uiControl) {
-            Row.EnsureListSource(ref dataSource, 10000);
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
             grid = ((GridControl)uiControl);
             gridView = grid.MainView as GridView;
             grid.DataSource = dataSource;

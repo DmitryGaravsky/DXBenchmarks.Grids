@@ -5,7 +5,7 @@
             treeList.ApplyFindFilter("Notes:ipsum");
         }
     }
-    [BenchmarkItem("Search by all columns (Bound)")]
+    [BenchmarkItem("Search by all columns (Bound)", Configuration = "Huge")]
     public class Searching_All : SearchBoundBase {
         public sealed override void Benchmark() {
             treeList.ApplyFindFilter("AB 5");
@@ -27,7 +27,7 @@ namespace BenchmarkingApp.Tree.BoundHierarchy {
     }
 }
 namespace BenchmarkingApp.Tree.Unbound {
-    [BenchmarkItem("Search by Notes (Unbound)")]
+    [BenchmarkItem("Search by Notes (Unbound)", Configuration = "Huge")]
     public class Searching_Notes : SearchUnboundBase {
         public sealed override void Benchmark() {
             treeList.ApplyFindFilter("Notes:ipsum");
@@ -61,7 +61,7 @@ namespace BenchmarkingApp.Grid.Bound {
             gridView.ApplyFindFilter("Notes:ipsum");
         }
     }
-    [BenchmarkItem("Search by all columns")]
+    [BenchmarkItem("Search by all columns", Configuration = "Huge")]
     public class Searching_All : SearchBase {
         public sealed override void Benchmark() {
             gridView.ApplyFindFilter("AB 5");

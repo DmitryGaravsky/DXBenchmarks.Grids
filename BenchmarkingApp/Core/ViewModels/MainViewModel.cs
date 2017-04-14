@@ -57,7 +57,7 @@ namespace BenchmarkingApp {
         public void Load() {
             this.types = typeof(MainViewModel).Assembly.GetTypes();
             this.benchmarks = types
-                .Where(t => t.IsPublic && !t.IsAbstract && !t.IsInterface && typeof(IBenchmarkItem).IsAssignableFrom(t))
+                .Where(t => t.IsPublic && !t.IsAbstract && !t.IsInterface && BenchmarkItem.Match(t, Benchmarks.Data.Configuration.Current))
                 .Select(x => new BenchmarkItem(x)).ToArray();
             HostItems = types
                 .Where(t => t.IsPublic && !t.IsAbstract && typeof(IBenchmarkHost).IsAssignableFrom(t) && !t.IsInterface)
@@ -130,6 +130,7 @@ namespace BenchmarkingApp {
         int running;
         public void Run() {
             running++;
+            PrepareRun();
             UpdateCommands();
             if(!IsWarmedUp) WarmUp();
             // Prepare
@@ -144,7 +145,7 @@ namespace BenchmarkingApp {
                 hi++;
             }
             worst = 0;
-            int watchDog = Math.Max(counter * 2, 100);
+            int watchDog = Math.Max(counter * 2, 50);
             while(counter > 0 && (0 < watchDog--)) {
                 // Run
                 target.SetUp(uiControl);
@@ -160,17 +161,40 @@ namespace BenchmarkingApp {
                 if(current > low && current < hi)
                     results[--counter] = current;
             }
+            int actualResultsCount = results.Where(r => r != 0).Count();
+            // Check results completeness
+            if(watchDog <= 0 && actualResultsCount < results.Length / 2) {
+                while(counter > 0) {
+                    // Run Ever!
+                    target.SetUp(uiControl);
+                    try {
+                        stopwatch.Restart();
+                        target.Benchmark();
+                        stopwatch.Stop();
+                    }
+                    finally { target.TearDown(uiControl); }
+                    long current = stopwatch.ElapsedMilliseconds;
+                    worst = Math.Max(current, worst.Value);
+                    results[--counter] = current;
+                }
+                actualResultsCount = results.Length;
+            }
             // Calc
-            result = (long)Math.Ceiling((double)results.Sum() / (double)results.Length);
+            result = (long)Math.Ceiling((double)results.Sum() / (double)actualResultsCount);
             this.RaisePropertyChanged(x => x.Result);
             running--;
             UpdateCommands();
             LogResults();
             CopyToClipboard();
         }
+        static void PrepareRun() {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
         void LogResults() {
             var log = this.GetService<ILogService>();
-            log.Log("[" + ActiveHostItem.Name + " - " + ActiveBenchmarkItem.Name + "] " + Result);
+            log.Log("[" + ActiveHostItem.Name + "(" + Benchmarks.Data.Configuration.Current.Name + ") - " + ActiveBenchmarkItem.Name + "] " + Result);
         }
         //
         long? result, worst;

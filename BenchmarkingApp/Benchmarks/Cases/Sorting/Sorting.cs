@@ -1,5 +1,5 @@
 ﻿namespace BenchmarkingApp.Tree.Bound {
-    [BenchmarkItem("Sort by ID (Bound)")]
+    [BenchmarkItem("Sort by ID (Bound)", Configuration = "Huge")]
     public class Sorting_ID : SortBoundBase {
         public sealed override void Benchmark() {
             treeList.BeginSort();
@@ -35,7 +35,7 @@
     }
 }
 namespace BenchmarkingApp.Tree.BoundHierarchy {
-    [BenchmarkItem("Sort by ID (Bound Hierarchy)")]
+    [BenchmarkItem("Sort by ID (Bound Hierarchy)", Configuration = "Deep;Huge")]
     public class Sorting_ID : SortBoundBase {
         public sealed override void Benchmark() {
             treeList.BeginSort();
@@ -72,7 +72,7 @@ namespace BenchmarkingApp.Tree.BoundHierarchy {
 }
 
 namespace BenchmarkingApp.Tree.Unbound {
-    [BenchmarkItem("Sort by ID (Unbound)")]
+    [BenchmarkItem("Sort by ID (Unbound)", Configuration = "Huge")]
     public class Sorting_ID : SortUnboundBase {
         public sealed override void Benchmark() {
             treeList.BeginSort();
@@ -109,7 +109,7 @@ namespace BenchmarkingApp.Tree.Unbound {
 }
 
 namespace BenchmarkingApp.Tree.UnboundHierarchy {
-    [BenchmarkItem("Sort by ID (Unbound Hierarchy)")]
+    [BenchmarkItem("Sort by ID (Unbound Hierarchy)", Configuration = "Deep;Huge")]
     public class Sorting_ID : SortUnboundBase {
         public sealed override void Benchmark() {
             treeList.BeginSort();
@@ -146,7 +146,7 @@ namespace BenchmarkingApp.Tree.UnboundHierarchy {
 }
 
 namespace BenchmarkingApp.Grid.Bound {
-    [BenchmarkItem("Sort by ID")]
+    [BenchmarkItem("Sort by ID", Configuration = "Huge")]
     public class Sorting_ID : SortBase {
         public sealed override void Benchmark() {
             gridView.BeginSort();
@@ -192,13 +192,13 @@ namespace BenchmarkingApp.InMemory {
         protected List<Row> dataSource;
         protected Row[] sorted;
         public void SetUp(object uiControl) {
-            Row.EnsureListSource(ref dataSource, 10000);
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
         }
         public void TearDown(object uiControl) { }
         public abstract void Benchmark();
     }
     //
-    [BenchmarkItem("Sort by ID")]
+    [BenchmarkItem("Sort by ID", Configuration = "Huge")]
     public class Sorting_ID : SortBase {
         public sealed override void Benchmark() {
             sorted = dataSource

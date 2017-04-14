@@ -42,5 +42,13 @@
             var attributes = type.GetCustomAttributes(typeof(BenchmarkItemAttribute), true);
             return (attributes.Length > 0) ? ((BenchmarkItemAttribute)attributes[0]).Benchmark.GetValueOrDefault(defaultValue) : defaultValue;
         }
+        //
+        public static bool Match(Type type, Benchmarks.Data.Configuration configuration) {
+            return typeof(IBenchmarkItem).IsAssignableFrom(type) && MatchCore(type, configuration);
+        }
+        static bool MatchCore(System.Type type, Benchmarks.Data.Configuration configuration) {
+            var attributes = type.GetCustomAttributes(typeof(BenchmarkItemAttribute), true);
+            return (attributes.Length > 0) ? configuration.Match(((BenchmarkItemAttribute)attributes[0]).Configuration) : true;
+        }
     }
 }

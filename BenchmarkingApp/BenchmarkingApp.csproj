@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Benchmarks\Cases\Data\Row.cs" />
+    <Compile Include="Benchmarks\Configuration.cs" />
     <Compile Include="Benchmarks\Cases\Data\StringGenerator.cs" />
     <Compile Include="Benchmarks\Cases\Filtering\Base.cs" />
     <Compile Include="Benchmarks\Cases\Filtering\Filtering.cs" />

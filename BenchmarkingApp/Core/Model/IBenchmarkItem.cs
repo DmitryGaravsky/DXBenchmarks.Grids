@@ -22,6 +22,10 @@ namespace BenchmarkingApp {
             get;
             set;
         }
+        public string Configuration {
+            get;
+            set;
+        }
     }
     //
     public interface IBenchmarkItem {
