@@ -26,6 +26,7 @@ namespace BenchmarkingApp {
             get;
             private set;
         }
+        //
         static string GetName(Type type) {
             var attributes = type.GetCustomAttributes(typeof(BenchmarkHostAttribute), true);
             return (attributes.Length > 0) ? ((BenchmarkHostAttribute)attributes[0]).Name : type.Name;

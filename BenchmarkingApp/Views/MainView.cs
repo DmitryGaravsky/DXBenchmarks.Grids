@@ -29,7 +29,9 @@ namespace BenchmarkingApp {
                     .KeyToCommand(x => x.CopyToClipboard());
                 fluent.WithKey(this, Keys.Control | Keys.T)
                     .KeyToCommand(x => x.Test());
+                //
                 fluent.SetBinding(result, l => l.Text, x => x.Result);
+                fluent.SetBinding(this, f => f.Text, x => x.Title);
             }
         }
         void showLog_CheckedChanged(object sender, EventArgs e) {
@@ -48,7 +50,10 @@ namespace BenchmarkingApp {
             memoLog.Text += (message + Environment.NewLine);
         }
         void IClipboardService.SetResult(string result) {
-            Clipboard.SetText(result, TextDataFormat.Text);
+            try {
+                Clipboard.SetText(result, TextDataFormat.Text);
+            }
+            catch { }
         }
         #endregion
     }

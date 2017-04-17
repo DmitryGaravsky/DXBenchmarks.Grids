@@ -26,6 +26,7 @@
         public IBenchmarkItem Target {
             get { return itemCore.Value; }
         }
+        //
         static string GetName(Type type) {
             var attributes = type.GetCustomAttributes(typeof(BenchmarkItemAttribute), true);
             return (attributes.Length > 0) ? ((BenchmarkItemAttribute)attributes[0]).Name : type.Name;

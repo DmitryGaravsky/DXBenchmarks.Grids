@@ -176,7 +176,7 @@
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(8, 40, 8, 8);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Benckmarking App for DevExpress WinForms Grids (" + Benchmarks.Data.Configuration.Current.Name + " Configuration)";
+            this.Text = "Benckmarking App for DevExpress WinForms Grids";
             ((System.ComponentModel.ISupportInitialize)(this.leHosts.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.leBenchmarks.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.result.Properties)).EndInit();
