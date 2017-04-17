@@ -1,6 +1,15 @@
 ﻿namespace BenchmarkingApp.Benchmarks.Data {
+    using System.Linq;
+
     public abstract class Configuration {
-        public static readonly Configuration Current = Huge.Instance;
+        static Configuration currentConfiguration;
+        public static Configuration Current {
+            get {
+                if(currentConfiguration == null)
+                    return Configuration.Typical.Instance;
+                return currentConfiguration;
+            }
+        }
         protected Configuration() { }
         //
         public const int Seed = 10000;
@@ -61,5 +70,31 @@
             }
         }
         #endregion Configurations
+        internal static string[] Parse(string[] args) {
+            string cfgString = args.FirstOrDefault(a => IsConfigurationLine(a));
+            if(cfgString != null) {
+                cfgString = cfgString.Replace("cfg=", string.Empty);
+                cfgString = cfgString.Replace("configuration=", string.Empty);
+                switch(cfgString) {
+                    case "typycal":
+                        currentConfiguration = Typical.Instance;
+                        break;
+                    case "huge":
+                        currentConfiguration = Huge.Instance;
+                        break;
+                    case "deep":
+                        currentConfiguration = Deep.Instance;
+                        break;
+                    default:
+                        currentConfiguration = null;
+                        break;
+                }
+                args = args.Where(a => !IsConfigurationLine(a)).ToArray();
+            }
+            return args;
+        }
+        static bool IsConfigurationLine(string line) {
+            return line.StartsWith("cfg=") || line.StartsWith("configuration=");
+        }
     }
 }

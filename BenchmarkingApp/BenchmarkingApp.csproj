@@ -87,22 +87,28 @@
     <Compile Include="Benchmarks\Hosts\Treelist.Designer.cs">
       <DependentUpon>Treelist.cs</DependentUpon>
     </Compile>
-    <Compile Include="Core\Services\IClipboardService.cs" />
-    <Compile Include="Core\Services\IHostService.cs" />
-    <Compile Include="Core\Model\IBenchmarkHost.cs" />
-    <Compile Include="Core\Model\IBenchmarkItem.cs" />
-    <Compile Include="Core\Services\ILogService.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="Views\Services\IClipboardService.cs" />
+    <Compile Include="Views\Services\IHostService.cs" />
+    <Compile Include="Model\IBenchmarkHost.cs" />
+    <Compile Include="Model\IBenchmarkItem.cs" />
+    <Compile Include="Views\Services\ILogService.cs" />
+    <Compile Include="Views\MainView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="Views\MainView.Designer.cs">
+      <DependentUpon>MainView.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\ViewModels\BenchmarkItem.cs" />
-    <Compile Include="Core\ViewModels\HostItem.cs" />
-    <Compile Include="Core\ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\BenchmarkItem.cs" />
+    <Compile Include="ViewModels\HostItem.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\RunnerView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\RunnerView.Designer.cs">
+      <DependentUpon>RunnerView.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Benchmarks\Hosts\Empty.resx">
       <DependentUpon>Empty.cs</DependentUpon>
     </EmbeddedResource>
@@ -112,8 +118,8 @@
     <EmbeddedResource Include="Benchmarks\Hosts\Treelist.resx">
       <DependentUpon>Treelist.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <EmbeddedResource Include="Views\MainView.resx">
+      <DependentUpon>MainView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -124,6 +130,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\RunnerView.resx">
+      <DependentUpon>RunnerView.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
