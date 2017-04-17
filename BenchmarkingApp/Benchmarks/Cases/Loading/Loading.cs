@@ -26,7 +26,10 @@ namespace BenchmarkingApp.Tree.BoundHierarchy {
             base.SetUp(uiControl);
         }
         public sealed override void Benchmark() {
+            treeList.BeginUpdate();
             treeList.DataSource = dataSource;
+            treeList.ExpandAll();
+            treeList.EndUpdate();
         }
     }
 }
@@ -80,6 +83,23 @@ namespace BenchmarkingApp.Tree.UnboundHierarchy {
             }
             treeList.ExpandAll();
             treeList.EndUnboundLoad();
+        }
+    }
+}
+
+namespace BenchmarkingApp.Grid {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+
+    [BenchmarkItem("Loading", Configuration = "Huge")]
+    public class Loading : LoadBase {
+        List<Row> dataSource;
+        public sealed override void SetUp(object uiControl) {
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+            base.SetUp(uiControl);
+        }
+        public sealed override void Benchmark() {
+            grid.DataSource = dataSource;
         }
     }
 }
