@@ -67,14 +67,15 @@ namespace BenchmarkingApp {
         public void LoadAndRunBatch(string[] args) {
             args = Benchmarks.Data.Configuration.Parse(args);
             Load();
-            bool useSpecificBenchmarks = (args != null) && (args.Length > 0);
+            BenchmarkItem[] activeBenchmarks = benchmarks;
+            if(args != null && args.Length > 0) {
+                activeBenchmarks = benchmarks.Where(b => IsSpecificBenchmark(b, args))
+                    .OrderBy(b => GetBenchmarkIndex(b, args))
+                    .ToArray();
+            }
             int total = 0;
-            for(int i = 0; i < benchmarks.Length; i++) {
-                var current = benchmarks[i];
-                if(useSpecificBenchmarks) {
-                    if((Array.IndexOf(args, current.Name) == -1) && (Array.IndexOf(args, current.Type.FullName) == -1))
-                        continue;
-                }
+            for(int i = 0; i < activeBenchmarks.Length; i++) {
+                var current = activeBenchmarks[i];
                 ActiveHostItem = HostItems.FirstOrDefault(host => BenchmarkItem.IsBenchmarkFor(current.Type, host.Name));
                 if(ActiveHostItem != null) {
                     ActiveBenchmarkItem = current;
@@ -83,6 +84,15 @@ namespace BenchmarkingApp {
                 }
             }
             OnBatchRunComplete(total);
+        }
+        int GetBenchmarkIndex(BenchmarkItem current, string[] args) {
+            int typeNameIndex = Array.IndexOf(args, current.Type.FullName.ToLowerInvariant());
+            return (typeNameIndex != -1) ? typeNameIndex : Array.IndexOf(args, current.Name.ToLowerInvariant());
+        }
+        bool IsSpecificBenchmark(BenchmarkItem current, string[] args) {
+            return
+                Array.IndexOf(args, current.Type.FullName.ToLowerInvariant()) != -1 ||
+                Array.IndexOf(args, current.Name.ToLowerInvariant()) != -1;
         }
         void OnBatchRunComplete(int total) {
             var messageService = this.GetRequiredService<IMessageBoxService>();
