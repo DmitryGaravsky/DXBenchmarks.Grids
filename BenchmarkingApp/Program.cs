@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 
 namespace BenchmarkingApp {
     static class Program {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main(string[] args) {
+            // AFFINITY
+            var currentProcess = Process.GetCurrentProcess();
+            currentProcess.ProcessorAffinity = new System.IntPtr(1);
+            //
             WindowsFormsSettings.EnableFormSkins();
             WindowsFormsSettings.DefaultLookAndFeel.SetSkinStyle("Office 2016 Colorful");
             Application.EnableVisualStyles();

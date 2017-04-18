@@ -89,6 +89,7 @@
     <Compile Include="Benchmarks\Hosts\Treelist.Designer.cs">
       <DependentUpon>Treelist.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\AutoClosingMessageBox.cs" />
     <Compile Include="Views\Services\IClipboardService.cs" />
     <Compile Include="Views\Services\IHostService.cs" />
     <Compile Include="Model\IBenchmarkHost.cs" />
