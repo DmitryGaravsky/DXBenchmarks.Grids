@@ -76,7 +76,7 @@
                 cfgString = cfgString.Replace("cfg=", string.Empty);
                 cfgString = cfgString.Replace("configuration=", string.Empty);
                 switch(cfgString) {
-                    case "typycal":
+                    case "typical":
                         currentConfiguration = Typical.Instance;
                         break;
                     case "huge":

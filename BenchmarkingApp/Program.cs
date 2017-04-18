@@ -19,11 +19,14 @@ namespace BenchmarkingApp {
                 Application.Run(new MainForm());
             }
             else {
-                if(args.Length == 1 && System.IO.File.Exists(args[0]))
-                    args = System.IO.File.ReadAllLines(args[0]);
+                string workload = string.Empty;
+                if(args.Length == 1 && System.IO.File.Exists(args[0])) {
+                    workload = args[0];
+                    args = System.IO.File.ReadAllLines(workload);
+                }
                 args = args.Where(a => !string.IsNullOrWhiteSpace(a))
                     .Select(s => s.Trim().ToLowerInvariant()).ToArray();
-                Application.Run(new RunnerForm(args));
+                Application.Run(new RunnerForm(args, workload));
             }
         }
     }

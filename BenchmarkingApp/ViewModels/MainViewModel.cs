@@ -105,6 +105,7 @@ namespace BenchmarkingApp {
             get { return ActiveBenchmarkItem != null; }
         }
         void UpdateCommands() {
+            this.RaisePropertyChanged(x => x.Title);
             this.RaiseCanExecuteChanged(x => x.ColdRun());
             this.RaiseCanExecuteChanged(x => x.WarmUp());
             this.RaiseCanExecuteChanged(x => x.Run());
@@ -168,7 +169,8 @@ namespace BenchmarkingApp {
             running++;
             PrepareRun();
             UpdateCommands();
-            if(!IsWarmedUp) WarmUp();
+            if(!IsWarmedUp) 
+                WarmUp();
             // Prepare
             var target = ActiveBenchmarkItem.Target;
             var uiControl = ActiveHostItem.Target.UIControl;
@@ -239,7 +241,10 @@ namespace BenchmarkingApp {
         // Title
         const string name = "Benckmarking App for DevExpress WinForms Grids";
         public string Title {
-            get { return name + " (" + Benchmarks.Data.Configuration.Current.Name + " Configuration)"; }
+            get {
+                string state = (running > 0) ? ", " + ActiveBenchmarkItem.Name : string.Empty;
+                return name + " (Configuration: " + Benchmarks.Data.Configuration.Current.Name + state + ")";
+            }
         }
         // Result
         long? result, worst;

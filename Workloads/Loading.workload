@@ -1,0 +1,7 @@
+Configuration=Typical
+
+BenchmarkingApp.Grid.Bound.Loading
+BenchmarkingApp.Tree.Bound.Loading
+BenchmarkingApp.Tree.Unbound.Loading
+BenchmarkingApp.Tree.BoundHierarchy.Loading
+BenchmarkingApp.Tree.UnboundHierarchy.Loading
