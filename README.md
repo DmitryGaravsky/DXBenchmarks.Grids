@@ -3,6 +3,41 @@ Benchmarking app for DevExpress Grids (WinForms)
 
 App for measuring performance of DevExpress WinForms GridControl and TreeListControl.
 
+### Usage:
+
+You can run this app either in *interactive* or in *batch* mode. 
+
+### Batch mode:
+
+To run the app in batch mode use the command line arguments:
+
+    BenchmarkingApp cfg=Deep
+
+or
+
+    BenchmarkingApp Workloads/Sorting.workload
+
+The `*.workload` file contains bencmarking workload declaration. For example:
+
+    Configuration=Typical
+
+    BenchmarkingApp.InMemory.Filtering_Price
+    BenchmarkingApp.Grid.Bound.Filtering_Price
+    BenchmarkingApp.Tree.Bound.Filtering_Price
+
+
+You can specify the bencmarking configuration (`Typical`, `Huge`, `Deep`):
+
+    Configuration=Typical
+    config=huge
+    cfg=deep
+
+and, optionally, define the specific benchmarking fixtures (you can use either fixture's
+type name or fixture's description).
+
+The results will be available in `*.results` files.
+
+Hint: use the predefined `RunTypical.cmd` script.
 
 ### Testing Data:
 
@@ -39,7 +74,7 @@ App for measuring performance of DevExpress WinForms GridControl and TreeListCon
  - sorting by ordered/random data (single column)
  - sorting by clustered/unclustered data (multiple columns)
 
-### The resulting tables (17.1 vs v16.2, **10k data items**):
+### The resulting tables (17.1 vs v16.2, **Typical configuration, 10k data items, up to 5 levels**):
 
 1) i7-4702HQ 2.2 GHz, 16 Gb, Win8.1x64 
 
