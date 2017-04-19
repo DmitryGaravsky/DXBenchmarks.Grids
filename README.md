@@ -83,9 +83,9 @@ Filtering is **up to 1.75 times faster**.
 Searching is **up to 1.4 times faster**.  
 Loading nodes tree is **up to 2.6 times faster**.  
 
-### Benchmarking notes:###
+### Benchmarking notes
 
-1. The results above are measured by using following PC configuration:
+1. The results above are measured by using following PC configuration:  
    Intel Core i7-4702HQ 2.2 GHz, 16 Gb, Win8.1x64)
 2. Here are [the bencmarking raw data and graphs](https://goo.gl/zCM6zT)
 
