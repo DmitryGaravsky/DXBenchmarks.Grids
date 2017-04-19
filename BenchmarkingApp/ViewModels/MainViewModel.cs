@@ -77,7 +77,7 @@ namespace BenchmarkingApp {
             this.batchTotal = activeBenchmarks.Length;
             int total = 0;
             for(int i = 0; i < activeBenchmarks.Length; i++) {
-                this.batchIndex = i;
+                this.batchIndex = i + 1;
                 var current = activeBenchmarks[i];
                 ActiveHostItem = HostItems.FirstOrDefault(host => BenchmarkItem.IsBenchmarkFor(current.Type, host.Name));
                 if(ActiveHostItem != null) {
@@ -152,8 +152,8 @@ namespace BenchmarkingApp {
             int warmUpCounter = BenchmarkItem.GetWarmUpCounter(ActiveBenchmarkItem.Type);
             var target = ActiveBenchmarkItem.Target;
             var uiControl = ActiveHostItem.Target.UIControl;
-            stopwatch.Reset();
-            for(int i = 0; i < warmUpCounter; i++) {
+            for(int i = -2 /*pre-warmup*/; i < warmUpCounter; i++) {
+                if(i == 0) stopwatch.Reset();
                 target.SetUp(uiControl);
                 try {
                     stopwatch.Start();
@@ -174,8 +174,7 @@ namespace BenchmarkingApp {
             running++;
             PrepareRun();
             UpdateCommands();
-            if(!IsWarmedUp)
-                WarmUp();
+            if(!IsWarmedUp) WarmUp();
             // Prepare
             var target = ActiveBenchmarkItem.Target;
             var uiControl = ActiveHostItem.Target.UIControl;
@@ -206,7 +205,7 @@ namespace BenchmarkingApp {
             }
             int actualResultsCount = results.Where(r => r != 0).Count();
             // Check results completeness
-            if(watchDog <= 0 && actualResultsCount < results.Length / 2) {
+            if(watchDog <= 0 && (results.Length - counter) > 0) {
                 while(counter > 0) {
                     // Run Ever!
                     target.SetUp(uiControl);
@@ -218,7 +217,8 @@ namespace BenchmarkingApp {
                     finally { target.TearDown(uiControl); }
                     long current = stopwatch.ElapsedMilliseconds;
                     worst = Math.Max(current, worst.Value);
-                    results[--counter] = current;
+                    if(current < warmUpResult.Value * 2)
+                        results[--counter] = current;
                 }
                 actualResultsCount = results.Length;
             }
