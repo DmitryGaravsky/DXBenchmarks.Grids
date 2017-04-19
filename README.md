@@ -37,7 +37,7 @@ type name or fixture's description).
 
 The results will be available in `*.results` files.
 
-Hint: use the predefined `RunTypical.cmd` script.
+Hint: use the predefined `RunTypical.cmd` script (it requires administrative permissions due to using NGEN).
 
 ### Testing Data:
 
@@ -68,12 +68,18 @@ Hint: use the predefined `RunTypical.cmd` script.
         public int ParentID { get; }
     }
 
+All the data are generated randomly and looks like real.
+
 ### Test categories:
- - filtering by different data types with simple and complex filters
- - searching by specific column and by the all columns
+
  - sorting by ordered/random data (single column)
  - sorting by clustered/unclustered data (multiple columns)
+ - filtering by different data types with simple and complex filters
+ - searching by specific column and by the all columns
+ - loading tree nodes by assigning the data source(Bound) or via appending nodes in cycle(Unbound)
 
+All the above tests can be performed on flat list or on self-referenced hierarchy(ID->ParentID).
+ 
 ### The results (17.1 vs 16.2)
 
 In the 17.1 the overall performance of data-aware operations in the Tree List Control was improved:
@@ -85,7 +91,7 @@ Loading nodes tree is **up to 2.6 times faster**.
 
 ### Benchmarking notes
 
-1. The results above are measured by using following PC configuration:  
+1. The results above are measured by using the following PC configuration:  
    Intel Core i7-4702HQ 2.2 GHz, 16 Gb, Win8.1x64)
 2. Here are [the bencmarking raw data and graphs](https://goo.gl/zCM6zT)
 
