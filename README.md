@@ -69,8 +69,8 @@ Hint: use the predefined `RunTypical.cmd` script.
     }
 
 ### Test categories:
- - filtering by different data types
- - searching by specific and by all columns
+ - filtering by different data types with simple and complex filters
+ - searching by specific column and by the all columns
  - sorting by ordered/random data (single column)
  - sorting by clustered/unclustered data (multiple columns)
 
@@ -83,10 +83,12 @@ Filtering is **up to 1.75 times faster**.
 Searching is **up to 1.4 times faster**.  
 Loading nodes tree is **up to 2.6 times faster**.  
 
-The resulta above are measured by using following PC configuration:
- - Intel Core i7-4702HQ 2.2 GHz, 16 Gb, Win8.1x64)
- - Here are [the bencmarking raw data and graphs](https://goo.gl/zCM6zT)
+### Benchmarking notes:###
 
-Performance notes, or Why the Grid Control faster:  
+1. The results above are measured by using following PC configuration:
+   Intel Core i7-4702HQ 2.2 GHz, 16 Gb, Win8.1x64)
+2. Here are [the bencmarking raw data and graphs](https://goo.gl/zCM6zT)
+
+Why the Grid Control faster?
  - the TreeList and Grid controls uses different data-model and data processing approaches.
- - the Grid controls is based on list-processing, so the Grid can use the most aggressive optimizations (for example parallel processing)
+ - the Grid control is based on List' processing, so the Grid can use the most aggressive optimizations (for example parallel processing or indexed data-access)
