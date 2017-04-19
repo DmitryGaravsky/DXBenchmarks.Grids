@@ -1,4 +1,5 @@
 ﻿namespace BenchmarkingApp.Benchmarks.Data {
+    using System;
     using System.Linq;
 
     public abstract class Configuration {
@@ -15,6 +16,7 @@
         public const int Seed = 10000;
         public abstract int Rows { get; }
         public abstract int Levels { get; }
+        public abstract int WatchDog(int counter);
         public abstract string Name { get; }
         //
         #region Configurations
@@ -38,6 +40,9 @@
             public sealed override int Levels {
                 get { return 5; }
             }
+            public sealed override int WatchDog(int counter) {
+                return counter * 2;
+            }
         }
         sealed class Huge : Configuration {
             readonly internal static Configuration Instance = new Huge();
@@ -50,8 +55,11 @@
             public sealed override int Levels {
                 get { return 5; }
             }
+            public sealed override int WatchDog(int counter) {
+                return counter;
+            }
             protected sealed override bool MatchCore(string[] items) {
-                return System.Array.IndexOf(items, "huge") != -1;
+                return Array.IndexOf(items, "huge") != -1;
             }
         }
         sealed class Deep : Configuration {
@@ -65,8 +73,11 @@
             public sealed override int Levels {
                 get { return 100; }
             }
+            public sealed override int WatchDog(int counter) {
+                return counter;
+            }
             protected sealed override bool MatchCore(string[] items) {
-                return System.Array.IndexOf(items, "deep") != -1;
+                return Array.IndexOf(items, "deep") != -1;
             }
         }
         #endregion Configurations
@@ -74,6 +85,7 @@
             string cfgString = args.FirstOrDefault(a => IsConfigurationLine(a));
             if(cfgString != null) {
                 cfgString = cfgString.Replace("cfg=", string.Empty);
+                cfgString = cfgString.Replace("config=", string.Empty);
                 cfgString = cfgString.Replace("configuration=", string.Empty);
                 switch(cfgString) {
                     case "typical":
@@ -94,7 +106,10 @@
             return args;
         }
         static bool IsConfigurationLine(string line) {
-            return line.StartsWith("cfg=") || line.StartsWith("configuration=");
+            return 
+                line.StartsWith("cfg=") || 
+                line.StartsWith("config=") || 
+                line.StartsWith("configuration=");
         }
     }
 }

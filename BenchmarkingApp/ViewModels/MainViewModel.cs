@@ -183,7 +183,7 @@ namespace BenchmarkingApp {
                 hi++;
             }
             worst = 0;
-            int watchDog = Math.Max(counter * 2, 50);
+            int watchDog = Benchmarks.Data.Configuration.Current.WatchDog(counter);
             while(counter > 0 && (0 < watchDog--)) {
                 // Run
                 target.SetUp(uiControl);
@@ -242,8 +242,8 @@ namespace BenchmarkingApp {
         const string name = "Benckmarking App for DevExpress WinForms Grids";
         public string Title {
             get {
-                string state = (running > 0) ? ", " + ActiveBenchmarkItem.Name : string.Empty;
-                return name + " (Configuration: " + Benchmarks.Data.Configuration.Current.Name + state + ")";
+                string stage = (running > 0) ? ", Stage: " + ActiveBenchmarkItem.Name : string.Empty;
+                return name + " (Configuration: " + Benchmarks.Data.Configuration.Current.Name + stage + ")";
             }
         }
         // Result
