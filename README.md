@@ -78,14 +78,14 @@ Hint: use the predefined `RunTypical.cmd` script.
 
 In v 17.1 the performance of main data aware operations of the DevExpress Tree List Control were improved:
 
-Sorting is *up to 8 times faster*.
-Filtering is *up to 1.75 times faster*.
-Searching is *up to 1.4 times faster*.
-Loading nodes tree is *up to 2.6 times faster*.
+Sorting is *up to 8 times faster*.  
+Filtering is *up to 1.75 times faster*.  
+Searching is *up to 1.4 times faster*.  
+Loading nodes tree is *up to 2.6 times faster*.  
 
-Heare are the bencmarking raw data and graphs: 
+Heare are the bencmarking raw data and graphs:  
     https://goo.gl/zCM6zT
 
-Performance notes:
- The TreeList and Grid controls uses different data-model.
- The Grid controls is based on list-processing, so the Grid can use the most aggressive optimizations (for example parallel processing)
+Performance notes:  
+ - the TreeList and Grid controls uses different data-model.
+ - the Grid controls is based on list-processing, so the Grid can use the most aggressive optimizations (for example parallel processing)
