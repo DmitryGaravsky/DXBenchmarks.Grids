@@ -73,6 +73,7 @@ namespace BenchmarkingApp.Tree {
                 var columns = HierarchicalRow.GetHierarchicalColumns();
                 for(int i = 0; i < columns.Length; i++)
                     treeList.Columns.AddVisible(columns[i]);
+                treeList.Columns["ParentID"].Visible = false;
                 treeList.EndUpdate();
                 // Data
                 treeList.BeginUnboundLoad();

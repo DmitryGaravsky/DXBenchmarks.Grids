@@ -40,7 +40,7 @@ namespace BenchmarkingApp {
         void ILogService.Log(string message) {
             message = message.Substring(0, message.IndexOf(']') + 1);
             using(var writer = File.AppendText(results))
-                writer.Write(message.PadRight(60) + '\t'.ToString());
+                writer.Write(message.PadRight(64) + '\t'.ToString());
         }
         void IClipboardService.SetResult(string result) {
             using(var writer = File.AppendText(results))

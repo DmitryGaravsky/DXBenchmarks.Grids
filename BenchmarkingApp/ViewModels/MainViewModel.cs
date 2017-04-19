@@ -64,6 +64,7 @@ namespace BenchmarkingApp {
                 .Select(x => new HostItem(x)).ToList();
         }
         //
+        int? batchIndex, batchTotal;
         public void LoadAndRunBatch(string[] args) {
             args = Benchmarks.Data.Configuration.Parse(args);
             Load();
@@ -73,8 +74,10 @@ namespace BenchmarkingApp {
                     .OrderBy(b => GetBenchmarkIndex(b, args))
                     .ToArray();
             }
+            this.batchTotal = activeBenchmarks.Length;
             int total = 0;
             for(int i = 0; i < activeBenchmarks.Length; i++) {
+                this.batchIndex = i;
                 var current = activeBenchmarks[i];
                 ActiveHostItem = HostItems.FirstOrDefault(host => BenchmarkItem.IsBenchmarkFor(current.Type, host.Name));
                 if(ActiveHostItem != null) {
@@ -83,6 +86,8 @@ namespace BenchmarkingApp {
                     total++;
                 }
             }
+            this.batchTotal = null;
+            this.batchIndex = null;
             OnBatchRunComplete(total);
         }
         int GetBenchmarkIndex(BenchmarkItem current, string[] args) {
@@ -169,7 +174,7 @@ namespace BenchmarkingApp {
             running++;
             PrepareRun();
             UpdateCommands();
-            if(!IsWarmedUp) 
+            if(!IsWarmedUp)
                 WarmUp();
             // Prepare
             var target = ActiveBenchmarkItem.Target;
@@ -242,8 +247,13 @@ namespace BenchmarkingApp {
         const string name = "Benckmarking App for DevExpress WinForms Grids";
         public string Title {
             get {
-                string stage = (running > 0) ? ", Stage: " + ActiveBenchmarkItem.Name : string.Empty;
-                return name + " (Configuration: " + Benchmarks.Data.Configuration.Current.Name + stage + ")";
+                string runningStage = string.Empty;
+                if(running > 0) {
+                    runningStage = ", Running: " + ActiveBenchmarkItem.Name;
+                    if(batchIndex.HasValue)
+                        runningStage += ", " + batchIndex.Value.ToString() + " of " + batchTotal.Value.ToString();
+                }
+                return name + " (Configuration: " + Benchmarks.Data.Configuration.Current.Name + runningStage + ")";
             }
         }
         // Result

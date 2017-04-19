@@ -1,6 +1,7 @@
 ﻿namespace BenchmarkingApp.Benchmarks.Data {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public enum Gender {
         Male, Female, Other
@@ -109,10 +110,9 @@
     //
     public class HierarchicalRow : Row {
         HierarchicalRow(Row parent) {
-            ParentID = -1;
-            if(parent != null)
-                ParentID = parent.ID;
+            ParentID = (parent != null) ? parent.ID : -1;
         }
+        [Display(Order = -1)]
         public int ParentID {
             get;
             private set;
