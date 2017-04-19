@@ -14,7 +14,7 @@ namespace BenchmarkingApp {
         public RunnerForm(string[] benchmarkArgs, string workload) {
             this.benchmarkArgs = benchmarkArgs;
             if(!string.IsNullOrEmpty(workload))
-                results = workload.Replace(".workload", ".results");
+                results = Path.GetFileName(workload.Replace(".workload", ".results"));
             if(File.Exists(results))
                 File.Delete(results);
             InitializeComponent();
