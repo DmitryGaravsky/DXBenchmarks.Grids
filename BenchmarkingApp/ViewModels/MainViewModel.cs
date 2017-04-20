@@ -205,7 +205,7 @@ namespace BenchmarkingApp {
             }
             int actualResultsCount = results.Where(r => r != 0).Count();
             // Check results completeness
-            if(watchDog <= 0 && (results.Length - counter) > 0) {
+            if(watchDog <= 0 && (results.Length - counter) >= 0) {
                 while(counter > 0) {
                     // Run Ever!
                     target.SetUp(uiControl);

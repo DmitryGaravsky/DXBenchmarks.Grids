@@ -23,7 +23,7 @@ namespace BenchmarkingApp {
             else {
                 string workload = string.Empty;
                 if(args.Length == 1 && System.IO.File.Exists(args[0])) {
-                    workload = args[0];
+                    workload = args[0].Trim();
                     args = System.IO.File.ReadAllLines(workload);
                 }
                 args = args.Where(a => !string.IsNullOrWhiteSpace(a))
