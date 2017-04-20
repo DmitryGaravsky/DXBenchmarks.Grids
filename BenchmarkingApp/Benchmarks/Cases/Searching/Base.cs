@@ -2,6 +2,7 @@
     using System.Collections.Generic;
     using BenchmarkingApp.Benchmarks.Data;
     using DevExpress.XtraTreeList;
+    using DevExpress.XtraTreeList.Nodes;
 
     [BenchmarkHost("TreeList")]
     public abstract class SearchBase : IBenchmarkItem {
@@ -80,9 +81,16 @@
                 treeList.EndUpdate();
                 // Data
                 treeList.BeginUnboundLoad();
+                IDictionary<int, TreeListNode> nodes = new Dictionary<int, TreeListNode>();
                 for(int i = 0; i < dataSource.Count; i++) {
                     var data = dataSource[i].GetHierarchicalData();
-                    treeList.AppendNode(data, dataSource[i].ParentID);
+                    int parentID = dataSource[i].ParentID;
+                    TreeListNode parentNode, node;
+                    if(!nodes.TryGetValue(parentID, out parentNode))
+                        node = treeList.AppendNode(data, dataSource[i].ParentID);
+                    else
+                        node = treeList.AppendNode(data, parentNode);
+                    nodes.Add(node.Id, node);
                 }
                 treeList.ExpandAll();
                 treeList.EndUnboundLoad();
