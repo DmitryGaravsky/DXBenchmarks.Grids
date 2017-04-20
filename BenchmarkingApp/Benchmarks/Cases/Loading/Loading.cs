@@ -87,8 +87,7 @@ namespace BenchmarkingApp.Tree.UnboundHierarchy {
         }
     }
 }
-
-namespace BenchmarkingApp.Grid {
+namespace BenchmarkingApp.Grid.Bound {
     using System.Collections.Generic;
     using BenchmarkingApp.Benchmarks.Data;
 
