@@ -126,3 +126,64 @@ namespace BenchmarkingApp.Grid.Bound {
         public abstract void Benchmark();
     }
 }
+namespace BenchmarkingApp.RadGrid.Bound {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+    using Telerik.WinControls;
+    using Telerik.WinControls.UI;
+
+    [BenchmarkHost("RadGrid")]
+    public abstract class SearchBase : IBenchmarkItem {
+        List<Row> dataSource;
+        protected RadGridView gridView;
+        public virtual void SetUp(object uiControl) {
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+            gridView = ((RadGridView)uiControl);
+            gridView.AllowAddNewRow = false;
+            gridView.AllowSearchRow = true;
+            gridView.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
+            gridView.EnableFiltering = true;
+            gridView.MasterView.TableSearchRow.HighlightResults = true;
+            gridView.MasterView.TableSearchRow.CaseSensitive = false;
+            gridView.Relations.Clear();
+            gridView.DataSource = dataSource;
+        }
+        public void TearDown(object uiControl) {
+            gridView.MasterView.TableSearchRow.Search(null);
+            gridView = null;
+        }
+        public abstract void Benchmark();
+    }
+}
+namespace BenchmarkingApp.RadGrid.BoundHierarchy {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+    using Telerik.WinControls;
+    using Telerik.WinControls.UI;
+
+    [BenchmarkHost("RadGrid")]
+    public abstract class SearchBase : IBenchmarkItem {
+        List<HierarchicalRow> dataSource;
+        protected RadGridView gridView;
+        public virtual void SetUp(object uiControl) {
+            Row.EnsureHierarchicalSource(ref dataSource, Configuration.Current.Rows,Configuration.Current.Levels);
+            gridView = ((RadGridView)uiControl);
+            gridView.DataSource = dataSource;
+            gridView.Columns["ParentId"].IsVisible = false;
+            gridView.AllowAddNewRow = false;
+            gridView.AllowSearchRow = true;
+            gridView.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
+            gridView.EnableFiltering = true;
+            gridView.Relations.Clear();
+            gridView.Relations.AddSelfReference(gridView.MasterTemplate, "ID", "ParentID");
+            gridView.MasterView.TableSearchRow.HighlightResults = true;
+            gridView.MasterView.TableSearchRow.CaseSensitive = false;
+            gridView.MasterTemplate.ExpandAll();
+        }
+        public void TearDown(object uiControl) {
+            gridView.MasterView.TableSearchRow.Search(null);
+            gridView = null;
+        }
+        public abstract void Benchmark();
+    }
+}

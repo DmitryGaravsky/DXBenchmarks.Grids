@@ -181,6 +181,76 @@ namespace BenchmarkingApp.Grid.Bound {
         }
     }
 }
+namespace BenchmarkingApp.RadGrid.Bound {
+    using Telerik.WinControls.Data;
+    using Telerik.WinControls.UI;
+
+    [BenchmarkItem("Sort by ID", Configuration = "Huge")]
+    public class Sorting_ID : SortBase {
+        public sealed override void Benchmark() {
+            gridView.Columns["ID"].SortOrder = RadSortOrder.Descending;
+        }
+    }
+    [BenchmarkItem("Sort by Name")]
+    public class Sorting_Name : SortBase {
+        public sealed override void Benchmark() {
+            gridView.Columns["Name"].SortOrder = RadSortOrder.Descending;
+        }
+    }
+    [BenchmarkItem("Sort by ID and Name")]
+    public class Sorting_ID_and_Name : SortBase {
+        public sealed override void Benchmark() {
+            gridView.SortDescriptors.AddRange(
+                    new SortDescriptor("ID", System.ComponentModel.ListSortDirection.Descending),
+                    new SortDescriptor("Name", System.ComponentModel.ListSortDirection.Ascending)
+                );
+        }
+    }
+    [BenchmarkItem("Sort by Age and Factor")]
+    public class Sorting_Age_and_Factor : SortBase {
+        public sealed override void Benchmark() {
+            gridView.SortDescriptors.AddRange(
+                    new SortDescriptor("Age", System.ComponentModel.ListSortDirection.Descending),
+                    new SortDescriptor("Factor", System.ComponentModel.ListSortDirection.Ascending)
+                );
+        }
+    }
+}
+namespace BenchmarkingApp.RadGrid.BoundHierarchy {
+    using Telerik.WinControls.Data;
+    using Telerik.WinControls.UI;
+
+    [BenchmarkItem("Sort by ID (Bound Hierarchy)", Configuration = "Huge")]
+    public class Sorting_ID : SortBase {
+        public sealed override void Benchmark() {
+            gridView.Columns["ID"].SortOrder = RadSortOrder.Descending;
+        }
+    }
+    [BenchmarkItem("Sort by Name (Bound Hierarchy)")]
+    public class Sorting_Name : SortBase {
+        public sealed override void Benchmark() {
+            gridView.Columns["Name"].SortOrder = RadSortOrder.Descending;
+        }
+    }
+    [BenchmarkItem("Sort by ID and Name (Bound Hierarchy)")]
+    public class Sorting_ID_and_Name : SortBase {
+        public sealed override void Benchmark() {
+            gridView.SortDescriptors.AddRange(
+                    new SortDescriptor("ID", System.ComponentModel.ListSortDirection.Descending),
+                    new SortDescriptor("Name", System.ComponentModel.ListSortDirection.Ascending)
+                );
+        }
+    }
+    [BenchmarkItem("Sort by Age and Factor (Bound Hierarchy)")]
+    public class Sorting_Age_and_Factor : SortBase {
+        public sealed override void Benchmark() {
+            gridView.SortDescriptors.AddRange(
+                    new SortDescriptor("Age", System.ComponentModel.ListSortDirection.Descending),
+                    new SortDescriptor("Factor", System.ComponentModel.ListSortDirection.Ascending)
+                );
+        }
+    }
+}
 
 namespace BenchmarkingApp.InMemory {
     using System.Collections.Generic;

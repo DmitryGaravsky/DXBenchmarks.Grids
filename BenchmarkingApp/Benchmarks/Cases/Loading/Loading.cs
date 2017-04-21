@@ -103,3 +103,41 @@ namespace BenchmarkingApp.Grid.Bound {
         }
     }
 }
+
+namespace BenchmarkingApp.RadGrid.Bound {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+
+    [BenchmarkItem("Loading", Configuration = "Huge")]
+    public class Loading : LoadBase {
+        List<Row> dataSource;
+        public sealed override void SetUp(object uiControl) {
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+            base.SetUp(uiControl);
+        }
+        public sealed override void Benchmark() {
+            gridView.DataSource = dataSource;
+        }
+    }
+}
+namespace BenchmarkingApp.RadGrid.BoundHierarchy {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+
+    [BenchmarkItem("Loading (Bound Hierarchy)", Configuration = "Huge")]
+    public class Loading : LoadBase {
+        List<HierarchicalRow> dataSource;
+        public sealed override void SetUp(object uiControl) {
+            Row.EnsureHierarchicalSource(ref dataSource, Configuration.Current.Rows, Configuration.Current.Levels);
+            base.SetUp(uiControl);
+        }
+        public sealed override void Benchmark() {
+            gridView.BeginUpdate();
+            gridView.Relations.AddSelfReference(gridView.MasterTemplate, "ID", "ParentID");
+            gridView.DataSource = dataSource;
+            gridView.Columns["ParentId"].IsVisible = false;
+            gridView.MasterTemplate.ExpandAll();
+            gridView.EndUpdate();
+        }
+    }
+}

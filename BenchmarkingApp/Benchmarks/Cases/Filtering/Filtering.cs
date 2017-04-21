@@ -159,6 +159,82 @@ namespace BenchmarkingApp.Grid.Bound {
         }
     }
 }
+namespace BenchmarkingApp.RadGrid.Bound {
+    using Telerik.WinControls.Data;
+
+    [BenchmarkItem("Filter by Price", Configuration = "Huge")]
+    public class Filtering_Price : FilterBase {
+        public sealed override void Benchmark() {
+            gridView.FilterDescriptors.Add("Price", Telerik.WinControls.Data.FilterOperator.IsGreaterThan, 5000);
+        }
+    }
+    [BenchmarkItem("Filter by Approved")]
+    public class Filtering_Approved : FilterBase {
+        public sealed override void Benchmark() {
+            gridView.FilterDescriptors.Add("Price", Telerik.WinControls.Data.FilterOperator.IsNotNull, null);
+        }
+    }
+    [BenchmarkItem("Filter by Price and Approved")]
+    public class Filtering_Price_and_Approved : FilterBase {
+        public sealed override void Benchmark() {
+            gridView.FilterDescriptors.AddRange(
+                    new FilterDescriptor("Price", Telerik.WinControls.Data.FilterOperator.IsLessThan, 5000),
+                    new FilterDescriptor("Approved", Telerik.WinControls.Data.FilterOperator.IsNotNull, null)
+                );
+        }
+    }
+    [BenchmarkItem("Filter by Amount and Open")]
+    public class Filtering_Amount_and_Open : FilterBase {
+        public sealed override void Benchmark() {
+            System.DateTime before = new System.DateTime(2002, 1, 1);
+            System.DateTime after = new System.DateTime(2001, 1, 1);
+            gridView.FilterDescriptors.AddRange(
+                    new FilterDescriptor("Amount", Telerik.WinControls.Data.FilterOperator.IsGreaterThanOrEqualTo, 150),
+                    new FilterDescriptor("Amount", Telerik.WinControls.Data.FilterOperator.IsLessThanOrEqualTo, 175),
+                    new FilterDescriptor("Open", Telerik.WinControls.Data.FilterOperator.IsGreaterThanOrEqualTo, after),
+                    new FilterDescriptor("Open", Telerik.WinControls.Data.FilterOperator.IsLessThan, before)
+                );
+        }
+    }
+}
+namespace BenchmarkingApp.RadGrid.BoundHierarchy {
+    using Telerik.WinControls.Data;
+
+    [BenchmarkItem("Filter by Price (Bound Hierarchy)", Configuration = "Huge")]
+    public class Filtering_Price : FilterBase {
+        public sealed override void Benchmark() {
+            gridView.FilterDescriptors.Add("Price", Telerik.WinControls.Data.FilterOperator.IsGreaterThan, 5000);
+        }
+    }
+    [BenchmarkItem("Filter by Approved (Bound Hierarchy)")]
+    public class Filtering_Approved : FilterBase {
+        public sealed override void Benchmark() {
+            gridView.FilterDescriptors.Add("Price", Telerik.WinControls.Data.FilterOperator.IsNotNull, null);
+        }
+    }
+    [BenchmarkItem("Filter by Price and Approved (Bound Hierarchy)")]
+    public class Filtering_Price_and_Approved : FilterBase {
+        public sealed override void Benchmark() {
+            gridView.FilterDescriptors.AddRange(
+                    new FilterDescriptor("Price", Telerik.WinControls.Data.FilterOperator.IsLessThan, 5000),
+                    new FilterDescriptor("Approved", Telerik.WinControls.Data.FilterOperator.IsNotNull, null)
+                );
+        }
+    }
+    [BenchmarkItem("Filter by Amount and Open (Bound Hierarchy)")]
+    public class Filtering_Amount_and_Open : FilterBase {
+        public sealed override void Benchmark() {
+            System.DateTime before = new System.DateTime(2002, 1, 1);
+            System.DateTime after = new System.DateTime(2001, 1, 1);
+            gridView.FilterDescriptors.AddRange(
+                    new FilterDescriptor("Amount", Telerik.WinControls.Data.FilterOperator.IsGreaterThanOrEqualTo, 150),
+                    new FilterDescriptor("Amount", Telerik.WinControls.Data.FilterOperator.IsLessThanOrEqualTo, 175),
+                    new FilterDescriptor("Open", Telerik.WinControls.Data.FilterOperator.IsGreaterThanOrEqualTo, after),
+                    new FilterDescriptor("Open", Telerik.WinControls.Data.FilterOperator.IsLessThan, before)
+                );
+        }
+    }
+}
 
 namespace BenchmarkingApp.InMemory {
     using System.Collections.Generic;

@@ -129,3 +129,61 @@ namespace BenchmarkingApp.Grid.Bound {
         public abstract void Benchmark();
     }
 }
+namespace BenchmarkingApp.RadGrid.Bound {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+    using Telerik.WinControls;
+    using Telerik.WinControls.UI;
+
+    [BenchmarkHost("RadGrid")]
+    public abstract class FilterBase : IBenchmarkItem {
+        List<Row> dataSource;
+        protected RadGridView gridView;
+        public void SetUp(object uiControl) {
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+            gridView = ((RadGridView)uiControl);
+            gridView.FilterDescriptors.Clear();
+            gridView.Relations.Clear();
+            gridView.DataSource = dataSource;
+            gridView.AllowAddNewRow = false;
+            gridView.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
+            gridView.EnableFiltering = true;
+        }
+        public void TearDown(object uiControl) {
+            gridView.FilterDescriptors.Clear();
+            gridView = null;
+        }
+        public abstract void Benchmark();
+    }
+}
+namespace BenchmarkingApp.RadGrid.BoundHierarchy {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+    using Telerik.WinControls;
+    using Telerik.WinControls.UI;
+
+    [BenchmarkHost("RadGrid")]
+    public abstract class FilterBase : IBenchmarkItem {
+        List<Row> dataSource;
+        protected RadGridView gridView;
+        public void SetUp(object uiControl) {
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+            gridView = ((RadGridView)uiControl);
+            gridView.Relations.Clear();
+            gridView.FilterDescriptors.Clear();
+            gridView.DataSource = dataSource;
+            gridView.Columns["ParentId"].IsVisible = false;
+            gridView.AllowAddNewRow = false;
+            gridView.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
+            gridView.EnableFiltering = true;
+            gridView.MasterTemplate.EnableHierarchyFiltering = true;
+            gridView.Relations.AddSelfReference(gridView.MasterTemplate, "ID", "ParentID");
+            gridView.MasterTemplate.ExpandAll();
+        }
+        public void TearDown(object uiControl) {
+            gridView.FilterDescriptors.Clear();
+            gridView = null;
+        }
+        public abstract void Benchmark();
+    }
+}

@@ -1,0 +1,10 @@
+Configuration=Typical
+
+BenchmarkingApp.RadGrid.Bound.Filtering_Price
+BenchmarkingApp.RadGrid.Bound.Filtering_Approved
+BenchmarkingApp.RadGrid.Bound.Filtering_Price_and_Approved
+BenchmarkingApp.RadGrid.Bound.Filtering_Amount_and_Open
+BenchmarkingApp.RadGrid.BoundHierarchy.Filtering_Price
+BenchmarkingApp.RadGrid.BoundHierarchy.Filtering_Approved
+BenchmarkingApp.RadGrid.BoundHierarchy.Filtering_Price_and_Approved
+BenchmarkingApp.RadGrid.BoundHierarchy.Filtering_Amount_and_Open

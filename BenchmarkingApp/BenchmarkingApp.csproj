@@ -47,6 +47,10 @@
     <Reference Include="DevExpress.XtraLayout.v17.1" />
     <Reference Include="DevExpress.XtraPrinting.v17.1" />
     <Reference Include="DevExpress.XtraTreeList.v17.1" />
+    <Reference Include="Telerik.WinControls" />
+    <Reference Include="Telerik.WinControls.GridView" />
+    <Reference Include="Telerik.WinControls.UI" />
+    <Reference Include="TelerikCommon" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -83,6 +87,12 @@
     <Compile Include="Benchmarks\Hosts\Grid.Designer.cs">
       <DependentUpon>Grid.cs</DependentUpon>
     </Compile>
+    <Compile Include="Benchmarks\Hosts\RadGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Benchmarks\Hosts\RadGrid.Designer.cs">
+      <DependentUpon>RadGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Benchmarks\Hosts\Treelist.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -117,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Benchmarks\Hosts\Grid.resx">
       <DependentUpon>Grid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Benchmarks\Hosts\RadGrid.resx">
+      <DependentUpon>RadGrid.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Benchmarks\Hosts\Treelist.resx">
       <DependentUpon>Treelist.cs</DependentUpon>
@@ -181,7 +194,22 @@
     <None Include="RunHuge.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="RunRadGrid.cmd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="RunTypical.cmd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Workloads\Filtering.RadGrid.workload">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Workloads\Loading.RadGrid.workload">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Workloads\Searching.RadGrid.workload">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Workloads\Sorting.RadGrid.workload">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

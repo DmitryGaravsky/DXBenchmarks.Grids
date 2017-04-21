@@ -68,3 +68,53 @@ namespace BenchmarkingApp.Grid.Bound {
         }
     }
 }
+namespace BenchmarkingApp.RadGrid.Bound {
+    [BenchmarkItem("Search by Notes")]
+    public class Searching_Notes : SearchBase {
+        public override void SetUp(object uiControl) {
+            base.SetUp(uiControl);
+            foreach(var column in gridView.Columns)
+                column.AllowSearching = false;
+            gridView.Columns["Notes"].AllowSearching = true;
+        }
+        public sealed override void Benchmark() {
+            gridView.MasterView.TableSearchRow.Search("ipsum");
+        }
+    }
+    [BenchmarkItem("Search by all columns", Configuration = "Huge")]
+    public class Searching_All : SearchBase {
+        public override void SetUp(object uiControl) {
+            base.SetUp(uiControl);
+            foreach(var column in gridView.Columns)
+                column.AllowSearching = true;
+        }
+        public sealed override void Benchmark() {
+            gridView.MasterView.TableSearchRow.Search("AB 5");
+        }
+    }
+}
+namespace BenchmarkingApp.RadGrid.BoundHierarchy {
+    [BenchmarkItem("Search by Notes (Bound Hierarchy)")]
+    public class Searching_Notes : SearchBase {
+        public override void SetUp(object uiControl) {
+            base.SetUp(uiControl);
+            foreach(var column in gridView.Columns)
+                column.AllowSearching = false;
+            gridView.Columns["Notes"].AllowSearching = true;
+        }
+        public sealed override void Benchmark() {
+            gridView.MasterView.TableSearchRow.Search("ipsum");
+        }
+    }
+    [BenchmarkItem("Search by all columns (Bound Hierarchy)", Configuration = "Huge")]
+    public class Searching_All : SearchBase {
+        public override void SetUp(object uiControl) {
+            base.SetUp(uiControl);
+            foreach(var column in gridView.Columns)
+                column.AllowSearching = true;
+        }
+        public sealed override void Benchmark() {
+            gridView.MasterView.TableSearchRow.Search("AB 5");
+        }
+    }
+}

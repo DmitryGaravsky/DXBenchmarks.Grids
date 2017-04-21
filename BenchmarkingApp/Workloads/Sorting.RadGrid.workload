@@ -1,0 +1,10 @@
+Configuration=Typical
+
+BenchmarkingApp.RadGrid.Bound.Sorting_ID
+BenchmarkingApp.RadGrid.Bound.Sorting_Name
+BenchmarkingApp.RadGrid.Bound.Sorting_ID_and_Name
+BenchmarkingApp.RadGrid.Bound.Sorting_Age_and_Factor
+BenchmarkingApp.RadGrid.BoundHierarchy.Sorting_ID
+BenchmarkingApp.RadGrid.BoundHierarchy.Sorting_Name
+BenchmarkingApp.RadGrid.BoundHierarchy.Sorting_ID_and_Name
+BenchmarkingApp.RadGrid.BoundHierarchy.Sorting_Age_and_Factor
