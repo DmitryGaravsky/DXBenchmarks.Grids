@@ -147,12 +147,25 @@ namespace BenchmarkingApp.RadGrid.Bound {
             gridView.MasterView.TableSearchRow.CaseSensitive = false;
             gridView.Relations.Clear();
             gridView.DataSource = dataSource;
+            sw.Reset();
+            gridView.MasterView.TableSearchRow.SearchProgressChanged += TableSearchRow_SearchProgressChanged;
         }
         public void TearDown(object uiControl) {
-            gridView.MasterView.TableSearchRow.Search(null);
             gridView = null;
         }
-        public abstract void Benchmark();
+        public virtual void Benchmark() {
+            sw.Start();
+        }
+        readonly System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        void TableSearchRow_SearchProgressChanged(object sender, SearchProgressChangedEventArgs e) {
+            var searchRowInfo = sender as GridViewSearchRowInfo;
+            if(e.SearchFinished) {
+                sw.Stop();
+                searchRowInfo.SearchProgressChanged -= TableSearchRow_SearchProgressChanged;
+                searchRowInfo.Search(null);
+                RadMessageBox.Show(sw.ElapsedMilliseconds.ToString());
+            }
+        }
     }
 }
 namespace BenchmarkingApp.RadGrid.BoundHierarchy {
@@ -179,11 +192,24 @@ namespace BenchmarkingApp.RadGrid.BoundHierarchy {
             gridView.MasterView.TableSearchRow.HighlightResults = true;
             gridView.MasterView.TableSearchRow.CaseSensitive = false;
             gridView.MasterTemplate.ExpandAll();
+            sw.Reset();
+            gridView.MasterView.TableSearchRow.SearchProgressChanged += TableSearchRow_SearchProgressChanged;
         }
         public void TearDown(object uiControl) {
-            gridView.MasterView.TableSearchRow.Search(null);
             gridView = null;
         }
-        public abstract void Benchmark();
+        public virtual void Benchmark() {
+            sw.Start();
+        }
+        readonly System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        void TableSearchRow_SearchProgressChanged(object sender, SearchProgressChangedEventArgs e) {
+            var searchRowInfo = sender as GridViewSearchRowInfo;
+            if(e.SearchFinished) {
+                sw.Stop();
+                searchRowInfo.SearchProgressChanged -= TableSearchRow_SearchProgressChanged;
+                searchRowInfo.Search(null);
+                RadMessageBox.Show(sw.ElapsedMilliseconds.ToString());
+            }
+        }
     }
 }

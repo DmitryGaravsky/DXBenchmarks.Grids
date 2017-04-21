@@ -78,6 +78,7 @@ namespace BenchmarkingApp.RadGrid.Bound {
             gridView.Columns["Notes"].AllowSearching = true;
         }
         public sealed override void Benchmark() {
+            base.Benchmark();
             gridView.MasterView.TableSearchRow.Search("ipsum");
         }
     }
@@ -89,6 +90,7 @@ namespace BenchmarkingApp.RadGrid.Bound {
                 column.AllowSearching = true;
         }
         public sealed override void Benchmark() {
+            base.Benchmark();
             gridView.MasterView.TableSearchRow.Search("AB 5");
         }
     }
@@ -103,6 +105,7 @@ namespace BenchmarkingApp.RadGrid.BoundHierarchy {
             gridView.Columns["Notes"].AllowSearching = true;
         }
         public sealed override void Benchmark() {
+            base.Benchmark();
             gridView.MasterView.TableSearchRow.Search("ipsum");
         }
     }
@@ -114,6 +117,7 @@ namespace BenchmarkingApp.RadGrid.BoundHierarchy {
                 column.AllowSearching = true;
         }
         public sealed override void Benchmark() {
+            base.Benchmark();
             gridView.MasterView.TableSearchRow.Search("AB 5");
         }
     }
