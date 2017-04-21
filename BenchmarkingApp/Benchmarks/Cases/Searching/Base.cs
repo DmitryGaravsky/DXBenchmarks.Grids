@@ -166,7 +166,7 @@ namespace BenchmarkingApp.RadGrid.BoundHierarchy {
         List<HierarchicalRow> dataSource;
         protected RadGridView gridView;
         public virtual void SetUp(object uiControl) {
-            Row.EnsureHierarchicalSource(ref dataSource, Configuration.Current.Rows,Configuration.Current.Levels);
+            Row.EnsureHierarchicalSource(ref dataSource, Configuration.Current.Rows, Configuration.Current.Levels);
             gridView = ((RadGridView)uiControl);
             gridView.DataSource = dataSource;
             gridView.Columns["ParentId"].IsVisible = false;

@@ -142,8 +142,8 @@ namespace BenchmarkingApp.RadGrid.Bound {
         public void SetUp(object uiControl) {
             Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
             gridView = ((RadGridView)uiControl);
-            gridView.FilterDescriptors.Clear();
             gridView.Relations.Clear();
+            gridView.FilterDescriptors.Clear();
             gridView.DataSource = dataSource;
             gridView.AllowAddNewRow = false;
             gridView.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
@@ -164,10 +164,10 @@ namespace BenchmarkingApp.RadGrid.BoundHierarchy {
 
     [BenchmarkHost("RadGrid")]
     public abstract class FilterBase : IBenchmarkItem {
-        List<Row> dataSource;
+        List<HierarchicalRow> dataSource;
         protected RadGridView gridView;
         public void SetUp(object uiControl) {
-            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+            Row.EnsureHierarchicalSource(ref dataSource, Configuration.Current.Rows,Configuration.Current.Levels);
             gridView = ((RadGridView)uiControl);
             gridView.Relations.Clear();
             gridView.FilterDescriptors.Clear();
