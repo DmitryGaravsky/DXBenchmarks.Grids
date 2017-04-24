@@ -38,6 +38,10 @@
     <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoClosingMessageBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoClosingMessageBox.1.0.0\lib\net40\AutoClosingMessageBox.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="DevExpress.Data.v17.1" />
     <Reference Include="DevExpress.Mvvm.v17.1" />
     <Reference Include="DevExpress.Printing.v17.1.Core" />
@@ -99,7 +103,6 @@
     <Compile Include="Benchmarks\Hosts\Treelist.Designer.cs">
       <DependentUpon>Treelist.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\AutoClosingMessageBox.cs" />
     <Compile Include="Views\Services\IClipboardService.cs" />
     <Compile Include="Views\Services\IHostService.cs" />
     <Compile Include="Model\IBenchmarkHost.cs" />
@@ -149,6 +152,7 @@
     <EmbeddedResource Include="Views\RunnerView.resx">
       <DependentUpon>RunnerView.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

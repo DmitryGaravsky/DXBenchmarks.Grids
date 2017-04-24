@@ -47,7 +47,7 @@ namespace BenchmarkingApp {
                 writer.WriteLine(result);
         }
         MessageResult IMessageBoxService.Show(string messageBoxText, string caption, MessageButton button, MessageIcon icon, MessageResult defaultResult) {
-            var result = Views.Controls.AutoClosingMessageBox.Show(
+            var result = AutoClosingMessageBox.Show(
                 messageBoxText + Environment.NewLine + "Application is about to be closed automatically",
                 caption,
                 2500, MessageBoxButtons.OK, DialogResult.OK);
