@@ -78,7 +78,7 @@ All the data are generated randomly and looks like real.
  - searching by specific column and by the all columns
  - loading tree nodes by assigning the data source(Bound) or via appending nodes in cycle(Unbound)
 
-All the above tests can be performed on flat list or on self-referenced hierarchy(ID->ParentID).
+All the above tests can be performed either on flat list or on self-referenced hierarchy(ID->ParentID).
  
 ### The results (17.1 vs 16.2)
 
@@ -87,7 +87,7 @@ In the 17.1 the overall performance of data-aware operations in the Tree List Co
 Sorting is **up to 8 times faster**.  
 Filtering is **up to 1.75 times faster**.  
 Searching is **up to 1.4 times faster**.  
-Loading nodes tree is **up to 2.6 times faster**.  
+Loading nodes tree is **up to 8 times faster**.  
 
 ### Benchmarking notes
 
