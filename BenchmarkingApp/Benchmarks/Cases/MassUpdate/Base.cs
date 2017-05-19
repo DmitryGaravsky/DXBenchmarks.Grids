@@ -4,6 +4,42 @@ namespace BenchmarkingApp.Tree {
     using DevExpress.XtraTreeList;
     using DevExpress.XtraTreeList.Nodes;
 
+    static class Benchmarks {
+        internal static void UpdateSID(TreeList treeList) {
+            var colSID = treeList.Columns["SID"];
+            treeList.BeginUpdate();
+            treeList.NodesIterator.Do(node =>
+            {
+                string sid = (string)node.GetValue(colSID);
+                node.SetValue(colSID, "#" + sid);
+            });
+            treeList.EndUpdate();
+            treeList.BeginUpdate();
+            treeList.NodesIterator.Do(node =>
+            {
+                string sid = (string)node.GetValue(colSID);
+                node.SetValue(colSID, sid.Substring(1));
+            });
+            treeList.EndUpdate();
+        }
+        internal static void UpdateSize(TreeList treeList) {
+            var colSize = treeList.Columns["Size"];
+            treeList.BeginUpdate();
+            treeList.NodesIterator.Do(node =>
+            {
+                long size = (long)node.GetValue(colSize);
+                node.SetValue(colSize, size + size);
+            });
+            treeList.EndUpdate();
+            treeList.BeginUpdate();
+            treeList.NodesIterator.Do(node =>
+            {
+                long size = (long)node.GetValue(colSize);
+                node.SetValue(colSize, size % 2);
+            });
+            treeList.EndUpdate();
+        }
+    }
     [BenchmarkHost("TreeList")]
     public abstract class MassUpdateBase : IBenchmarkItem {
         protected TreeList treeList;
@@ -19,47 +55,6 @@ namespace BenchmarkingApp.Tree {
             treeList = null;
         }
         public abstract void Benchmark();
-        //
-        protected void UpdateSID_AddSign() {
-            treeList.BeginUpdate();
-            var colSID = treeList.Columns["SID"];
-            treeList.NodesIterator.Do(node =>
-            {
-                string sid = (string)node.GetValue(colSID);
-                node.SetValue(colSID, "#" + sid);
-            });
-            treeList.EndUpdate();
-        }
-        protected void UpdateSID_RemoveSign() {
-            treeList.BeginUpdate();
-            var colSID = treeList.Columns["SID"];
-            treeList.NodesIterator.Do(node =>
-            {
-                string sid = (string)node.GetValue(colSID);
-                node.SetValue(colSID, sid.Substring(1));
-            });
-            treeList.EndUpdate();
-        }
-        protected void UpdateSize_Scale() {
-            treeList.BeginUpdate();
-            var colSID = treeList.Columns["Size"];
-            treeList.NodesIterator.Do(node =>
-            {
-                long size = (long)node.GetValue(colSID);
-                node.SetValue(colSID, size + size);
-            });
-            treeList.EndUpdate();
-        }
-        protected void UpdateSize_Descale() {
-            treeList.BeginUpdate();
-            var colSize = treeList.Columns["Size"];
-            treeList.NodesIterator.Do(node =>
-            {
-                long size = (long)node.GetValue(colSize);
-                node.SetValue(colSize, size / 2);
-            });
-            treeList.EndUpdate();
-        }
     }
     namespace Bound {
         public abstract class MassUpdateBoundBase : MassUpdateBase {
@@ -68,7 +63,6 @@ namespace BenchmarkingApp.Tree {
                 Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
                 base.SetUp(uiControl);
                 treeList.DataSource = dataSource;
-                treeList.ClearSorting();
             }
         }
     }
@@ -80,7 +74,6 @@ namespace BenchmarkingApp.Tree {
                 base.SetUp(uiControl);
                 treeList.DataSource = dataSource;
                 treeList.ExpandAll();
-                treeList.ClearSorting();
             }
         }
     }
@@ -143,6 +136,36 @@ namespace BenchmarkingApp.Grid.Bound {
     using DevExpress.XtraGrid;
     using DevExpress.XtraGrid.Views.Grid;
 
+    static class Benchmarks {
+        internal static void UpdateSID(GridView gridView) {
+            gridView.BeginUpdate();
+            for(int i = 0; i < gridView.RowCount; i++) {
+                string sid = (string)gridView.GetRowCellValue(i, "SID");
+                gridView.SetRowCellValue(i, "SID", "#" + sid);
+            }
+            gridView.EndUpdate();
+            gridView.BeginUpdate();
+            for(int i = 0; i < gridView.RowCount; i++) {
+                string sid = (string)gridView.GetRowCellValue(i, "SID");
+                gridView.SetRowCellValue(i, "SID", sid.Substring(1));
+            }
+            gridView.EndUpdate();
+        }
+        internal static void UpdateSize(GridView gridView) {
+            gridView.BeginUpdate();
+            for(int i = 0; i < gridView.RowCount; i++) {
+                long size = (long)gridView.GetRowCellValue(i, "Size");
+                gridView.SetRowCellValue(i, "Size", size + size);
+            }
+            gridView.EndUpdate();
+            gridView.BeginUpdate();
+            for(int i = 0; i < gridView.RowCount; i++) {
+                long size = (long)gridView.GetRowCellValue(i, "Size");
+                gridView.SetRowCellValue(i, "Size", size / 2);
+            }
+            gridView.EndUpdate();
+        }
+    }
     [BenchmarkHost("Grid")]
     public abstract class MassUpdateBase : IBenchmarkItem {
         List<Row> dataSource;
@@ -153,10 +176,8 @@ namespace BenchmarkingApp.Grid.Bound {
             grid = ((GridControl)uiControl);
             gridView = grid.MainView as GridView;
             grid.DataSource = dataSource;
-            gridView.ClearSorting();
         }
         public void TearDown(object uiControl) {
-            gridView.ClearSorting();
             gridView = null;
             grid = null;
         }
@@ -164,56 +185,80 @@ namespace BenchmarkingApp.Grid.Bound {
     }
 }
 
-namespace BenchmarkingApp.RadGrid.Bound {
+namespace BenchmarkingApp.RadGrid {
     using System.Collections.Generic;
     using BenchmarkingApp.Benchmarks.Data;
     using Telerik.WinControls.UI;
 
-    [BenchmarkHost("RadGrid")]
-    public abstract class MassUpdateBase : IBenchmarkItem {
-        List<Row> dataSource;
-        protected RadGridView gridView;
-        public void SetUp(object uiControl) {
-            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
-            gridView = ((RadGridView)uiControl);
-            gridView.Relations.Clear();
-            gridView.DataSource = dataSource;
-            gridView.AllowAddNewRow = false;
-            gridView.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
-            gridView.SortDescriptors.Clear();
+    static class Benchmarks {
+        internal static void UpdateSID(RadGridView gridView) {
+            gridView.BeginUpdate();
+            for(int i = 0; i < gridView.RowCount; i++) {
+                string sid = (string)gridView.Rows[i].Cells["SID"].Value;
+                gridView.Rows[i].Cells["SID"].Value = "#" + sid;
+            }
+            gridView.EndUpdate();
+            gridView.BeginUpdate();
+            for(int i = 0; i < gridView.RowCount; i++) {
+                string sid = (string)gridView.Rows[i].Cells["SID"].Value;
+                gridView.Rows[i].Cells["SID"].Value = sid.Substring(1);
+            }
+            gridView.EndUpdate();
         }
-        public void TearDown(object uiControl) {
-            gridView.SortDescriptors.Clear();
-            gridView = null;
+        internal static void UpdateSize(RadGridView gridView) {
+            gridView.BeginUpdate();
+            for(int i = 0; i < gridView.RowCount; i++) {
+                long size = (long)gridView.Rows[i].Cells["Size"].Value;
+                gridView.Rows[i].Cells["Size"].Value = size + size;
+            }
+            gridView.EndUpdate();
+            gridView.BeginUpdate();
+            for(int i = 0; i < gridView.RowCount; i++) {
+                long size = (long)gridView.Rows[i].Cells["Size"].Value;
+                gridView.Rows[i].Cells["Size"].Value = size / 2;
+            }
+            gridView.EndUpdate();
         }
-        public abstract void Benchmark();
     }
-}
-namespace BenchmarkingApp.RadGrid.BoundHierarchy {
-    using System.Collections.Generic;
-    using BenchmarkingApp.Benchmarks.Data;
-    using Telerik.WinControls.UI;
-
-    [BenchmarkHost("RadGrid")]
-    public abstract class MassUpdateBase : IBenchmarkItem {
-        List<HierarchicalRow> dataSource;
-        protected RadGridView gridView;
-        public void SetUp(object uiControl) {
-            Row.EnsureHierarchicalSource(ref dataSource, Configuration.Current.Rows, Configuration.Current.Levels);
-            gridView = ((RadGridView)uiControl);
-            gridView.DataSource = dataSource;
-            gridView.Columns["ParentId"].IsVisible = false;
-            gridView.AllowAddNewRow = false;
-            gridView.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
-            gridView.Relations.Clear();
-            gridView.Relations.AddSelfReference(gridView.MasterTemplate, "ID", "ParentID");
-            gridView.SortDescriptors.Clear();
-            gridView.MasterTemplate.ExpandAll();
+    namespace Bound {
+        [BenchmarkHost("RadGrid")]
+        public abstract class MassUpdateBase : IBenchmarkItem {
+            List<Row> dataSource;
+            protected RadGridView gridView;
+            public void SetUp(object uiControl) {
+                Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+                gridView = ((RadGridView)uiControl);
+                gridView.Relations.Clear();
+                gridView.DataSource = dataSource;
+                gridView.AllowAddNewRow = false;
+                gridView.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
+            }
+            public void TearDown(object uiControl) {
+                gridView = null;
+            }
+            public abstract void Benchmark();
         }
-        public void TearDown(object uiControl) {
-            gridView.SortDescriptors.Clear();
-            gridView = null;
+    }
+    namespace BoundHierarchy {
+        [BenchmarkHost("RadGrid")]
+        public abstract class MassUpdateBase : IBenchmarkItem {
+            List<HierarchicalRow> dataSource;
+            protected RadGridView gridView;
+            public void SetUp(object uiControl) {
+                Row.EnsureHierarchicalSource(ref dataSource, Configuration.Current.Rows, Configuration.Current.Levels);
+                gridView = ((RadGridView)uiControl);
+                gridView.DataSource = dataSource;
+                gridView.Columns["ParentId"].IsVisible = false;
+                gridView.AllowAddNewRow = false;
+                gridView.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
+                gridView.Relations.Clear();
+                gridView.Relations.AddSelfReference(gridView.MasterTemplate, "ID", "ParentID");
+                gridView.MasterTemplate.ExpandAll();
+            }
+            public void TearDown(object uiControl) {
+                gridView = null;
+            }
+            public abstract void Benchmark();
         }
-        public abstract void Benchmark();
     }
 }
