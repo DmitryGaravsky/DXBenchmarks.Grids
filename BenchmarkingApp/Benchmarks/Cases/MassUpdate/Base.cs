@@ -8,14 +8,14 @@ namespace BenchmarkingApp.Tree {
         internal static void UpdateSID(TreeList treeList) {
             var colSID = treeList.Columns["SID"];
             treeList.BeginUpdate();
-            treeList.NodesIterator.Do(node =>
+            treeList.NodesIterator.DoOperation(node =>
             {
                 string sid = (string)node.GetValue(colSID);
                 node.SetValue(colSID, "#" + sid);
             });
             treeList.EndUpdate();
             treeList.BeginUpdate();
-            treeList.NodesIterator.Do(node =>
+            treeList.NodesIterator.DoOperation(node =>
             {
                 string sid = (string)node.GetValue(colSID);
                 node.SetValue(colSID, sid.Substring(1));
@@ -25,14 +25,14 @@ namespace BenchmarkingApp.Tree {
         internal static void UpdateSize(TreeList treeList) {
             var colSize = treeList.Columns["Size"];
             treeList.BeginUpdate();
-            treeList.NodesIterator.Do(node =>
+            treeList.NodesIterator.DoOperation(node =>
             {
                 long size = (long)node.GetValue(colSize);
                 node.SetValue(colSize, size + size);
             });
             treeList.EndUpdate();
             treeList.BeginUpdate();
-            treeList.NodesIterator.Do(node =>
+            treeList.NodesIterator.DoOperation(node =>
             {
                 long size = (long)node.GetValue(colSize);
                 node.SetValue(colSize, size % 2);
