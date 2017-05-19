@@ -71,6 +71,8 @@
     <Compile Include="Benchmarks\Cases\Data\Row.cs" />
     <Compile Include="Benchmarks\Cases\Loading\Base.cs" />
     <Compile Include="Benchmarks\Cases\Loading\Loading.cs" />
+    <Compile Include="Benchmarks\Cases\MassUpdate\Base.cs" />
+    <Compile Include="Benchmarks\Cases\MassUpdate\MassUpdate.cs" />
     <Compile Include="Benchmarks\Configuration.cs" />
     <Compile Include="Benchmarks\Cases\Data\StringGenerator.cs" />
     <Compile Include="Benchmarks\Cases\Filtering\Base.cs" />
