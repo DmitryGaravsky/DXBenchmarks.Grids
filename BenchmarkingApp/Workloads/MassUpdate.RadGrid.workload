@@ -1,0 +1,6 @@
+﻿Configuration=Typical
+
+BenchmarkingApp.RadGrid.Bound.MassUpdate_SID
+BenchmarkingApp.RadGrid.Bound.MassUpdate_Size
+BenchmarkingApp.RadGrid.BoundHierarchy.MassUpdate_SID
+BenchmarkingApp.RadGrid.BoundHierarchy.MassUpdate_Size

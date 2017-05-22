@@ -72,7 +72,7 @@ namespace BenchmarkingApp.Grid.Bound {
 
 namespace BenchmarkingApp.RadGrid.Bound {
     [BenchmarkItem("Mass Update, SID", Configuration = "Huge")]
-    public class MassUpdate_ID : MassUpdateBase {
+    public class MassUpdate_SID : MassUpdateBase {
         public sealed override void Benchmark() {
             Benchmarks.UpdateSID(gridView);
         }
@@ -86,7 +86,7 @@ namespace BenchmarkingApp.RadGrid.Bound {
 }
 namespace BenchmarkingApp.RadGrid.BoundHierarchy {
     [BenchmarkItem("Mass Update, SID (Bound Hierarchy)", Configuration = "Huge")]
-    public class MassUpdate_ID : MassUpdateBase {
+    public class MassUpdate_SID : MassUpdateBase {
         public sealed override void Benchmark() {
             Benchmarks.UpdateSID(gridView);
         }

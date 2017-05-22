@@ -212,6 +212,12 @@
     <None Include="Workloads\Loading.RadGrid.workload">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Workloads\MassUpdate.RadGrid.workload">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Workloads\MassUpdate.workload">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Workloads\Searching.RadGrid.workload">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

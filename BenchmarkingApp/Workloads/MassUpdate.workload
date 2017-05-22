@@ -1,0 +1,13 @@
+﻿Configuration=Typical
+
+BenchmarkingApp.Grid.Bound.MassUpdate_SID
+BenchmarkingApp.Grid.Bound.MassUpdate_Size
+
+BenchmarkingApp.Tree.Bound.MassUpdate_SID
+BenchmarkingApp.Tree.Bound.MassUpdate_Size
+BenchmarkingApp.Tree.Unbound.MassUpdate_SID
+BenchmarkingApp.Tree.Unbound.MassUpdate_Size
+BenchmarkingApp.Tree.BoundHierarchy.MassUpdate_SID
+BenchmarkingApp.Tree.BoundHierarchy.MassUpdate_Size
+BenchmarkingApp.Tree.UnboundHierarchy.MassUpdate_SID
+BenchmarkingApp.Tree.UnboundHierarchy.MassUpdate_Size
