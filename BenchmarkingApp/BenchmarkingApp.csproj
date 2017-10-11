@@ -44,31 +44,41 @@
     </Reference>
     <Reference Include="DevExpress.Data.v17.1" />
     <Reference Include="DevExpress.Mvvm.v17.1" />
+    <Reference Include="DevExpress.PivotGrid.v17.1.Core" />
     <Reference Include="DevExpress.Printing.v17.1.Core" />
     <Reference Include="DevExpress.Utils.v17.1" />
     <Reference Include="DevExpress.XtraEditors.v17.1" />
     <Reference Include="DevExpress.XtraGrid.v17.1" />
     <Reference Include="DevExpress.XtraLayout.v17.1" />
+    <Reference Include="DevExpress.XtraPivotGrid.v17.1" />
     <Reference Include="DevExpress.XtraPrinting.v17.1" />
     <Reference Include="DevExpress.XtraTreeList.v17.1" />
-    <Reference Include="Telerik.WinControls" />
-    <Reference Include="Telerik.WinControls.GridView" />
-    <Reference Include="Telerik.WinControls.UI" />
-    <Reference Include="TelerikCommon" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Telerik.WinControls">
+      <HintPath>..\lib\Telerik.WinControls.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.WinControls.GridView">
+      <HintPath>..\lib\Telerik.WinControls.GridView.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.WinControls.UI">
+      <HintPath>..\lib\Telerik.WinControls.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="TelerikCommon">
+      <HintPath>..\lib\TelerikCommon.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Benchmarks\Cases\Data\Row.cs" />
+    <Compile Include="Benchmarks\Cases\Grouping\Base.cs" />
+    <Compile Include="Benchmarks\Cases\Grouping\Grouping.cs" />
     <Compile Include="Benchmarks\Cases\Loading\Base.cs" />
     <Compile Include="Benchmarks\Cases\Loading\Loading.cs" />
     <Compile Include="Benchmarks\Cases\MassUpdate\Base.cs" />
@@ -92,6 +102,12 @@
     </Compile>
     <Compile Include="Benchmarks\Hosts\Grid.Designer.cs">
       <DependentUpon>Grid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Benchmarks\Hosts\PivotGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Benchmarks\Hosts\PivotGrid.Designer.cs">
+      <DependentUpon>PivotGrid.cs</DependentUpon>
     </Compile>
     <Compile Include="Benchmarks\Hosts\RadGrid.cs">
       <SubType>UserControl</SubType>
@@ -132,6 +148,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Benchmarks\Hosts\Grid.resx">
       <DependentUpon>Grid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Benchmarks\Hosts\PivotGrid.resx">
+      <DependentUpon>PivotGrid.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Benchmarks\Hosts\RadGrid.resx">
       <DependentUpon>RadGrid.cs</DependentUpon>
@@ -194,21 +213,36 @@
     <Content Include="Workloads\Sorting.workload">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="RunDeep.cmd">
+    <Content Include="RunCompetition.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="RunHuge.cmd">
+    </Content>
+    <Content Include="RunDeep.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="RunRadGrid.cmd">
+    </Content>
+    <Content Include="RunHuge.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="RunTypical.cmd">
+    </Content>
+    <Content Include="RunRadGrid.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
+    <Content Include="RunTypical.cmd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Workloads\Filtering,Competition.workload">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Workloads\Filtering.RadGrid.workload">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Workloads\Loading.Competition.workload">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Workloads\Grouping.Competition.workload">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Workloads\Grouping.workload">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Workloads\Loading.RadGrid.workload">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -221,6 +255,9 @@
     <None Include="Workloads\Searching.RadGrid.workload">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Workloads\Sorting.Competition.workload">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Workloads\Sorting.RadGrid.workload">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

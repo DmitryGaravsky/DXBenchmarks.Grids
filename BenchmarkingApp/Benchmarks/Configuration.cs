@@ -80,6 +80,21 @@
                 return Array.IndexOf(items, "deep") != -1;
             }
         }
+        sealed class Competition : Configuration {
+            readonly internal static Configuration Instance = new Competition();
+            public sealed override string Name {
+                get { return "Competition"; }
+            }
+            public sealed override int Rows {
+                get { return 1000099; }
+            }
+            public sealed override int Levels {
+                get { return 1; }
+            }
+            public sealed override int WatchDog(int counter) {
+                return counter;
+            }
+        }
         #endregion Configurations
         internal static string[] Parse(string[] args) {
             string cfgString = args.FirstOrDefault(a => IsConfigurationLine(a));
@@ -97,18 +112,23 @@
                     case "deep":
                         currentConfiguration = Deep.Instance;
                         break;
+                    case "competition":
+                        currentConfiguration = Competition.Instance;
+                        break;
                     default:
                         currentConfiguration = null;
                         break;
                 }
-                args = args.Where(a => !IsConfigurationLine(a)).ToArray();
+                args = args
+                    .Where(a => !IsConfigurationLine(a))
+                    .ToArray();
             }
             return args;
         }
         static bool IsConfigurationLine(string line) {
-            return 
-                line.StartsWith("cfg=") || 
-                line.StartsWith("config=") || 
+            return
+                line.StartsWith("cfg=") ||
+                line.StartsWith("config=") ||
                 line.StartsWith("configuration=");
         }
     }

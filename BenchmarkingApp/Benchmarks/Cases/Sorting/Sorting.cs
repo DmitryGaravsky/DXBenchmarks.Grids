@@ -70,7 +70,6 @@ namespace BenchmarkingApp.Tree.BoundHierarchy {
         }
     }
 }
-
 namespace BenchmarkingApp.Tree.Unbound {
     [BenchmarkItem("Sort by ID (Unbound)", Configuration = "Huge")]
     public class Sorting_ID : SortUnboundBase {
@@ -107,7 +106,6 @@ namespace BenchmarkingApp.Tree.Unbound {
         }
     }
 }
-
 namespace BenchmarkingApp.Tree.UnboundHierarchy {
     [BenchmarkItem("Sort by ID (Unbound Hierarchy)", Configuration = "Deep;Huge")]
     public class Sorting_ID : SortUnboundBase {
@@ -181,6 +179,22 @@ namespace BenchmarkingApp.Grid.Bound {
         }
     }
 }
+
+namespace BenchmarkingApp.PivotGrid.Bound {
+    [BenchmarkItem("Sort by ID", Configuration = "Huge")]
+    public class Sorting_ID : SortBase {
+        public sealed override void Benchmark() {
+            pivot.Fields["ID"].ChangeSortOrder();
+        }
+    }
+    [BenchmarkItem("Sort by Name")]
+    public class Sorting_Name : SortBase {
+        public sealed override void Benchmark() {
+            pivot.Fields["Name"].ChangeSortOrder();
+        }
+    }
+}
+
 namespace BenchmarkingApp.RadGrid.Bound {
     using Telerik.WinControls.Data;
     using Telerik.WinControls.UI;

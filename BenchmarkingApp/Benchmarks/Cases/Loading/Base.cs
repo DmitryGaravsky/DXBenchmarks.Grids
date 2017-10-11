@@ -19,6 +19,7 @@
 }
 namespace BenchmarkingApp.Grid.Bound {
     using DevExpress.XtraGrid;
+    using DevExpress.XtraGrid.Views.Base;
 
     [BenchmarkHost("Grid")]
     public abstract class LoadBase : IBenchmarkItem {
@@ -26,6 +27,7 @@ namespace BenchmarkingApp.Grid.Bound {
         public virtual void SetUp(object uiControl) {
             grid = ((GridControl)uiControl);
             grid.DataSource = null;
+            ((ColumnView)grid.MainView).Columns.Clear();
         }
         public void TearDown(object uiControl) {
             grid = null;

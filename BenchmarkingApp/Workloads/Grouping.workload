@@ -1,0 +1,7 @@
+Configuration=Typical
+
+BenchmarkingApp.Grid.Bound.Grouping_ID
+BenchmarkingApp.Grid.Bound.Grouping_Name
+
+BenchmarkingApp.PivotGrid.Bound.Grouping_ID
+BenchmarkingApp.PivotGrid.Bound.Grouping_Name

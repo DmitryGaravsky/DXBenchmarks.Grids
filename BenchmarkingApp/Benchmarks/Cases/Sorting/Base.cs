@@ -123,6 +123,38 @@ namespace BenchmarkingApp.Grid.Bound {
     }
 }
 
+namespace BenchmarkingApp.PivotGrid.Bound {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+    using DevExpress.XtraPivotGrid;
+
+    [BenchmarkHost("Pivot")]
+    public abstract class SortBase : IBenchmarkItem {
+        List<Row> dataSource;
+        protected PivotGridControl pivot;
+        public void SetUp(object uiControl) {
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+            pivot = ((PivotGridControl)uiControl);
+            pivot.BeginUpdate();
+            pivot.DataSource = dataSource;
+            pivot.RetrieveFields(PivotArea.FilterArea, true);
+            pivot.Fields["Amount"].Area = PivotArea.DataArea;
+            pivot.Fields["ID"].Area = PivotArea.RowArea;
+            pivot.Fields["Name"].Area = PivotArea.ColumnArea;
+            pivot.EndUpdate();
+        }
+        public void TearDown(object uiControl) {
+            pivot.BeginUpdate();
+            pivot.Fields["Amount"].Area = PivotArea.FilterArea;
+            pivot.Fields["ID"].Area = PivotArea.FilterArea;
+            pivot.Fields["Name"].Area = PivotArea.FilterArea;
+            pivot.EndUpdate();
+            pivot = null;
+        }
+        public abstract void Benchmark();
+    }
+}
+
 namespace BenchmarkingApp.RadGrid.Bound {
     using System.Collections.Generic;
     using BenchmarkingApp.Benchmarks.Data;
