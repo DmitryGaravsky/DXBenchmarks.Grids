@@ -38,8 +38,8 @@
     <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoClosingMessageBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoClosingMessageBox.1.0.0\lib\net40\AutoClosingMessageBox.dll</HintPath>
+    <Reference Include="AutoClosingMessageBox">
+      <HintPath>..\packages\AutoClosingMessageBox.1.0.0.1\lib\net40\AutoClosingMessageBox.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Data.v17.1" />
