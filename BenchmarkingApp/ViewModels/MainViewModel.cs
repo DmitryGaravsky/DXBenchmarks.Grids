@@ -253,7 +253,7 @@ namespace BenchmarkingApp {
                     if(batchIndex.HasValue)
                         runningStage += ", " + batchIndex.Value.ToString() + " of " + batchTotal.Value.ToString();
                 }
-                return name + " (Configuration: " + Benchmarks.Data.Configuration.Current.Name + runningStage + ")";
+                return name + " (Version: " + AssemblyInfo.Version + "; Configuration: " + Benchmarks.Data.Configuration.Current.Name + runningStage + ")";
             }
         }
         // Result
