@@ -21,6 +21,7 @@ namespace BenchmarkingApp {
             //
             InitializeComponent();
             //
+            string startMsgFmt = Environment.NewLine + "{0} started at {1}";
             LogResult(runnerLog, string.Format(startMsgFmt, workload, DateTime.Now.ToShortTimeString()));
         }
         protected override void OnHandleCreated(EventArgs e) {
@@ -55,6 +56,7 @@ namespace BenchmarkingApp {
                 caption,
                 2500, MessageBoxButtons.OK, DialogResult.OK);
             if(result == DialogResult.OK) {
+                LogResult(runnerLog, Environment.NewLine);
                 Application.Exit();
             }
             return MessageResult.OK;
