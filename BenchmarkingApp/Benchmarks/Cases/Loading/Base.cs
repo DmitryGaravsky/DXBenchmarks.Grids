@@ -78,3 +78,22 @@ namespace BenchmarkingApp.RadGrid.BoundHierarchy {
         public abstract void Benchmark();
     }
 }
+
+namespace BenchmarkingApp.UltraGrid.Bound {
+    using Infragistics.Win;
+    using Infragistics.Win.UltraWinGrid;
+
+    [BenchmarkHost("UltraGrid")]
+    public abstract class LoadBase : IBenchmarkItem {
+        protected UltraGrid gridView;
+        public virtual void SetUp(object uiControl) {
+            gridView = ((UltraGrid)uiControl);
+            gridView.DataSource = null;
+            gridView.DisplayLayout.ResetBands();
+        }
+        public void TearDown(object uiControl) {
+            gridView = null;
+        }
+        public abstract void Benchmark();
+    }
+}

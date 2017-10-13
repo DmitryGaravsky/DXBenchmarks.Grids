@@ -12,6 +12,7 @@
         }
     }
 }
+
 namespace BenchmarkingApp.PivotGrid.Bound {
     [BenchmarkItem("Group by ID", Configuration = "Huge")]
     public class Grouping_ID : GroupBase {
@@ -26,6 +27,7 @@ namespace BenchmarkingApp.PivotGrid.Bound {
         }
     }
 }
+
 namespace BenchmarkingApp.RadGrid.Bound {
     [BenchmarkItem("Group by ID", Configuration = "Huge")]
     public class Grouping_ID : GroupBase {
@@ -37,6 +39,21 @@ namespace BenchmarkingApp.RadGrid.Bound {
     public class Grouping_Name : GroupBase {
         public sealed override void Benchmark() {
             gridView.GroupDescriptors.Add("Name", System.ComponentModel.ListSortDirection.Ascending);
+        }
+    }
+}
+
+namespace BenchmarkingApp.UltraGrid.Bound {
+    [BenchmarkItem("Group by ID", Configuration = "Huge")]
+    public class Grouping_ID : GroupBase {
+        public sealed override void Benchmark() {
+            gridView.DisplayLayout.Bands[0].SortedColumns.Add("ID", false, true);
+        }
+    }
+    [BenchmarkItem("Group by Name")]
+    public class Grouping_Name : GroupBase {
+        public sealed override void Benchmark() {
+            gridView.DisplayLayout.Bands[0].SortedColumns.Add("Name", false, true);
         }
     }
 }

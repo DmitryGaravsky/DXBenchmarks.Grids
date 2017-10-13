@@ -74,3 +74,30 @@ namespace BenchmarkingApp.RadGrid.Bound {
         public abstract void Benchmark();
     }
 }
+
+namespace BenchmarkingApp.UltraGrid.Bound {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+    using Infragistics.Win.UltraWinGrid;
+
+    [BenchmarkHost("UltraGrid")]
+    public abstract class GroupBase : IBenchmarkItem {
+        List<Row> dataSource;
+        protected UltraGrid gridView;
+        public virtual void SetUp(object uiControl) {
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+            gridView = ((UltraGrid)uiControl);
+            gridView.DataSource = dataSource;
+            gridView.DisplayLayout.ViewStyleBand = Infragistics.Win.UltraWinGrid.ViewStyleBand.OutlookGroupBy;
+            gridView.DisplayLayout.GroupByBox.Hidden = true;
+            gridView.DisplayLayout.Bands[0].SortedColumns.Clear();
+            gridView.Rows.Refresh(Infragistics.Win.UltraWinGrid.RefreshRow.ReloadData);
+        }
+        public void TearDown(object uiControl) {
+            gridView.DisplayLayout.Bands[0].SortedColumns.Clear();
+            gridView.DisplayLayout.ResetBands();
+            gridView = null;
+        }
+        public abstract void Benchmark();
+    }
+}

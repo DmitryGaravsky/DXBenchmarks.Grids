@@ -171,7 +171,7 @@ namespace BenchmarkingApp.RadGrid.Bound {
     [BenchmarkItem("Filter by Approved")]
     public class Filtering_Approved : FilterBase {
         public sealed override void Benchmark() {
-            gridView.FilterDescriptors.Add("Price", Telerik.WinControls.Data.FilterOperator.IsNotNull, null);
+            gridView.FilterDescriptors.Add("Approved", Telerik.WinControls.Data.FilterOperator.IsNotNull, null);
         }
     }
     [BenchmarkItem("Filter by Price and Approved")]
@@ -232,6 +232,45 @@ namespace BenchmarkingApp.RadGrid.BoundHierarchy {
                     new FilterDescriptor("Open", Telerik.WinControls.Data.FilterOperator.IsGreaterThanOrEqualTo, after),
                     new FilterDescriptor("Open", Telerik.WinControls.Data.FilterOperator.IsLessThan, before)
                 );
+        }
+    }
+}
+
+namespace BenchmarkingApp.UltraGrid.Bound {
+    using Infragistics.Win.UltraWinGrid;
+
+    [BenchmarkItem("Filter by Price", Configuration = "Huge")]
+    public class Filtering_Price : FilterBase {
+        public sealed override void Benchmark() {
+            gridView.DisplayLayout.Bands[0].ColumnFilters["Price"].FilterConditions.Add(FilterComparisionOperator.GreaterThan, 5000);
+        }
+    }
+    [BenchmarkItem("Filter by Approved")]
+    public class Filtering_Approved : FilterBase {
+        public sealed override void Benchmark() {
+            gridView.DisplayLayout.Bands[0].ColumnFilters["Approved"].FilterConditions.Add(FilterComparisionOperator.NotEquals, null);
+        }
+    }
+    [BenchmarkItem("Filter by Price and Approved")]
+    public class Filtering_Price_and_Approved : FilterBase {
+        public sealed override void Benchmark() {
+            gridView.BeginUpdate();
+            gridView.DisplayLayout.Bands[0].ColumnFilters["Price"].FilterConditions.Add(FilterComparisionOperator.GreaterThan, 5000);
+            gridView.DisplayLayout.Bands[0].ColumnFilters["Approved"].FilterConditions.Add(FilterComparisionOperator.NotEquals, null);
+            gridView.EndUpdate();
+        }
+    }
+    [BenchmarkItem("Filter by Amount and Open")]
+    public class Filtering_Amount_and_Open : FilterBase {
+        public sealed override void Benchmark() {
+            System.DateTime before = new System.DateTime(2002, 1, 1);
+            System.DateTime after = new System.DateTime(2001, 1, 1);
+            gridView.BeginUpdate();
+            gridView.DisplayLayout.Bands[0].ColumnFilters["Amount"].FilterConditions.Add(FilterComparisionOperator.GreaterThanOrEqualTo, 150);
+            gridView.DisplayLayout.Bands[0].ColumnFilters["Amount"].FilterConditions.Add(FilterComparisionOperator.LessThanOrEqualTo, 175);
+            gridView.DisplayLayout.Bands[0].ColumnFilters["Open"].FilterConditions.Add(FilterComparisionOperator.GreaterThanOrEqualTo, after);
+            gridView.DisplayLayout.Bands[0].ColumnFilters["Open"].FilterConditions.Add(FilterComparisionOperator.LessThan, before);
+            gridView.EndUpdate();
         }
     }
 }

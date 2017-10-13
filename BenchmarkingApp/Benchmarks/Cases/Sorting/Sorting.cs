@@ -266,6 +266,41 @@ namespace BenchmarkingApp.RadGrid.BoundHierarchy {
     }
 }
 
+namespace BenchmarkingApp.UltraGrid.Bound {
+    using Infragistics.Win.UltraWinGrid;
+
+    [BenchmarkItem("Sort by ID", Configuration = "Huge")]
+    public class Sorting_ID : SortBase {
+        public sealed override void Benchmark() {
+            gridView.DisplayLayout.Bands[0].Columns["ID"].SortIndicator = SortIndicator.Descending;
+        }
+    }
+    [BenchmarkItem("Sort by Name")]
+    public class Sorting_Name : SortBase {
+        public sealed override void Benchmark() {
+            gridView.DisplayLayout.Bands[0].Columns["Name"].SortIndicator = SortIndicator.Descending;
+        }
+    }
+    [BenchmarkItem("Sort by ID and Name")]
+    public class Sorting_ID_and_Name : SortBase {
+        public sealed override void Benchmark() {
+            gridView.BeginUpdate();
+            gridView.DisplayLayout.Bands[0].SortedColumns.Add("ID", true);
+            gridView.DisplayLayout.Bands[0].SortedColumns.Add("Name", false);
+            gridView.EndUpdate();
+        }
+    }
+    [BenchmarkItem("Sort by Age and Factor")]
+    public class Sorting_Age_and_Factor : SortBase {
+        public sealed override void Benchmark() {
+            gridView.BeginUpdate();
+            gridView.DisplayLayout.Bands[0].SortedColumns.Add("Age", true);
+            gridView.DisplayLayout.Bands[0].SortedColumns.Add("Factor", false);
+            gridView.EndUpdate();
+        }
+    }
+}
+
 namespace BenchmarkingApp.InMemory {
     using System.Collections.Generic;
     using System.Linq;

@@ -129,10 +129,10 @@ namespace BenchmarkingApp.Grid.Bound {
         public abstract void Benchmark();
     }
 }
+
 namespace BenchmarkingApp.RadGrid.Bound {
     using System.Collections.Generic;
     using BenchmarkingApp.Benchmarks.Data;
-    using Telerik.WinControls;
     using Telerik.WinControls.UI;
 
     [BenchmarkHost("RadGrid")]
@@ -159,7 +159,6 @@ namespace BenchmarkingApp.RadGrid.Bound {
 namespace BenchmarkingApp.RadGrid.BoundHierarchy {
     using System.Collections.Generic;
     using BenchmarkingApp.Benchmarks.Data;
-    using Telerik.WinControls;
     using Telerik.WinControls.UI;
 
     [BenchmarkHost("RadGrid")]
@@ -182,6 +181,30 @@ namespace BenchmarkingApp.RadGrid.BoundHierarchy {
         }
         public void TearDown(object uiControl) {
             gridView.FilterDescriptors.Clear();
+            gridView = null;
+        }
+        public abstract void Benchmark();
+    }
+}
+
+namespace BenchmarkingApp.UltraGrid.Bound {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+    using Infragistics.Win.UltraWinGrid;
+
+    [BenchmarkHost("UltraGrid")]
+    public abstract class FilterBase : IBenchmarkItem {
+        List<Row> dataSource;
+        protected UltraGrid gridView;
+        public virtual void SetUp(object uiControl) {
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+            gridView = ((UltraGrid)uiControl);
+            gridView.DataSource = dataSource;
+            gridView.DisplayLayout.Bands[0].ColumnFilters.ClearAllFilters();
+            gridView.Rows.Refresh(RefreshRow.ReloadData);
+        }
+        public void TearDown(object uiControl) {
+            gridView.DisplayLayout.Bands[0].ColumnFilters.ClearAllFilters();
             gridView = null;
         }
         public abstract void Benchmark();

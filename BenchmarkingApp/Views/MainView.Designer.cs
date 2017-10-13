@@ -82,7 +82,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.leHosts.Properties.DataSource = this.hostItemBindingSource;
             this.leHosts.Properties.DisplayMember = "Name";
-            this.leHosts.Properties.DropDownRows = 5;
+            this.leHosts.Properties.DropDownRows = 6;
             this.leHosts.Properties.PopupFormMinSize = new System.Drawing.Size(80, 0);
             this.leHosts.Properties.ShowFooter = false;
             this.leHosts.Properties.ShowHeader = false;

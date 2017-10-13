@@ -48,8 +48,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.Controls.Add(this.radGridView1);
-            this.Name = "RadForm1";
-            this.Text = "RadForm1";
+            this.Name = "RadGrid";
+            this.Text = "RadGrid";
             ((System.ComponentModel.ISupportInitialize)(this.radGridView1.MasterTemplate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radGridView1)).EndInit();
             this.ResumeLayout(false);

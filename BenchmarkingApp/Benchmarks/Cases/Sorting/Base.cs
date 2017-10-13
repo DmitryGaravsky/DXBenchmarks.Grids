@@ -208,3 +208,27 @@ namespace BenchmarkingApp.RadGrid.BoundHierarchy {
         public abstract void Benchmark();
     }
 }
+
+namespace BenchmarkingApp.UltraGrid.Bound {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+    using Infragistics.Win.UltraWinGrid;
+
+    [BenchmarkHost("UltraGrid")]
+    public abstract class SortBase : IBenchmarkItem {
+        List<Row> dataSource;
+        protected UltraGrid gridView;
+        public virtual void SetUp(object uiControl) {
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+            gridView = ((UltraGrid)uiControl);
+            gridView.DataSource = dataSource;
+            gridView.DisplayLayout.Bands[0].SortedColumns.Clear();
+            gridView.Rows.Refresh(Infragistics.Win.UltraWinGrid.RefreshRow.ReloadData);
+        }
+        public void TearDown(object uiControl) {
+            gridView.DisplayLayout.Bands[0].SortedColumns.Clear();
+            gridView = null;
+        }
+        public abstract void Benchmark();
+    }
+}
