@@ -2,6 +2,8 @@ Configuration=Competition
 
 BenchmarkingApp.Grid.Bound.Grouping_ID
 BenchmarkingApp.RadGrid.Bound.Grouping_ID
+BenchmarkingApp.UltraGrid.Bound.Grouping_ID
 
 BenchmarkingApp.Grid.Bound.Grouping_Name
 BenchmarkingApp.RadGrid.Bound.Grouping_Name
+BenchmarkingApp.UltraGrid.Bound.Grouping_Name

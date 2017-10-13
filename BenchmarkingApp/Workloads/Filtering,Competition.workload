@@ -2,7 +2,9 @@ Configuration=Competition
 
 BenchmarkingApp.Grid.Bound.Filtering_Price
 BenchmarkingApp.RadGrid.Bound.Filtering_Price
+BenchmarkingApp.UltraGrid.Bound.Filtering_Price
 
 BenchmarkingApp.Grid.Bound.Filtering_Price_and_Approved
 BenchmarkingApp.RadGrid.Bound.Filtering_Price_and_Approved
+BenchmarkingApp.UltraGrid.Bound.Filtering_Price_and_Approved
 
