@@ -90,6 +90,7 @@ namespace BenchmarkingApp.UltraGrid.Bound {
             gridView = ((UltraGrid)uiControl);
             gridView.DataSource = null;
             gridView.DisplayLayout.ResetBands();
+            gridView.Rows.Refresh(Infragistics.Win.UltraWinGrid.RefreshRow.ReloadData);
         }
         public void TearDown(object uiControl) {
             gridView = null;
