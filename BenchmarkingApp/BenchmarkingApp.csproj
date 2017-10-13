@@ -74,6 +74,18 @@
     <Reference Include="TelerikCommon">
       <HintPath>..\lib\TelerikCommon.dll</HintPath>
     </Reference>
+    <Reference Include="Infragistics4.Shared.v17.1">
+      <HintPath>..\lib\Infragistics4.Shared.v17.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics4.Win.Misc.v17.1">
+      <HintPath>..\lib\Infragistics4.Win.Misc.v17.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics4.Win.UltraWinGrid.v17.1">
+      <HintPath>..\lib\Infragistics4.Win.UltraWinGrid.v17.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics4.Win.v17.1">
+      <HintPath>..\lib\Infragistics4.Win.v17.1.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Benchmarks\Cases\Data\Row.cs" />
@@ -121,6 +133,12 @@
     <Compile Include="Benchmarks\Hosts\Treelist.Designer.cs">
       <DependentUpon>Treelist.cs</DependentUpon>
     </Compile>
+    <Compile Include="Benchmarks\Hosts\UltraGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Benchmarks\Hosts\UltraGrid.Designer.cs">
+      <DependentUpon>UltraGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Services\IClipboardService.cs" />
     <Compile Include="Views\Services\IHostService.cs" />
     <Compile Include="Model\IBenchmarkHost.cs" />
@@ -157,6 +175,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Benchmarks\Hosts\Treelist.resx">
       <DependentUpon>Treelist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Benchmarks\Hosts\UltraGrid.resx">
+      <DependentUpon>UltraGrid.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>
