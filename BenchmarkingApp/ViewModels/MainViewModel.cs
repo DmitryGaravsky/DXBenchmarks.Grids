@@ -1,8 +1,8 @@
 namespace BenchmarkingApp {
     using System;
     using System.Collections.Generic;
-    using System.Threading;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using DevExpress.Mvvm;
     using DevExpress.Mvvm.POCO;
