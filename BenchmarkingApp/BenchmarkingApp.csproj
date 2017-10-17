@@ -139,6 +139,7 @@
     <Compile Include="Benchmarks\Hosts\UltraGrid.Designer.cs">
       <DependentUpon>UltraGrid.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Helpers\UIAwaitingToken.cs" />
     <Compile Include="Views\Services\IClipboardService.cs" />
     <Compile Include="Views\Services\IHostService.cs" />
     <Compile Include="Model\IBenchmarkHost.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Views\RunnerView.Designer.cs">
       <DependentUpon>RunnerView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Services\IUIAwaiter.cs" />
     <EmbeddedResource Include="Benchmarks\Hosts\Empty.resx">
       <DependentUpon>Empty.cs</DependentUpon>
     </EmbeddedResource>
@@ -249,7 +251,7 @@
     <Content Include="RunTypical.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Workloads\Filtering,Competition.workload">
+    <Content Include="Workloads\Filtering.Competition.workload">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Workloads\Filtering.RadGrid.workload">

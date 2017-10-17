@@ -1,7 +1,7 @@
 namespace BenchmarkingApp {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
+    using System.Threading;
     using System.Linq;
     using System.Threading.Tasks;
     using DevExpress.Mvvm;
@@ -105,7 +105,6 @@ namespace BenchmarkingApp {
                 messageService.ShowMessage("Total benchmarks complete:" + total.ToString());
         }
         //
-        readonly Stopwatch stopwatch = new Stopwatch();
         protected bool HasBenchmark {
             get { return ActiveBenchmarkItem != null; }
         }
@@ -129,119 +128,171 @@ namespace BenchmarkingApp {
         public bool CanColdRun() {
             return HasBenchmark && cold.GetValueOrDefault(true) && running == 0;
         }
-        public void ColdRun() {
-            var target = ActiveBenchmarkItem.Target;
-            var uiControl = ActiveHostItem.Target.UIControl;
-            target.SetUp(uiControl);
-            try {
-                stopwatch.Restart();
-                target.Benchmark();
-                stopwatch.Stop();
-                coldRunResult = stopwatch.ElapsedMilliseconds;
+        public Task ColdRun() {
+            var dispatcher = this.GetRequiredService<IDispatcherService>();
+            var awaiter = this.GetService<IUIAwaiter>();
+            awaiter.Prepare();
+            return Task.Run(() =>
+            {
+                coldRunResult = DoCycle(dispatcher, awaiter, ActiveBenchmarkItem.Target, ActiveHostItem.Target.UIControl).Result;
                 cold = false;
-            }
-            finally { target.TearDown(uiControl); }
-            this.RaisePropertyChanged(x => x.Result);
-            this.RaiseCanExecuteChanged(x => x.ColdRun());
+                dispatcher.BeginInvoke(() =>
+                {
+                    this.RaisePropertyChanged(x => x.Result);
+                    this.RaiseCanExecuteChanged(x => x.ColdRun());
+                });
+            });
         }
         public bool CanWarmUp() {
             return HasBenchmark && running == 0;
         }
-        public void WarmUp() {
-            if(IsCold) ColdRun();
-            int warmUpCounter = BenchmarkItem.GetWarmUpCounter(ActiveBenchmarkItem.Type);
+        public Task WarmUp() {
+            var dispatcher = this.GetRequiredService<IDispatcherService>();
+            var awaiter = this.GetService<IUIAwaiter>();
+            awaiter.Prepare();
             var target = ActiveBenchmarkItem.Target;
             var uiControl = ActiveHostItem.Target.UIControl;
-            for(int i = -2 /*pre-warmup*/; i < warmUpCounter; i++) {
-                if(i == 0) stopwatch.Reset();
-                target.SetUp(uiControl);
-                try {
-                    stopwatch.Start();
-                    target.Benchmark();
-                    stopwatch.Stop();
+            int warmUpCounter = BenchmarkItem.GetWarmUpCounter(ActiveBenchmarkItem.Type);
+            Task coldRun = IsCold ? ColdRun() : Task.CompletedTask;
+            return coldRun.ContinueWith(_ =>
+            {
+                long result = 0;
+                for(int i = -2 /*pre-warmup*/; i < warmUpCounter; i++) {
+                    if(i == 0)
+                        result = 0;
+                    result += DoCycle(dispatcher, awaiter, target, uiControl).Result;
                 }
-                finally { target.TearDown(uiControl); }
-            }
-            warmUpResult = Math.Max(1, stopwatch.ElapsedMilliseconds / warmUpCounter);
-            this.RaisePropertyChanged(x => x.Result);
-            this.RaiseCanExecuteChanged(x => x.Run());
+                warmUpResult = Math.Max(1, result / warmUpCounter);
+                //
+                dispatcher.BeginInvoke(() =>
+                {
+                    this.RaisePropertyChanged(x => x.Result);
+                    this.RaiseCanExecuteChanged(x => x.Run());
+                });
+            });
         }
         public bool CanRun() {
             return HasBenchmark && running == 0;
         }
         int running;
-        public void Run() {
+        int? runIndex, runTotal;
+        public Task Run() {
             running++;
-            PrepareRun();
+            var dispatcher = this.GetRequiredService<IDispatcherService>();
+            var awaiter = this.GetService<IUIAwaiter>();
+            awaiter.Prepare();
+            //
             UpdateCommands();
-            if(!IsWarmedUp) WarmUp();
+            Task warmUp = !IsWarmedUp ? WarmUp() : Task.CompletedTask;
             // Prepare
             var target = ActiveBenchmarkItem.Target;
             var uiControl = ActiveHostItem.Target.UIControl;
-            int counter = BenchmarkItem.GetBenchmarkCounter(ActiveBenchmarkItem.Type, Math.Max(10, 1000 / (int)warmUpResult.Value));
-            long[] results = new long[counter];
-            long low = warmUpResult.Value - Math.Min(warmUpResult.Value / 3, Math.Max(5, warmUpResult.Value / 20));
-            long hi = warmUpResult.Value + Math.Min(warmUpResult.Value / 3, Math.Max(5, warmUpResult.Value / 20));
-            if(low == hi) {
-                low--;
-                hi++;
-            }
-            worst = 0;
-            int watchDog = Benchmarks.Data.Configuration.Current.WatchDog(counter);
-            while(counter > 0 && (0 < watchDog--)) {
-                // Run
-                target.SetUp(uiControl);
-                try {
-                    stopwatch.Restart();
-                    target.Benchmark();
-                    stopwatch.Stop();
+            return warmUp.ContinueWith(_ =>
+            {
+                int counter = BenchmarkItem.GetBenchmarkCounter(ActiveBenchmarkItem.Type, Math.Max(10, Math.Min(100, 1000 / (int)warmUpResult.Value)));
+                long[] results = new long[counter];
+                long low = warmUpResult.Value - Math.Min(warmUpResult.Value / 3, Math.Max(5, warmUpResult.Value / 20));
+                long hi = warmUpResult.Value + Math.Min(warmUpResult.Value / 3, Math.Max(5, warmUpResult.Value / 20));
+                if(low == hi) {
+                    low--; hi++;
                 }
-                finally { target.TearDown(uiControl); }
-                // Continue
-                long current = stopwatch.ElapsedMilliseconds;
-                worst = Math.Max(current, worst.Value);
-                if(current > low && current < hi)
-                    results[--counter] = current;
-            }
-            int actualResultsCount = results.Where(r => r != 0).Count();
-            // Check results completeness
-            if(watchDog <= 0 && (results.Length - counter) >= 0) {
-                while(counter > 0) {
-                    // Run Ever!
-                    target.SetUp(uiControl);
-                    try {
-                        stopwatch.Restart();
-                        target.Benchmark();
-                        stopwatch.Stop();
-                    }
-                    finally { target.TearDown(uiControl); }
-                    long current = stopwatch.ElapsedMilliseconds;
+                worst = 0;
+                int watchDog = Benchmarks.Data.Configuration.Current.WatchDog(counter);
+                runTotal = counter;
+                while(counter > 0 && (0 < watchDog--)) {
+                    // Run
+                    long current = DoCycle(dispatcher, awaiter, target, uiControl).Result;
                     worst = Math.Max(current, worst.Value);
-                    if(current < warmUpResult.Value * 2)
+                    if(current > low && current < hi) {
                         results[--counter] = current;
+                        runIndex = runTotal - counter;
+                        dispatcher.BeginInvoke(() =>
+                            this.RaisePropertyChanged(x => x.Title));
+                    }
                 }
-                actualResultsCount = results.Length;
-            }
-            // Calc
-            result = (long)Math.Ceiling((double)results.Sum() / (double)actualResultsCount);
-            this.RaisePropertyChanged(x => x.Result);
-            running--;
-            UpdateCommands();
-            LogResults();
-            CopyToClipboard();
+                int actualResultsCount = results.Where(r => r != 0).Count();
+                // Check results completeness
+                if(watchDog <= 0 && (results.Length - counter) >= 0) {
+                    while(counter > 0) {
+                        // Run Ever!
+                        long current = DoCycle(dispatcher, awaiter, target, uiControl).Result;
+                        worst = Math.Max(current, worst.Value);
+                        if(current < warmUpResult.Value * 2) {
+                            results[--counter] = current;
+                            runIndex = runTotal - counter;
+                            dispatcher.BeginInvoke(() =>
+                                this.RaisePropertyChanged(x => x.Title));
+                        }
+                    }
+                    actualResultsCount = results.Length;
+                }
+                // Calc
+                result = (long)Math.Ceiling((double)results.Sum() / (double)actualResultsCount);
+                dispatcher.BeginInvoke(() =>
+                {
+                    this.runTotal = null;
+                    this.runIndex = null;
+                    this.RaisePropertyChanged(x => x.Result);
+                    running--;
+                    UpdateCommands();
+                    LogResults();
+                    CopyToClipboard();
+                });
+            });
         }
-        static void PrepareRun() {
-            System.Windows.Forms.Application.DoEvents();
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
+        public bool CanTest() {
+            return HasBenchmark && running == 0;
         }
-        void LogResults() {
-            var log = this.GetService<ILogService>();
-            if(log != null) {
-                string name = ActiveHostItem.Name + "(" + Benchmarks.Data.Configuration.Current.Name + ") - " + ActiveBenchmarkItem.Name;
-                log.Log("[" + name + "] " + Result);
-            }
+        public Task Test() {
+            var dispatcher = this.GetRequiredService<IDispatcherService>();
+            var awaiter = this.GetService<IUIAwaiter>();
+            var target = ActiveBenchmarkItem.Target;
+            var uiControl = ActiveHostItem.Target.UIControl;
+            return DoSetup(dispatcher, awaiter, target, uiControl)
+                    .ContinueWith(_ =>
+                        DoBehcmark(dispatcher, awaiter, target).Result)
+                    .ContinueWith(run =>
+                    {
+                        Thread.Sleep(5000);
+                        DoTearDown(dispatcher, awaiter, target, uiControl).Wait();
+                        return run.Result;
+                    });
+        }
+        // Tasks
+        Task<long> DoCycle(IDispatcherService dispatcher, IUIAwaiter awaiter, IBenchmarkItem target, object uiControl) {
+            return DoSetup(dispatcher, awaiter, target, uiControl)
+                    .ContinueWith(_ =>
+                        DoBehcmark(dispatcher, awaiter, target).Result)
+                    .ContinueWith(run =>
+                    {
+                        DoTearDown(dispatcher, awaiter, target, uiControl).Wait();
+                        return run.Result;
+                    });
+        }
+        Task DoSetup(IDispatcherService service, IUIAwaiter awaiter, IBenchmarkItem target, object uiControl) {
+            return Task.Factory.StartNew(() =>
+            {
+                running++;
+                using(var token = awaiter.BeginAwaiting(() => target.SetUp(uiControl)))
+                    service.BeginInvoke(() => token.Run());
+            }, TaskCreationOptions.LongRunning);
+        }
+        Task DoTearDown(IDispatcherService service, IUIAwaiter awaiter, IBenchmarkItem target, object uiControl) {
+            return Task.Factory.StartNew(() =>
+            {
+                using(var token = awaiter.BeginAwaiting(() => target.TearDown(uiControl)))
+                    service.BeginInvoke(() => token.Run());
+                running--;
+            }, TaskCreationOptions.LongRunning);
+        }
+        Task<long> DoBehcmark(IDispatcherService service, IUIAwaiter awaiter, IBenchmarkItem target) {
+            return Task.Factory.StartNew<long>(() =>
+            {
+                using(var token = awaiter.BeginAwaiting(() => target.Benchmark())) {
+                    service.BeginInvoke(() => token.Run());
+                    return token.ElapsedMilliseconds;
+                }
+            }, TaskCreationOptions.LongRunning);
         }
         // Title
         const string name = "Benckmarking App for DevExpress WinForms Grids";
@@ -250,6 +301,8 @@ namespace BenchmarkingApp {
                 string runningStage = string.Empty;
                 if(running > 0) {
                     runningStage = ", Running: " + ActiveBenchmarkItem.Name;
+                    if(runIndex.HasValue)
+                        runningStage += ", " + runIndex.Value.ToString() + "/" + runTotal.Value.ToString();
                     if(batchIndex.HasValue)
                         runningStage += ", " + batchIndex.Value.ToString() + " of " + batchTotal.Value.ToString();
                 }
@@ -273,6 +326,15 @@ namespace BenchmarkingApp {
                 return string.Empty;
             }
         }
+        #region Log
+        void LogResults() {
+            var log = this.GetService<ILogService>();
+            if(log != null) {
+                string name = ActiveHostItem.Name + "(" + Benchmarks.Data.Configuration.Current.Name + ") - " + ActiveBenchmarkItem.Name;
+                log.Log("[" + name + "] " + Result);
+            }
+        }
+        #endregion Log
         #region Clipboard
         protected string TabulatedResult {
             get {
@@ -299,32 +361,5 @@ namespace BenchmarkingApp {
                 clipboard.SetResult(TabulatedResult);
         }
         #endregion Clipboard
-        #region Test
-        public bool CanTest() {
-            return HasBenchmark && running == 0;
-        }
-        public Task Test() {
-            var dispatcher = this.GetRequiredService<IDispatcherService>();
-            var target = ActiveBenchmarkItem.Target;
-            var uiControl = ActiveHostItem.Target.UIControl;
-            return Task.Factory.StartNew(() =>
-                dispatcher.BeginInvoke(() =>
-                {
-                    running++;
-                    target.SetUp(uiControl);
-                })
-            ).ContinueWith(setup =>
-                dispatcher.BeginInvoke(() => target.Benchmark())
-            ).ContinueWith(b =>
-            {
-                System.Threading.Thread.Sleep(5000);
-                dispatcher.BeginInvoke(() =>
-                {
-                    target.TearDown(uiControl);
-                    running--;
-                });
-            });
-        }
-        #endregion Test
     }
 }

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 
 namespace BenchmarkingApp {
-    public partial class MainForm : XtraForm, IHostService, ILogService, IClipboardService {
+    public partial class MainForm : XtraForm, IHostService, ILogService, IClipboardService, IUIAwaiter {
         public MainForm() {
             InitializeComponent();
             memoLog.Visible = false;
@@ -39,6 +39,7 @@ namespace BenchmarkingApp {
             result.Visible = !showLog.Checked;
             Padding = new Padding(8, 40, 8, showLog.Checked ? 120 : 8);
         }
+
         #region Custom Services
         void IHostService.Show(IBenchmarkHost host) {
             var hostControl = host as Control;
@@ -50,10 +51,19 @@ namespace BenchmarkingApp {
             memoLog.Text += (message + Environment.NewLine);
         }
         void IClipboardService.SetResult(string result) {
-            try {
-                Clipboard.SetText(result, TextDataFormat.Text);
-            }
+            try { Clipboard.SetText(result, TextDataFormat.Text); }
             catch { }
+        }
+        IntPtr awaitHandle;
+        void IUIAwaiter.Prepare() {
+            awaitHandle = Handle;
+            Application.DoEvents();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
+        IUIAwaitingToken IUIAwaiter.BeginAwaiting(Action action) {
+            return new UIAwaitingToken(awaitHandle, action);
         }
         #endregion
     }

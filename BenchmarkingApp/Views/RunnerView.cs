@@ -5,7 +5,7 @@ using DevExpress.Mvvm;
 using DevExpress.XtraEditors;
 
 namespace BenchmarkingApp {
-    public partial class RunnerForm : XtraForm, IHostService, ILogService, IClipboardService, IMessageBoxService {
+    public partial class RunnerForm : XtraForm, IHostService, ILogService, IClipboardService, IMessageBoxService, IUIAwaiter {
         const string runnerLog = "runner.log";
         readonly string[] benchmarkArgs;
         readonly string results = ".results";
@@ -42,6 +42,17 @@ namespace BenchmarkingApp {
             hostControl.Dock = DockStyle.Fill;
             hostControl.Parent = this;
         }
+        IntPtr awaitHandle;
+        void IUIAwaiter.Prepare() {
+            awaitHandle = Handle;
+            Application.DoEvents();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
+        IUIAwaitingToken IUIAwaiter.BeginAwaiting(Action action) {
+            return new UIAwaitingToken(awaitHandle, action);
+        }
         void ILogService.Log(string message) {
             LogMessage(results, message);
             LogMessage(runnerLog, message);
@@ -53,8 +64,7 @@ namespace BenchmarkingApp {
         MessageResult IMessageBoxService.Show(string messageBoxText, string caption, MessageButton button, MessageIcon icon, MessageResult defaultResult) {
             var result = AutoClosingMessageBox.Show(
                 messageBoxText + Environment.NewLine + "Application is about to be closed automatically",
-                caption,
-                2500, MessageBoxButtons.OK, DialogResult.OK);
+                caption, 2500, MessageBoxButtons.OK, DialogResult.OK);
             if(result == DialogResult.OK) {
                 LogResult(runnerLog, Environment.NewLine);
                 Application.Exit();
