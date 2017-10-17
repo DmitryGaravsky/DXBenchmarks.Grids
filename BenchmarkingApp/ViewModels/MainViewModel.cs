@@ -65,39 +65,35 @@ namespace BenchmarkingApp {
         }
         //
         int? batchIndex, batchTotal;
-        public void LoadAndRunBatch(string[] args) {
-            args = Benchmarks.Data.Configuration.Parse(args);
+        public Task LoadAndRunBatch(string[] args) {
             Load();
-            BenchmarkItem[] activeBenchmarks = benchmarks;
-            if(args != null && args.Length > 0) {
-                activeBenchmarks = benchmarks.Where(b => IsSpecificBenchmark(b, args))
-                    .OrderBy(b => GetBenchmarkIndex(b, args))
-                    .ToArray();
-            }
+            BenchmarkItem[] activeBenchmarks = BenchmarkItem.GetActive(benchmarks, args);
+            var dispatcher = this.GetRequiredService<IDispatcherService>();
+            var awaiter = this.GetService<IUIAwaiter>();
             this.batchTotal = activeBenchmarks.Length;
-            int total = 0;
-            for(int i = 0; i < activeBenchmarks.Length; i++) {
-                this.batchIndex = i + 1;
-                var current = activeBenchmarks[i];
-                ActiveHostItem = HostItems.FirstOrDefault(host => BenchmarkItem.IsBenchmarkFor(current.Type, host.Name));
-                if(ActiveHostItem != null) {
-                    ActiveBenchmarkItem = current;
-                    Run();
-                    total++;
+            return Task.Factory.StartNew(() =>
+            {
+                int total = 0;
+                for(int i = 0; i < activeBenchmarks.Length; i++) {
+                    this.batchIndex = i + 1;
+                    var current = activeBenchmarks[i];
+                    total = UIOperation<int>(dispatcher, () =>
+                    {
+                        ActiveHostItem = HostItems.FirstOrDefault(host => BenchmarkItem.IsBenchmarkFor(current.Type, host.Name));
+                        if(ActiveHostItem != null)
+                            ActiveBenchmarkItem = current;
+                        return total + ((ActiveHostItem != null) ? 1 : 0);
+                    }).ContinueWith(tSelectItem =>
+                    {
+                        Run().Wait();
+                        return tSelectItem.Result;
+                    }).Result;
                 }
-            }
-            this.batchTotal = null;
-            this.batchIndex = null;
-            OnBatchRunComplete(total);
-        }
-        int GetBenchmarkIndex(BenchmarkItem current, string[] args) {
-            int typeNameIndex = Array.IndexOf(args, current.Type.FullName.ToLowerInvariant());
-            return (typeNameIndex != -1) ? typeNameIndex : Array.IndexOf(args, current.Name.ToLowerInvariant());
-        }
-        bool IsSpecificBenchmark(BenchmarkItem current, string[] args) {
-            return
-                Array.IndexOf(args, current.Type.FullName.ToLowerInvariant()) != -1 ||
-                Array.IndexOf(args, current.Name.ToLowerInvariant()) != -1;
+                this.batchTotal = null;
+                this.batchIndex = null;
+                dispatcher.BeginInvoke(() =>
+                    OnBatchRunComplete(total));
+            });
         }
         void OnBatchRunComplete(int total) {
             var messageService = this.GetRequiredService<IMessageBoxService>();
@@ -113,7 +109,6 @@ namespace BenchmarkingApp {
             this.RaiseCanExecuteChanged(x => x.ColdRun());
             this.RaiseCanExecuteChanged(x => x.WarmUp());
             this.RaiseCanExecuteChanged(x => x.Run());
-            System.Windows.Forms.Application.DoEvents();
         }
         //
         long? warmUpResult;
@@ -131,17 +126,19 @@ namespace BenchmarkingApp {
         public Task ColdRun() {
             var dispatcher = this.GetRequiredService<IDispatcherService>();
             var awaiter = this.GetService<IUIAwaiter>();
-            awaiter.Prepare();
-            return Task.Run(() =>
-            {
-                coldRunResult = DoCycle(dispatcher, awaiter, ActiveBenchmarkItem.Target, ActiveHostItem.Target.UIControl).Result;
-                cold = false;
-                dispatcher.BeginInvoke(() =>
+            var target = ActiveBenchmarkItem.Target;
+            var uiControl = ActiveHostItem.Target.UIControl;
+            return Prepare(dispatcher, awaiter)
+                .ContinueWith(_ =>
                 {
-                    this.RaisePropertyChanged(x => x.Result);
-                    this.RaiseCanExecuteChanged(x => x.ColdRun());
+                    coldRunResult = DoCycle(dispatcher, awaiter, target, uiControl).Result;
+                    cold = false;
+                    dispatcher.BeginInvoke(() =>
+                    {
+                        this.RaisePropertyChanged(x => x.Result);
+                        this.RaiseCanExecuteChanged(x => x.ColdRun());
+                    });
                 });
-            });
         }
         public bool CanWarmUp() {
             return HasBenchmark && running == 0;
@@ -149,11 +146,10 @@ namespace BenchmarkingApp {
         public Task WarmUp() {
             var dispatcher = this.GetRequiredService<IDispatcherService>();
             var awaiter = this.GetService<IUIAwaiter>();
-            awaiter.Prepare();
             var target = ActiveBenchmarkItem.Target;
             var uiControl = ActiveHostItem.Target.UIControl;
             int warmUpCounter = BenchmarkItem.GetWarmUpCounter(ActiveBenchmarkItem.Type);
-            Task coldRun = IsCold ? ColdRun() : Task.CompletedTask;
+            Task coldRun = IsCold ? ColdRun() : Prepare(dispatcher, awaiter);
             return coldRun.ContinueWith(_ =>
             {
                 long result = 0;
@@ -163,7 +159,6 @@ namespace BenchmarkingApp {
                     result += DoCycle(dispatcher, awaiter, target, uiControl).Result;
                 }
                 warmUpResult = Math.Max(1, result / warmUpCounter);
-                //
                 dispatcher.BeginInvoke(() =>
                 {
                     this.RaisePropertyChanged(x => x.Result);
@@ -180,10 +175,7 @@ namespace BenchmarkingApp {
             running++;
             var dispatcher = this.GetRequiredService<IDispatcherService>();
             var awaiter = this.GetService<IUIAwaiter>();
-            awaiter.Prepare();
-            //
-            UpdateCommands();
-            Task warmUp = !IsWarmedUp ? WarmUp() : Task.CompletedTask;
+            Task warmUp = !IsWarmedUp ? WarmUp() : Prepare(dispatcher, awaiter);
             // Prepare
             var target = ActiveBenchmarkItem.Target;
             var uiControl = ActiveHostItem.Target.UIControl;
@@ -194,13 +186,14 @@ namespace BenchmarkingApp {
                 long low = warmUpResult.Value - Math.Min(warmUpResult.Value / 3, Math.Max(5, warmUpResult.Value / 20));
                 long hi = warmUpResult.Value + Math.Min(warmUpResult.Value / 3, Math.Max(5, warmUpResult.Value / 20));
                 if(low == hi) {
-                    low--; hi++;
+                    low--;
+                    hi++;
                 }
                 worst = 0;
                 int watchDog = Benchmarks.Data.Configuration.Current.WatchDog(counter);
                 runTotal = counter;
                 while(counter > 0 && (0 < watchDog--)) {
-                    // Run
+                    // Run Normal
                     long current = DoCycle(dispatcher, awaiter, target, uiControl).Result;
                     worst = Math.Max(current, worst.Value);
                     if(current > low && current < hi) {
@@ -248,7 +241,9 @@ namespace BenchmarkingApp {
             var awaiter = this.GetService<IUIAwaiter>();
             var target = ActiveBenchmarkItem.Target;
             var uiControl = ActiveHostItem.Target.UIControl;
-            return DoSetup(dispatcher, awaiter, target, uiControl)
+            return Prepare(dispatcher, awaiter)
+                    .ContinueWith(_ =>
+                        DoSetup(dispatcher, awaiter, target, uiControl).Wait())
                     .ContinueWith(_ =>
                         DoBehcmark(dispatcher, awaiter, target).Result)
                     .ContinueWith(run =>
@@ -259,6 +254,21 @@ namespace BenchmarkingApp {
                     });
         }
         // Tasks
+        Task Prepare(IDispatcherService dispatcher, IUIAwaiter awaiter) {
+            return UIOperation(dispatcher, () =>
+            {
+                UpdateCommands();
+                awaiter.Prepare();
+                return 0;
+            });
+        }
+        Task<T> UIOperation<T>(IDispatcherService dispatcher, Func<T> uiOperation) {
+            var completionSource = new TaskCompletionSource<T>();
+            completionSource.Task.ConfigureAwait(false);
+            dispatcher.BeginInvoke(() =>
+                completionSource.SetResult(uiOperation()));
+            return completionSource.Task;
+        }
         Task<long> DoCycle(IDispatcherService dispatcher, IUIAwaiter awaiter, IBenchmarkItem target, object uiControl) {
             return DoSetup(dispatcher, awaiter, target, uiControl)
                     .ContinueWith(_ =>

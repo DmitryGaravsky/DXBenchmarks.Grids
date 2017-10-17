@@ -39,7 +39,6 @@ namespace BenchmarkingApp {
             result.Visible = !showLog.Checked;
             Padding = new Padding(8, 40, 8, showLog.Checked ? 120 : 8);
         }
-
         #region Custom Services
         void IHostService.Show(IBenchmarkHost host) {
             var hostControl = host as Control;

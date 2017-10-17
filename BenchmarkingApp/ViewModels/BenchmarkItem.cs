@@ -1,6 +1,7 @@
 ﻿namespace BenchmarkingApp {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
 
     public class BenchmarkItem {
         readonly Lazy<IBenchmarkItem> itemCore;
@@ -50,6 +51,25 @@
         static bool MatchCore(System.Type type, Benchmarks.Data.Configuration configuration) {
             var attributes = type.GetCustomAttributes(typeof(BenchmarkItemAttribute), true);
             return (attributes.Length > 0) ? configuration.Match(((BenchmarkItemAttribute)attributes[0]).Configuration) : true;
+        }
+        //
+        public static BenchmarkItem[] GetActive(BenchmarkItem[] benchmarks, string[] args) {
+            args = Benchmarks.Data.Configuration.Parse(args);
+            if(args != null && args.Length > 0) {
+                return benchmarks.Where(b => IsSpecificBenchmark(b, args))
+                    .OrderBy(b => GetBenchmarkIndex(b, args))
+                    .ToArray();
+            }
+            return benchmarks;
+        }
+        static bool IsSpecificBenchmark(BenchmarkItem current, string[] args) {
+            return
+                Array.IndexOf(args, current.Type.FullName.ToLowerInvariant()) != -1 ||
+                Array.IndexOf(args, current.Name.ToLowerInvariant()) != -1;
+        }
+        static int GetBenchmarkIndex(BenchmarkItem current, string[] args) {
+            int typeNameIndex = Array.IndexOf(args, current.Type.FullName.ToLowerInvariant());
+            return (typeNameIndex != -1) ? typeNameIndex : Array.IndexOf(args, current.Name.ToLowerInvariant());
         }
     }
 }

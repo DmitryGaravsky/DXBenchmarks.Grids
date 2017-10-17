@@ -9,6 +9,8 @@ namespace BenchmarkingApp {
         const string runnerLog = "runner.log";
         readonly string[] benchmarkArgs;
         readonly string results = ".results";
+        readonly static string startMsgFmt = Environment.NewLine + "{0} started at {1}";
+        readonly static string msgEnding = Environment.NewLine + "Application is about to be closed automatically";
         public RunnerForm()
             : this(new string[] { }, string.Empty) {
         }
@@ -20,8 +22,6 @@ namespace BenchmarkingApp {
                 File.Delete(results);
             //
             InitializeComponent();
-            //
-            string startMsgFmt = Environment.NewLine + "{0} started at {1}";
             LogResult(runnerLog, string.Format(startMsgFmt, workload, DateTime.Now.ToShortTimeString()));
         }
         protected override void OnHandleCreated(EventArgs e) {
@@ -42,8 +42,10 @@ namespace BenchmarkingApp {
             hostControl.Dock = DockStyle.Fill;
             hostControl.Parent = this;
         }
-        IntPtr awaitHandle;
+        IntPtr? awaitHandle;
         void IUIAwaiter.Prepare() {
+            if(awaitHandle.HasValue) 
+                return;
             awaitHandle = Handle;
             Application.DoEvents();
             GC.Collect();
@@ -51,7 +53,7 @@ namespace BenchmarkingApp {
             GC.Collect();
         }
         IUIAwaitingToken IUIAwaiter.BeginAwaiting(Action action) {
-            return new UIAwaitingToken(awaitHandle, action);
+            return new UIAwaitingToken(awaitHandle.Value, action);
         }
         void ILogService.Log(string message) {
             LogMessage(results, message);
@@ -62,9 +64,7 @@ namespace BenchmarkingApp {
             LogResult(runnerLog, result);
         }
         MessageResult IMessageBoxService.Show(string messageBoxText, string caption, MessageButton button, MessageIcon icon, MessageResult defaultResult) {
-            var result = AutoClosingMessageBox.Show(
-                messageBoxText + Environment.NewLine + "Application is about to be closed automatically",
-                caption, 2500, MessageBoxButtons.OK, DialogResult.OK);
+            var result = AutoClosingMessageBox.Show(messageBoxText + msgEnding, caption, 2500, MessageBoxButtons.OK, DialogResult.OK);
             if(result == DialogResult.OK) {
                 LogResult(runnerLog, Environment.NewLine);
                 Application.Exit();
