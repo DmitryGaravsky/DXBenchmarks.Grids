@@ -154,6 +154,12 @@ namespace BenchmarkingApp {
             {
                 long result = 0;
                 for(int i = -2 /*pre-warmup*/; i < warmUpCounter; i++) {
+                    if(i == -1) {
+                        if(result > 5000)
+                            warmUpCounter = 5;
+                        if(result > 15000)
+                            warmUpCounter = 3;
+                    }
                     if(i == 0)
                         result = 0;
                     result += DoCycle(dispatcher, awaiter, target, uiControl).Result;
@@ -186,8 +192,7 @@ namespace BenchmarkingApp {
                 long low = warmUpResult.Value - Math.Min(warmUpResult.Value / 3, Math.Max(5, warmUpResult.Value / 20));
                 long hi = warmUpResult.Value + Math.Min(warmUpResult.Value / 3, Math.Max(5, warmUpResult.Value / 20));
                 if(low == hi) {
-                    low--;
-                    hi++;
+                    low--; hi++;
                 }
                 worst = 0;
                 int watchDog = Benchmarks.Data.Configuration.Current.WatchDog(counter);
