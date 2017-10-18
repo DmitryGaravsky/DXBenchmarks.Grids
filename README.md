@@ -72,29 +72,20 @@ All the data are generated randomly and looks like real.
 
 ### Test categories:
 
+ - loading rows/tree nodes by assigning the data source(Bound) or via appending nodes in cycle(Unbound)
  - sorting by ordered/random data (single column)
  - sorting by clustered/unclustered data (multiple columns)
  - filtering by different data types with simple and complex filters
+ - grouping by unique or typicaly distributed values
  - searching by specific column and by the all columns
- - loading tree nodes by assigning the data source(Bound) or via appending nodes in cycle(Unbound)
+ - some specific operations
 
 All the above tests can be performed either on flat list or on self-referenced hierarchy(ID->ParentID).
- 
-### The results (17.1 vs 16.2)
 
-In the 17.1 the overall performance of data-aware operations in the Tree List Control was improved:
+## Measuring technique notes: 
 
-Sorting is **up to 8 times faster**.  
-Filtering is **up to 1.75 times faster**.  
-Searching is **up to 1.4 times faster**.  
-Loading nodes tree is **up to 8 times faster**.  
+  Some vendors use the “postponed” data-operation execution which ends immediately after initializing,  but then blocks the UI until ending.
+  So our measuring technique takes into account only *the UI response time*. 
+  The UI response time  is a period (in milliseconds) from operation start to the moment when the application’s UI backs into the responsive state. 
+  As the indicator, we have used the message pump – we are awaiting the recovering of the normal messages processing (idle-state).
 
-### Benchmarking notes
-
-1. The results above are measured by using the following PC configuration:  
-   Intel Core i7-4702HQ 2.2 GHz, 16 Gb, Win8.1x64)
-2. Here are [the bencmarking raw data and graphs](https://goo.gl/zCM6zT)
-
-Why the Grid Control faster?
- - the TreeList and Grid controls uses different data-model and data processing approaches.
- - the Grid control is based on List' processing, so the Grid can use the most aggressive optimizations (for example parallel processing or indexed data-access)

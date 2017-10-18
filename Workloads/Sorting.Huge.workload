@@ -1,8 +1,0 @@
-Configuration=Huge
-
-BenchmarkingApp.InMemory.Sorting_ID
-BenchmarkingApp.Grid.Bound.Sorting_ID
-BenchmarkingApp.Tree.Bound.Sorting_ID
-BenchmarkingApp.Tree.Unbound.Sorting_ID
-BenchmarkingApp.Tree.BoundHierarchy.Sorting_ID
-BenchmarkingApp.Tree.UnboundHierarchy.Sorting_ID

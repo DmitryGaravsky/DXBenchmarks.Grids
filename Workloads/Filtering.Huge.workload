@@ -1,8 +1,0 @@
-Configuration=Huge
-
-BenchmarkingApp.InMemory.Filtering_Price
-BenchmarkingApp.Grid.Bound.Filtering_Price
-BenchmarkingApp.Tree.Bound.Filtering_Price
-BenchmarkingApp.Tree.Unbound.Filtering_Price
-BenchmarkingApp.Tree.BoundHierarchy.Filtering_Price
-BenchmarkingApp.Tree.UnboundHierarchy.Filtering_Price

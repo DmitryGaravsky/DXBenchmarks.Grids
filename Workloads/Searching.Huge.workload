@@ -1,5 +1,0 @@
-Configuration=Huge
-
-BenchmarkingApp.Grid.Bound.Searching_All
-BenchmarkingApp.Tree.Bound.Searching_All
-BenchmarkingApp.Tree.Unbound.Searching_All
