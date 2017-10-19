@@ -143,6 +143,12 @@
     <Compile Include="Benchmarks\Hosts\PivotGrid.Designer.cs">
       <DependentUpon>PivotGrid.cs</DependentUpon>
     </Compile>
+    <Compile Include="Benchmarks\Hosts\RadVirtualGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Benchmarks\Hosts\RadVirtualGrid.Designer.cs">
+      <DependentUpon>RadVirtualGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Benchmarks\Hosts\RadGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -193,6 +199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Benchmarks\Hosts\PivotGrid.resx">
       <DependentUpon>PivotGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Benchmarks\Hosts\RadVirtualGrid.resx">
+      <DependentUpon>RadVirtualGrid.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Benchmarks\Hosts\RadGrid.resx">
       <DependentUpon>RadGrid.cs</DependentUpon>

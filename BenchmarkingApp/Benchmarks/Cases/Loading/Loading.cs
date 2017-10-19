@@ -103,6 +103,37 @@ namespace BenchmarkingApp.Grid.Bound {
         }
     }
 }
+namespace BenchmarkingApp.Grid.Virtual {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+    using DevExpress.Data;
+
+    [BenchmarkItem("LoadingVirtual", Configuration = "Huge")]
+    public class Loading : LoadBase {
+        List<Row> dataSource;
+        public sealed override void SetUp(object uiControl) {
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+            base.SetUp(uiControl);
+        }
+        public override void TearDown(object uiControl) {
+            grid.BeginUpdate();
+            unboundSource.Count = 0;
+            unboundSource.ValueNeeded -= unboundSource_ValueNeeded;
+            grid.EndUpdate();
+            base.TearDown(uiControl);
+        }
+        public sealed override void Benchmark() {
+            grid.BeginUpdate();
+            unboundSource.ValueNeeded += unboundSource_ValueNeeded;
+            unboundSource.Count = dataSource.Count;
+            grid.DataSource = unboundSource;
+            grid.EndUpdate();
+        }
+        void unboundSource_ValueNeeded(object sender, UnboundSourceValueNeededEventArgs e) {
+            e.Value = dataSource[e.RowIndex].GetData((int)e.Tag/* column index */);
+        }
+    }
+}
 
 namespace BenchmarkingApp.RadGrid.Bound {
     using System.Collections.Generic;
@@ -138,6 +169,35 @@ namespace BenchmarkingApp.RadGrid.BoundHierarchy {
             gridView.Columns["ParentId"].IsVisible = false;
             gridView.MasterTemplate.ExpandAll();
             gridView.EndUpdate();
+        }
+    }
+}
+namespace BenchmarkingApp.RadGrid.Virtual {
+    using Telerik.WinControls.UI;
+
+    [BenchmarkItem("Loading", Configuration = "Huge")]
+    public class Loading : LoadBase {
+        public override void TearDown(object uiControl) {
+            gridView.BeginUpdate();
+            gridView.ColumnCount = gridView.RowCount = 0;
+            gridView.CellValueNeeded -= gridView_CellValueNeeded;
+            gridView.EndUpdate();
+            base.TearDown(uiControl);
+        }
+        public sealed override void Benchmark() {
+            gridView.BeginUpdate();
+            gridView.CellValueNeeded += gridView_CellValueNeeded;
+            gridView.RowCount = dataSource.Count;
+            gridView.ColumnCount = columnNames.Length;
+            gridView.EndUpdate();
+        }
+        void gridView_CellValueNeeded(object sender, VirtualGridCellValueNeededEventArgs e) {
+            if(e.ColumnIndex < 0)
+                return;
+            if(e.RowIndex == RadVirtualGrid.HeaderRowIndex)
+                e.Value = columnNames[e.ColumnIndex];
+            if(e.RowIndex >= 0 && e.RowIndex < dataSource.Count)
+                e.Value = dataSource[e.RowIndex].GetData(e.ColumnIndex);
         }
     }
 }

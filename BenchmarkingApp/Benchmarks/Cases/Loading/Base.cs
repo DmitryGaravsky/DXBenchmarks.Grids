@@ -35,9 +35,36 @@ namespace BenchmarkingApp.Grid.Bound {
         public abstract void Benchmark();
     }
 }
+namespace BenchmarkingApp.Grid.Virtual {
+    using System;
+    using System.Linq;
+    using BenchmarkingApp.Benchmarks.Data;
+    using DevExpress.Data;
+    using DevExpress.XtraGrid;
+    using DevExpress.XtraGrid.Views.Base;
+
+    [BenchmarkHost("Grid")]
+    public abstract class LoadBase : IBenchmarkItem {
+        protected GridControl grid;
+        protected UnboundSource unboundSource;
+        public virtual void SetUp(object uiControl) {
+            grid = ((GridControl)uiControl);
+            grid.DataSource = null;
+            unboundSource = new UnboundSource();
+            string[] names = Row.GetColumns();
+            Type[] types = Row.GetColumnTypes();
+            unboundSource.Properties.AddRange(names.Select(
+                (name, index) => new UnboundSourceProperty(name, types[index]) { UserTag = index }));
+            ((ColumnView)grid.MainView).Columns.Clear();
+        }
+        public virtual void TearDown(object uiControl) {
+            grid = null;
+        }
+        public abstract void Benchmark();
+    }
+}
 
 namespace BenchmarkingApp.RadGrid.Bound {
-    using Telerik.WinControls;
     using Telerik.WinControls.UI;
 
     [BenchmarkHost("RadGrid")]
@@ -58,7 +85,6 @@ namespace BenchmarkingApp.RadGrid.Bound {
     }
 }
 namespace BenchmarkingApp.RadGrid.BoundHierarchy {
-    using Telerik.WinControls;
     using Telerik.WinControls.UI;
 
     [BenchmarkHost("RadGrid")]
@@ -78,9 +104,28 @@ namespace BenchmarkingApp.RadGrid.BoundHierarchy {
         public abstract void Benchmark();
     }
 }
+namespace BenchmarkingApp.RadGrid.Virtual {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+    using Telerik.WinControls.UI;
+
+    [BenchmarkHost("RadVirtualGrid")]
+    public abstract class LoadBase : IBenchmarkItem {
+        protected List<Row> dataSource;
+        protected readonly string[] columnNames = Row.GetColumns();
+        protected RadVirtualGrid gridView;
+        public void SetUp(object uiControl) {
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+            gridView = ((RadVirtualGrid)uiControl);
+        }
+        public virtual void TearDown(object uiControl) {
+            gridView = null;
+        }
+        public abstract void Benchmark();
+    }
+}
 
 namespace BenchmarkingApp.UltraGrid.Bound {
-    using Infragistics.Win;
     using Infragistics.Win.UltraWinGrid;
 
     [BenchmarkHost("UltraGrid")]
@@ -90,7 +135,7 @@ namespace BenchmarkingApp.UltraGrid.Bound {
             gridView = ((UltraGrid)uiControl);
             gridView.DataSource = null;
             gridView.DisplayLayout.ResetBands();
-            gridView.Rows.Refresh(Infragistics.Win.UltraWinGrid.RefreshRow.ReloadData);
+            gridView.Rows.Refresh(RefreshRow.ReloadData);
         }
         public void TearDown(object uiControl) {
             gridView = null;

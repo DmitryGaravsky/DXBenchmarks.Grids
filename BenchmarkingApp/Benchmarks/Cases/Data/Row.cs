@@ -103,8 +103,33 @@
         internal static string[] GetColumns() {
             return new string[] { "ID", "UID", "SID", "Age", "Size", "Price", "Amount", "Factor", "Name", "Notes", "IsActive", "Approved", "Open", "Resolved", "Gender" };
         }
+        internal static Type[] GetColumnTypes() {
+            return new Type[] { 
+                typeof(int), typeof(Guid), typeof(string), typeof(int), typeof(long), typeof(decimal), typeof(double), typeof(float), 
+                typeof(string), typeof(string), typeof(bool), typeof(bool?), typeof(DateTime), typeof(DateTime?), typeof(Gender) };
+        }
         internal object[] GetData() {
             return new object[] { ID, UID, SID, Age, Size, Price, Amount, Factor, Name, Notes, IsActive, Approved, Open, Resolved, Gender };
+        }
+        internal object GetData(int columnIndex) {
+            switch(columnIndex) {
+                case 0: return ID;
+                case 1: return UID;
+                case 2: return SID;
+                case 3: return Age;
+                case 4: return Size;
+                case 5: return Price;
+                case 6: return Amount;
+                case 7: return Factor;
+                case 8: return Name;
+                case 9: return Notes;
+                case 10: return IsActive;
+                case 11: return Approved;
+                case 12: return Open;
+                case 13: return Resolved;
+                case 14: return Gender;
+            }
+            throw new IndexOutOfRangeException();
         }
     }
     //
