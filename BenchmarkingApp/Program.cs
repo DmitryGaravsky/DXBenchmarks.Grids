@@ -8,19 +8,18 @@ namespace BenchmarkingApp {
     static class Program {
         [STAThread]
         static void Main(string[] args) {
+            WindowsFormsSettings.SetDPIAware();
             // AFFINITY
             var currentProcess = Process.GetCurrentProcess();
             currentProcess.ProcessorAffinity = new System.IntPtr(1);
             //
-            WindowsFormsSettings.SetDPIAware();
             WindowsFormsSettings.EnableFormSkins();
             WindowsFormsSettings.DefaultLookAndFeel.SetSkinStyle("Office 2016 Colorful");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             // check arguments
-            if(args == null || args.Length == 0 || args.Length == 1 && string.IsNullOrWhiteSpace(args[0])) {
+            if(args == null || args.Length == 0 || args.Length == 1 && string.IsNullOrWhiteSpace(args[0])) 
                 Application.Run(new MainForm());
-            }
             else {
                 string workload = string.Empty;
                 if(args.Length == 1 && System.IO.File.Exists(args[0].Trim())) {
