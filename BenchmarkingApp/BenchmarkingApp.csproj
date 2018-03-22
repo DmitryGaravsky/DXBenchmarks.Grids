@@ -42,38 +42,38 @@
       <HintPath>..\packages\AutoClosingMessageBox.1.0.0.1\lib\net40\AutoClosingMessageBox.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.Data.v17.1">
-      <HintPath>..\lib\DevExpress.Data.v17.1.dll</HintPath>
+    <Reference Include="DevExpress.Data.v18.1">
+      <HintPath>..\lib\DevExpress.Data.v18.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Mvvm.v17.1">
-      <HintPath>..\lib\DevExpress.Mvvm.v17.1.dll</HintPath>
+    <Reference Include="DevExpress.Mvvm.v18.1">
+      <HintPath>..\lib\DevExpress.Mvvm.v18.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.PivotGrid.v17.1.Core">
-      <HintPath>..\lib\DevExpress.PivotGrid.v17.1.Core.dll</HintPath>
+    <Reference Include="DevExpress.PivotGrid.v18.1.Core">
+      <HintPath>..\lib\DevExpress.PivotGrid.v18.1.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Printing.v17.1.Core">
-      <HintPath>..\lib\DevExpress.Printing.v17.1.Core.dll</HintPath>
+    <Reference Include="DevExpress.Printing.v18.1.Core">
+      <HintPath>..\lib\DevExpress.Printing.v18.1.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Utils.v17.1">
-      <HintPath>..\lib\DevExpress.Utils.v17.1.dll</HintPath>
+    <Reference Include="DevExpress.Utils.v18.1">
+      <HintPath>..\lib\DevExpress.Utils.v18.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v17.1">
-      <HintPath>..\lib\DevExpress.XtraEditors.v17.1.dll</HintPath>
+    <Reference Include="DevExpress.XtraEditors.v18.1">
+      <HintPath>..\lib\DevExpress.XtraEditors.v18.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraGrid.v17.1">
-      <HintPath>..\lib\DevExpress.XtraGrid.v17.1.dll</HintPath>
+    <Reference Include="DevExpress.XtraGrid.v18.1">
+      <HintPath>..\lib\DevExpress.XtraGrid.v18.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraLayout.v17.1">
-      <HintPath>..\lib\DevExpress.XtraLayout.v17.1.dll</HintPath>
+    <Reference Include="DevExpress.XtraLayout.v18.1">
+      <HintPath>..\lib\DevExpress.XtraLayout.v18.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraPivotGrid.v17.1">
-      <HintPath>..\lib\DevExpress.XtraPivotGrid.v17.1.dll</HintPath>
+    <Reference Include="DevExpress.XtraPivotGrid.v18.1">
+      <HintPath>..\lib\DevExpress.XtraPivotGrid.v18.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraPrinting.v17.1">
-      <HintPath>..\lib\DevExpress.XtraPrinting.v17.1.dll</HintPath>
+    <Reference Include="DevExpress.XtraPrinting.v18.1">
+      <HintPath>..\lib\DevExpress.XtraPrinting.v18.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraTreeList.v17.1">
-      <HintPath>..\lib\DevExpress.XtraTreeList.v17.1.dll</HintPath>
+    <Reference Include="DevExpress.XtraTreeList.v18.1">
+      <HintPath>..\lib\DevExpress.XtraTreeList.v18.1.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

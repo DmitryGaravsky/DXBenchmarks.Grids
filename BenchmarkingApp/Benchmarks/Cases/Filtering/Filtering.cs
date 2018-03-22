@@ -159,6 +159,38 @@ namespace BenchmarkingApp.Grid.Bound {
         }
     }
 }
+namespace BenchmarkingApp.PivotGrid.Bound {
+    using DevExpress.Data.Filtering;
+
+    [BenchmarkItem("Filter by Price", Configuration = "Huge")]
+    public class Filtering_Price : FilterBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price>5000");
+        public sealed override void Benchmark() {
+            pivot.ActiveFilterCriteria = criteria;
+        }
+    }
+    [BenchmarkItem("Filter by Approved")]
+    public class Filtering_Approved : FilterBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("Approved Is Not Null");
+        public sealed override void Benchmark() {
+            pivot.ActiveFilterCriteria = criteria;
+        }
+    }
+    [BenchmarkItem("Filter by Price and Approved")]
+    public class Filtering_Price_and_Approved : FilterBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("Price<5000 AND Approved Is Not Null");
+        public sealed override void Benchmark() {
+            pivot.ActiveFilterCriteria = criteria;
+        }
+    }
+    [BenchmarkItem("Filter by Amount and Open")]
+    public class Filtering_Amount_and_Open : FilterBase {
+        readonly CriteriaOperator criteria = CriteriaOperator.Parse("[Amount] Between('150','175') AND ([Open]>='1/1/2001' AND [Open]<'1/1/2002')");
+        public sealed override void Benchmark() {
+            pivot.ActiveFilterCriteria = criteria;
+        }
+    }
+}
 namespace BenchmarkingApp.RadGrid.Bound {
     using Telerik.WinControls.Data;
 
