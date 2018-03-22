@@ -251,6 +251,7 @@
     <EmbeddedResource Include="Views\RunnerView.resx">
       <DependentUpon>RunnerView.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
