@@ -239,3 +239,29 @@ namespace BenchmarkingApp.UltraGrid.Bound {
         public abstract void Benchmark();
     }
 }
+
+namespace BenchmarkingApp.SfDataGrid.Bound {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+    using Syncfusion.WinForms.DataGrid;
+
+    [BenchmarkHost("SfDataGrid")]
+    public abstract class FilterBase : IBenchmarkItem {
+        List<Row> dataSource;
+        protected SfDataGrid gridView;
+        public void SetUp(object uiControl) {
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+            gridView = ((SfDataGrid)uiControl);
+            gridView.DataSource = dataSource;
+            gridView.AutoSizeColumnsMode = Syncfusion.WinForms.DataGrid.Enums.AutoSizeColumnsMode.Fill;
+            gridView.AllowFiltering = true;
+        }
+        public void TearDown(object uiControl) {
+            foreach(GridColumn item in gridView.Columns) {
+                item.FilterPredicates.Clear();
+            }
+            gridView = null;
+        }
+        public abstract void Benchmark();
+    }
+}

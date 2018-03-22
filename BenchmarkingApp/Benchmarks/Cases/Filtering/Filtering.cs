@@ -358,3 +358,35 @@ namespace BenchmarkingApp.InMemory {
         }
     }
 }
+namespace BenchmarkingApp.SfDataGrid.Bound {
+    [BenchmarkItem("Filter by Price", Configuration = "Huge")]
+    public class Filtering_Price : FilterBase {
+        public sealed override void Benchmark() {
+            gridView.Columns["Price"].FilterPredicates.Add(new Syncfusion.Data.FilterPredicate() { FilterType = Syncfusion.Data.FilterType.GreaterThan, FilterValue = 5000 });
+        }
+    }
+    [BenchmarkItem("Filter by Approved")]
+    public class Filtering_Approved : FilterBase {
+        public sealed override void Benchmark() {
+            gridView.Columns["Approved"].FilterPredicates.Add(new Syncfusion.Data.FilterPredicate() { FilterType = Syncfusion.Data.FilterType.NotEquals, FilterValue = null });
+        }
+    }
+    [BenchmarkItem("Filter by Price and Approved")]
+    public class Filtering_Price_and_Approved : FilterBase {
+        public sealed override void Benchmark() {
+            gridView.Columns["Price"].FilterPredicates.Add(new Syncfusion.Data.FilterPredicate() { FilterType = Syncfusion.Data.FilterType.GreaterThan, FilterValue = 5000 });
+            gridView.Columns["Approved"].FilterPredicates.Add(new Syncfusion.Data.FilterPredicate() { FilterType = Syncfusion.Data.FilterType.NotEquals, FilterValue = null });
+        }
+    }
+    [BenchmarkItem("Filter by Amount and Open")]
+    public class Filtering_Amount_and_Open : FilterBase {
+        public sealed override void Benchmark() {
+            System.DateTime before = new System.DateTime(2002, 1, 1);
+            System.DateTime after = new System.DateTime(2001, 1, 1);
+            gridView.Columns["Amount"].FilterPredicates.Add(new Syncfusion.Data.FilterPredicate() { FilterType = Syncfusion.Data.FilterType.GreaterThanOrEqual, FilterValue = 175 });
+            gridView.Columns["Amount"].FilterPredicates.Add(new Syncfusion.Data.FilterPredicate() { FilterType = Syncfusion.Data.FilterType.LessThanOrEqual, FilterValue = 175 });
+            gridView.Columns["Open"].FilterPredicates.Add(new Syncfusion.Data.FilterPredicate() { FilterType = Syncfusion.Data.FilterType.GreaterThanOrEqual, FilterValue = after });
+            gridView.Columns["Open"].FilterPredicates.Add(new Syncfusion.Data.FilterPredicate() { FilterType = Syncfusion.Data.FilterType.LessThanOrEqual, FilterValue = before });
+        }
+    }
+}

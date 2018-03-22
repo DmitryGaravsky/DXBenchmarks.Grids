@@ -12,6 +12,7 @@ namespace BenchmarkingApp {
             var currentProcess = Process.GetCurrentProcess();
             currentProcess.ProcessorAffinity = new System.IntPtr(1);
             //
+            WindowsFormsSettings.SetDPIAware();
             WindowsFormsSettings.EnableFormSkins();
             WindowsFormsSettings.DefaultLookAndFeel.SetSkinStyle("Office 2016 Colorful");
             Application.EnableVisualStyles();

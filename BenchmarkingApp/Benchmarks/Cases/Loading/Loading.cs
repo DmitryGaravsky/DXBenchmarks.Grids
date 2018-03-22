@@ -218,3 +218,19 @@ namespace BenchmarkingApp.UltraGrid.Bound {
         }
     }
 }
+namespace BenchmarkingApp.SfDataGrid.Bound {
+    using System.Collections.Generic;
+    using BenchmarkingApp.Benchmarks.Data;
+
+    [BenchmarkItem("Loading", Configuration = "Huge")]
+    public class Loading : LoadBase {
+        List<Row> dataSource;
+        public sealed override void SetUp(object uiControl) {
+            Row.EnsureListSource(ref dataSource, Configuration.Current.Rows);
+            base.SetUp(uiControl);
+        }
+        public sealed override void Benchmark() {
+            gridView.DataSource = dataSource;
+        }
+    }
+}

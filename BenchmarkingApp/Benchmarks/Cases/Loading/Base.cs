@@ -143,3 +143,20 @@ namespace BenchmarkingApp.UltraGrid.Bound {
         public abstract void Benchmark();
     }
 }
+namespace BenchmarkingApp.SfDataGrid.Bound {
+    using Syncfusion.WinForms.DataGrid;
+
+    [BenchmarkHost("SfDataGrid")]
+    public abstract class LoadBase : IBenchmarkItem {
+        protected SfDataGrid gridView;
+        public virtual void SetUp(object uiControl) {
+            gridView = ((SfDataGrid)uiControl);
+            gridView.AutoSizeColumnsMode = Syncfusion.WinForms.DataGrid.Enums.AutoSizeColumnsMode.Fill;
+            gridView.DataSource = null;
+        }
+        public void TearDown(object uiControl) {
+            gridView = null;
+        }
+        public abstract void Benchmark();
+    }
+}

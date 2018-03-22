@@ -57,3 +57,17 @@ namespace BenchmarkingApp.UltraGrid.Bound {
         }
     }
 }
+namespace BenchmarkingApp.SfDataGrid.Bound {
+    [BenchmarkItem("Group by ID", Configuration = "Huge")]
+    public class Grouping_ID : GroupBase {
+        public sealed override void Benchmark() {
+            gridView.GroupColumnDescriptions.Add(new Syncfusion.WinForms.DataGrid.GroupColumnDescription() { ColumnName = "ID" });
+        }
+    }
+    [BenchmarkItem("Group by Name")]
+    public class Grouping_Name : GroupBase {
+        public sealed override void Benchmark() {
+            gridView.GroupColumnDescriptions.Add(new Syncfusion.WinForms.DataGrid.GroupColumnDescription() { ColumnName = "Name" });
+        }
+    }
+}

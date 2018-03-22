@@ -350,3 +350,31 @@ namespace BenchmarkingApp.InMemory {
         }
     }
 }
+namespace BenchmarkingApp.SfDataGrid.Bound {
+    [BenchmarkItem("Sort by ID", Configuration = "Huge")]
+    public class Sorting_ID : SortBase {
+        public sealed override void Benchmark() {
+            gridView.SortColumnDescriptions.Add(new Syncfusion.WinForms.DataGrid.SortColumnDescription() { ColumnName = "ID", SortDirection = System.ComponentModel.ListSortDirection.Descending });
+        }
+    }
+    [BenchmarkItem("Sort by Name")]
+    public class Sorting_Name : SortBase {
+        public sealed override void Benchmark() {
+            gridView.SortColumnDescriptions.Add(new Syncfusion.WinForms.DataGrid.SortColumnDescription() { ColumnName = "Name", SortDirection = System.ComponentModel.ListSortDirection.Descending });
+        }
+    }
+    [BenchmarkItem("Sort by ID and Name")]
+    public class Sorting_ID_and_Name : SortBase {
+        public sealed override void Benchmark() {
+            gridView.SortColumnDescriptions.Add(new Syncfusion.WinForms.DataGrid.SortColumnDescription() { ColumnName = "ID", SortDirection = System.ComponentModel.ListSortDirection.Descending });
+            gridView.SortColumnDescriptions.Add(new Syncfusion.WinForms.DataGrid.SortColumnDescription() { ColumnName = "Name", SortDirection = System.ComponentModel.ListSortDirection.Ascending });
+        }
+    }
+    [BenchmarkItem("Sort by Age and Factor")]
+    public class Sorting_Age_and_Factor : SortBase {
+        public sealed override void Benchmark() {
+            gridView.SortColumnDescriptions.Add(new Syncfusion.WinForms.DataGrid.SortColumnDescription() { ColumnName = "Age", SortDirection = System.ComponentModel.ListSortDirection.Descending });
+            gridView.SortColumnDescriptions.Add(new Syncfusion.WinForms.DataGrid.SortColumnDescription() { ColumnName = "Factor", SortDirection = System.ComponentModel.ListSortDirection.Ascending });
+        }
+    }
+}

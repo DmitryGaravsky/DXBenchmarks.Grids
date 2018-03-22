@@ -75,6 +75,21 @@
     <Reference Include="DevExpress.XtraTreeList.v18.1">
       <HintPath>..\lib\DevExpress.XtraTreeList.v18.1.dll</HintPath>
     </Reference>
+    <Reference Include="Syncfusion.Core.WinForms">
+      <HintPath>..\lib\Syncfusion.Core.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Data.WinForms">
+      <HintPath>..\lib\Syncfusion.Data.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.GridCommon.WinForms">
+      <HintPath>..\lib\Syncfusion.GridCommon.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfDataGrid.WinForms">
+      <HintPath>..\lib\Syncfusion.SfDataGrid.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfInput.WinForms">
+      <HintPath>..\lib\Syncfusion.SfInput.WinForms.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -155,6 +170,12 @@
     <Compile Include="Benchmarks\Hosts\RadGrid.Designer.cs">
       <DependentUpon>RadGrid.cs</DependentUpon>
     </Compile>
+    <Compile Include="Benchmarks\Hosts\SfDataGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Benchmarks\Hosts\SfDataGrid.Designer.cs">
+      <DependentUpon>SfDataGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Benchmarks\Hosts\Treelist.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -205,6 +226,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Benchmarks\Hosts\RadGrid.resx">
       <DependentUpon>RadGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Benchmarks\Hosts\SfDataGrid.resx">
+      <DependentUpon>SfDataGrid.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Benchmarks\Hosts\Treelist.resx">
       <DependentUpon>Treelist.cs</DependentUpon>
